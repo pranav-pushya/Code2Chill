@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1244.1079999999997 617.3" width="1244.1079999999997" height="617.3" style="--bg:#18181B;--fg:#F4F4F5;--line:#71717A;--muted:#A1A1AA;--surface:#27272A;--border:#3F3F46;background:var(--bg)">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+  text { font-family: 'Inter', system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
+    <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+  <marker id="arrowhead-start" markerWidth="8" markerHeight="5" refX="1" refY="2.5" orient="auto-start-reverse">
+    <polygon points="8 0, 0 2.5, 8 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+</defs>
+<g class="subgraph" data-id="Frontend" data-label="Frontend Tier (Client Browser)">
+  <rect x="129.6609999999999" y="40" width="984.786" height="96.9" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="129.6609999999999" y="40" width="984.786" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="141.6609999999999" y="54" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">Frontend Tier (Client Browser)</text>
+</g>
+<g class="subgraph" data-id="Backend" data-label="Backend Tier (Python 3.11+ ASGI)">
+  <rect x="40" y="253.20000000000002" width="1164.1079999999997" height="96.9" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="40" y="253.20000000000002" width="1164.1079999999997" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="52" y="267.20000000000005" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">Backend Tier (Python 3.11+ ASGI)</text>
+</g>
+<g class="subgraph" data-id="Persistence" data-label="Persistence Tier (Async Engine)">
+  <rect x="236.51299999999992" y="466.40000000000003" width="771.0819999999999" height="110.9" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="236.51299999999992" y="466.40000000000003" width="771.0819999999999" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="248.51299999999992" y="480.40000000000003" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">Persistence Tier (Async Engine)</text>
+</g>
+<polyline class="edge" data-from="Frontend" data-to="Backend" data-style="solid" data-arrow-start="true" data-arrow-end="true" data-label="RESTful JSON / CORS Protected" points="622.0539999999999,136.9 622.0539999999999,253.20000000000002" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" marker-start="url(#arrowhead-start)" />
+<polyline class="edge" data-from="Backend" data-to="Persistence" data-style="solid" data-arrow-start="true" data-arrow-end="true" data-label="Async Non-Blocking I/O" points="622.0539999999999,350.1 622.0539999999999,466.40000000000003" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" marker-start="url(#arrowhead-start)" />
+<g class="edge-label" data-from="Frontend" data-to="Backend" data-label="RESTful JSON / CORS Protected">
+  <rect x="536.5539999999999" y="179.9" width="170.308" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="621.7079999999999" y="195.05" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">RESTful JSON / CORS Protected</text>
+</g>
+<g class="edge-label" data-from="Backend" data-to="Persistence" data-label="Async Non-Blocking I/O">
+  <rect x="557.5539999999999" y="393.1" width="128.13400000000001" height="30.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="621.6209999999999" y="408.25" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-sec)" dy="3.8499999999999996">Async Non-Blocking I/O</text>
+</g>
+<g class="node" data-id="UI" data-label="React 18 + Vite" data-shape="rectangle">
+  <rect x="419.3859999999998" y="84" width="122.71900000000001" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="480.7454999999998" y="102.45" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">React 18 + Vite</text>
+</g>
+<g class="node" data-id="Tailwind" data-label="Tailwind CSS v3 (Custom Dark System)" data-shape="rectangle">
+  <rect x="570.1049999999998" y="84" width="266.47299999999996" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="703.3414999999998" y="102.45" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Tailwind CSS v3 (Custom Dark System)</text>
+</g>
+<g class="node" data-id="Framer" data-label="Framer Motion (Micro-interactions)" data-shape="rectangle">
+  <rect x="145.6609999999999" y="84" width="245.72499999999994" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="268.52349999999984" y="102.45" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Framer Motion (Micro-interactions)</text>
+</g>
+<g class="node" data-id="Lucide" data-label="Lucide Icons (Developer Glyphs)" data-shape="rectangle">
+  <rect x="864.5779999999997" y="84" width="233.869" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="981.5124999999997" y="102.45" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Lucide Icons (Developer Glyphs)</text>
+</g>
+<g class="node" data-id="FastAPI" data-label="FastAPI Framework (Uvicorn Worker)" data-shape="rectangle">
+  <rect x="370.4799999999999" y="297.20000000000005" width="264.25" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="502.6049999999999" y="315.65000000000003" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">FastAPI Framework (Uvicorn Worker)</text>
+</g>
+<g class="node" data-id="Pydantic" data-label="Pydantic v2 (Rust Core Validation)" data-shape="rectangle">
+  <rect x="662.7299999999999" y="297.20000000000005" width="239.05599999999995" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="782.2579999999999" y="315.65000000000003" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Pydantic v2 (Rust Core Validation)</text>
+</g>
+<g class="node" data-id="Security" data-label="Passlib (Bcrypt) + PyJWT (Stateless Auth)" data-shape="rectangle">
+  <rect x="56" y="297.20000000000005" width="286.4799999999999" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="199.23999999999995" y="315.65000000000003" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Passlib (Bcrypt) + PyJWT (Stateless Auth)</text>
+</g>
+<g class="node" data-id="Limiter" data-label="SlowAPI (Token Bucket Rate Limiting)" data-shape="rectangle">
+  <rect x="929.7859999999998" y="297.20000000000005" width="258.3219999999999" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="1058.9469999999997" y="315.65000000000003" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">SlowAPI (Token Bucket Rate Limiting)</text>
+</g>
+<g class="node" data-id="SQLAlchemy" data-label="SQLAlchemy 2.0 (AsyncSession)" data-shape="rectangle">
+  <rect x="517.3459999999999" y="513.9000000000001" width="236.09199999999996" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="635.3919999999998" y="532.3500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">SQLAlchemy 2.0 (AsyncSession)</text>
+</g>
+<g class="node" data-id="Alembic" data-label="Alembic (Schema Migrations)" data-shape="rectangle">
+  <rect x="781.4379999999999" y="513.9000000000001" width="210.15699999999995" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="886.5164999999998" y="532.3500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">Alembic (Schema Migrations)</text>
+</g>
+<g class="node" data-id="DB" data-label="SQLite (Dev) / PostgreSQL (Prod)" data-shape="cylinder">
+  <rect x="252.51299999999992" y="520.9000000000001" width="236.83299999999997" height="36.900000000000006" fill="var(--_node-fill)" stroke="none" />
+  <line x1="252.51299999999992" y1="520.9000000000001" x2="252.51299999999992" y2="557.8000000000001" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <line x1="489.3459999999999" y1="520.9000000000001" x2="489.3459999999999" y2="557.8000000000001" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <ellipse cx="370.9294999999999" cy="557.8000000000001" rx="118.41649999999998" ry="7" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <ellipse cx="370.9294999999999" cy="520.9000000000001" rx="118.41649999999998" ry="7" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="370.9294999999999" y="539.3500000000001" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">SQLite (Dev) / PostgreSQL (Prod)</text>
+</g>
+</svg>
