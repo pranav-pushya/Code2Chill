@@ -193,6 +193,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-012 | Phase 1.2 preliminary document check | Python checked status labels across all 12 identity rows, relative links, the unchecked 1.2 box, and that the Git index was empty. `git diff --check` passed. | This check covered the research notes and repository state. Final verification depends on the approved identity details. |
 | VER-013 | Phase 1.2 final pass 1, university and owner evidence | Two anonymous Chrome renders exposed the public club page. A Python comparison matched all ten roster entries, four domain labels, the public links, and the visible membership interest action to the register. | The executive titles use owner confirmation. The check did not submit a membership request. |
 | VER-014 | Phase 1.2 final pass 2, publication and repository review | Checked document links, evidence labels, unfilled contact details, the Phase 1 checkbox sequence, and the staged change scope. `git diff --cached --check` passed. | The general enquiries address and the behavior behind the membership interest action remain open. |
+| VER-015 | Phase 1.3 pass 1, event source cross-check | Rendered both university event pages in Chrome. Python compared their dates, venue, topic details, and publication flags to the register. Confirmed the upcoming state and the On Fire recap separately. | Both event schedules showed zero duration. Byte The Vibe also had conflicting times. |
+| VER-016 | Phase 1.3 pass 2, publication and repository review | Checked evidence links, asset and results statuses, checkbox order, and the staged files with Python and `git diff --cached --check`. | Official placement lists, event media reuse, and some event details remain open. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -326,6 +328,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-013 checked the published facts and source labels. VER-014 checked the commit contents and correct treatment of missing details.
 - **Limitations / remaining work:** The in-app browser connection timed out, so the page was inspected with anonymous Chrome rendering. A general club email, faculty liaison, approved photos, and terms of office remain open. Available recruitment domains may vary by cycle. The interest action's sign-in and submission behavior remain untested.
 - **Viva Q&A:** **Why show two sources for the executive titles?** The university shows Club Leader and Core Member. The owner confirmed the more specific president and vice-president titles for club copy. **How did you resolve the disputed Content Head title?** The club's university listing gives Ayush Sharma that title directly.
+
+### TASK-009 — Collect event material
+
+- **Date:** 19 November 2026.
+- **Roadmap step:** Phase 1.3.
+- **Status:** Public event inventory collected and verified. Results and media gaps tracked.
+- **Objective:** Build a sourced event archive and identify missing material for event detail pages.
+- **Changes and files:** Updated the [content register](CONTENT_REGISTER.md#events-and-projects) with two university event records, an On Fire recap, a dated upcoming status check, and leads for placements and event images. Updated the [roadmap](../WEBSITE_ROADMAP.md#phase-1--establish-content-and-scope).
+- **How it works:** The university event pages supply dates, venue, and summaries. The media lead's recap establishes On Fire as a past club event. Each unresolved time, placement, or asset has an owner or source lead in the register.
+- **Why this approach:** The schedule fields show zero duration on both university event pages, and one conflicts with the event recap. Date-level archive copy remains useful while event leads verify times. Published images still need credits and reuse permission for the new site.
+- **Validation:** VER-015 checked the event facts and conflicting fields. VER-016 checked the staged documentation, links, and roadmap sequence.
+- **Limitations / remaining work:** Event leads must confirm exact times where relevant, official placements, On Fire's date and venue, and which posters and photographs the site may use. The upcoming event list reflects the day it was checked.
+- **Viva Q&A:** **How can both registration figures and attendance figures be accurate?** Registrations count sign-ups. Attendance counts who took part. Give each figure its own label and source. **What happens when an official event page gives different times?** Publish the verified date and keep the time open until the event lead resolves the discrepancy.
 
 ## 11. Template for Every Future Task or Step
 

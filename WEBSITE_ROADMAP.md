@@ -58,7 +58,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 - [x] **1.1 Create a content register.** Record each fact, source URL or owner, verification status, and last checked date in the [content register](docs/CONTENT_REGISTER.md).
 - [x] **1.2 Consolidate club identity.** Confirm the official description, leadership roster, domains, and public links. Record available contact paths and missing details in the [content register](docs/CONTENT_REGISTER.md#club-identity-and-contacts).
-- [ ] **1.3 Collect event material.** Gather dates, venues, posters, summaries, winners, and photographs for past and upcoming events.
+- [x] **1.3 Collect event material.** Record sourced dates, venues, summaries, upcoming status, and leads or gaps for results and media in the [content register](docs/CONTENT_REGISTER.md#events-and-projects).
 - [ ] **1.4 Collect project material.** Gather descriptions, repositories, live demos, screenshots, and contributor credits.
 - [ ] **1.5 Decide registration ownership.** Establish whether the website accepts registrations or redirects students to the university portal. Avoid conflicting records across two systems.
 - [ ] **1.6 Define recruitment rules.** Establish fields, available domains, opening and closing dates, eligibility, and application reviewers.
