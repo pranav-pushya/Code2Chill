@@ -176,6 +176,7 @@ If a future release takes ownership of registration, the proposed local flow is:
 | DEC-007 | Production ink transition | Open | Requires performance/accessibility evaluation |
 | DEC-008 | Update documentation after every task/step | Confirmed | Accurate viva preparation and handover |
 | DEC-011 | Use the university portal for launch event sign-ups | Selected for launch | One system holds registration records. The organizer confirms each event link and state. |
+| DEC-012 | Show an announcement while no recruitment cycle is approved | Selected for launch | Keeps the Join page usable while the club confirms actual dates, domains, eligibility, application route, and reviewers. |
 
 When replacing a decision, record the reason and affected implementation. Retain the old entry as superseded.
 
@@ -201,6 +202,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-018 | Phase 1.4 pass 2, publication and repository review | Checked evidence links, distinct project and starter records, missing-asset status, checklist sequence, and the staged scope. `git diff --cached --check` passed. | ChronoAtlas links and approved screenshots remain open. |
 | VER-019 | Phase 1.5 pass 1, registration design check | Used the observed university event pages to review open, closed, full, ended, and pending scenarios. Python checked the state table, event references, and system of record. | Design verification. Live submission remains untested. |
 | VER-020 | Phase 1.5 pass 2, documentation and repository review | Checked the roadmap, verification and decision IDs, relative links, staged files, and `git diff --cached --check`. | No application implementation or portal integration was exercised. |
+| VER-021 | Phase 1.6 pass 1, recruitment rules and boundary review | Matched the university's interest action and checked documented cycle settings and form fields. A Python walkthrough with demonstration settings checked five cases from unconfigured through the closing instant. | Design walkthrough. No form or real applicant data was used. |
+| VER-022 | Phase 1.6 pass 2, documentation and repository review | Checked the recruitment default, missing official settings, cross-document links, checklist sequence, and staged scope. `git diff --cached --check` passed. | Reviewers, dates, and other actual cycle settings are still to be provided. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -373,6 +376,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-019 checked the launch behavior against event states and the available source evidence. VER-020 checked the commit contents and related documentation.
 - **Limitations / remaining work:** No live registration or portal data integration was tested. The organizer still confirms each event's destination and availability. A local sign-up feature would require a future ownership decision.
 - **Viva Q&A:** **Where is a registration saved?** The university portal owns the launch sign-up. Code2Chill stores the event and official link. **How do you show dynamic data in the viva?** Publish an event in the dashboard and show the saved content update on the public page, then demonstrate the external handoff.
+
+### TASK-012 — Define recruitment rules
+
+- **Date:** 19 November 2026.
+- **Roadmap step:** Phase 1.6.
+- **Status:** Recruitment design verified. The default is an announcement until the club supplies a cycle.
+- **Objective:** Define what students see, what a later application needs, and who is responsible for review.
+- **Changes and files:** Added [recruitment rules](LAUNCH_SCOPE.md#recruitment), kept the missing actual cycle settings visible in the [content register](CONTENT_REGISTER.md#registration-and-recruitment), and updated the [roadmap](../WEBSITE_ROADMAP.md#phase-1--establish-content-and-scope).
+- **How it works:** Define a cycle with a start, close, available domains, eligibility, reviewers, and one application route. The planned form asks for a name, university email, and domain, with an optional motivation or portfolio. Public behavior moves from announcement to scheduled, open, and closed as configuration and time allow.
+- **Why this approach:** Published club domains can change availability across cycles. A cycle makes the opening times, eligibility, and reviewer assignments explicit. The university membership interest link remains useful while application details are pending.
+- **Validation:** VER-021 walked through the planned rules and checked both time boundaries using demonstration values. VER-022 checked the staged documents and roadmap state.
+- **Limitations / remaining work:** The club still needs to supply a real cycle, including dates, eligibility, enabled domains, reviewers, and the approved application route. Form handling and reviewer access controls are planned for Phase 8.
+- **Viva Q&A:** **What is the difference between membership interest and an application?** The university listing has a general interest action. A domain application belongs to a configured recruitment cycle with rules and reviewers. **What happens at the exact closing time?** The local form must reject it because the closing instant is outside the open window.
 
 ## 11. Template for Every Future Task or Step
 

@@ -61,7 +61,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **1.3 Collect event material.** Record sourced dates, venues, summaries, upcoming status, and leads or gaps for results and media in the [content register](docs/CONTENT_REGISTER.md#events-and-projects).
 - [x] **1.4 Collect project material.** Record project descriptions, contributor credits, verified code and demo links, and missing assets in the [content register](docs/CONTENT_REGISTER.md#events-and-projects).
 - [x] **1.5 Decide registration ownership.** Use the university portal for launch sign-ups, with an event-specific handoff and fallback states defined in the [launch scope](docs/LAUNCH_SCOPE.md#event-registration).
-- [ ] **1.6 Define recruitment rules.** Establish fields, available domains, opening and closing dates, eligibility, and application reviewers.
+- [x] **1.6 Define recruitment rules.** Set the cycle requirements, planned application fields, and public state before a cycle is announced in the [launch scope](docs/LAUNCH_SCOPE.md#recruitment).
 - [ ] **1.7 Set launch scope.** Separate essential features from later additions and record unresolved decisions.
 
 ### Deliverables

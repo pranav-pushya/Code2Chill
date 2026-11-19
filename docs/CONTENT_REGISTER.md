@@ -71,7 +71,8 @@ Use the confirmed social profiles and the university listing for membership inte
 | REG-01 | The university provides a Clubs & Events portal with event registration. | [University Clubs & Events portal](https://chitkarau.life/) | Source-confirmed | 2026-11-19 | Confirm with the university administrator whether specific Code2Chill events must use that portal. |
 | REG-02 | The Code2Chill launch design uses the university portal as the system for event sign-ups. | [Launch scope decision](LAUNCH_SCOPE.md#event-registration) | Project decision | 2026-11-19 | Confirm each event-specific URL and registration state with the organizer before publishing its action. |
 | JOIN-01 | Past recruitment drives took place. | [Club recruitment recap](https://www.linkedin.com/posts/code2chill_afreshstart-code2chill-chitkarauniversity-activity-7501545165317115904-f6kU) | Source-confirmed | 2026-11-19 | Ask the recruitment lead for the relevant cycle and verified dates if used in an archive. |
-| JOIN-02 | Current recruitment status, dates, eligibility, application fields, available domains, and reviewers. | Recruitment lead and club leadership | Missing | 2026-11-19 | Confirm the cycle rules and the authorized application route before accepting applications. |
+| JOIN-02 | Current cycle dates, eligibility, available domains, official application route, and assigned reviewers. | Recruitment lead and club leadership | Missing | 2026-11-19 | Confirm the cycle settings and application route before accepting applications. |
+| JOIN-03 | The Join page starts in an announcement state. A future application requires a documented cycle and route. | [Launch recruitment rules](LAUNCH_SCOPE.md#recruitment) | Project decision | 2026-11-19 | Keep the membership-interest link distinct from the later application action. |
 
 ## Asset inventory
 
