@@ -56,7 +56,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 ### Steps
 
-- [ ] **1.1 Create a content register.** Record each fact, source URL or owner, verification status, and last checked date.
+- [x] **1.1 Create a content register.** Record each fact, source URL or owner, verification status, and last checked date in the [content register](docs/CONTENT_REGISTER.md).
 - [ ] **1.2 Consolidate club identity.** Confirm the official description, leadership roster, domains, social links, and contact details.
 - [ ] **1.3 Collect event material.** Gather dates, venues, posters, summaries, winners, and photographs for past and upcoming events.
 - [ ] **1.4 Collect project material.** Gather descriptions, repositories, live demos, screenshots, and contributor credits.

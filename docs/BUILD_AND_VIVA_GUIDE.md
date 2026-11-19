@@ -40,7 +40,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Area | State | Evidence / limitation |
 | --- | --- | --- |
 | Roadmap | Written | Eleven phases with steps and completion criteria |
-| Content research | Partial | Supplied pages were not retrievable; some indexed LinkedIn content was available |
+| Content register | Created and verified | [Register](CONTENT_REGISTER.md) records evidence, checks, asset availability, and open content gaps |
 | Brand assets | Existing, inspected | Two 745 × 740 PNG logo variants |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
@@ -69,6 +69,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | [Code2Chill_transparent.png](../Code2Chill_transparent.png) | Transparent logo |
 | [GEMINI.md](../GEMINI.md) | Existing project rules |
 | [AGENTS.md](../AGENTS.md) | Contributor/agent instructions and documentation policy |
+| [CONTENT_REGISTER.md](CONTENT_REGISTER.md) | Phase 1 evidence, ownership, publication readiness, and asset inventory |
 | This guide | Current build explanation, decisions, verification, and task history |
 
 ## 5. Existing Prototype — How It Works
@@ -186,6 +187,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-004 | Prototype source and anchors | Missing targets and unimplemented workflows identified | No live-browser test |
 | VER-005 | Roadmap phase/criterion checks | Eleven phases and criteria present | Markdown structure check |
 | VER-006 | Python checks of documentation readability, relative links, section/task counts, and maintenance references | Passed: four files readable, local links resolve, twelve guide sections and four historical task entries present | Documentation-only checks; no application tests run |
+| VER-009 | Phase 1.1 pass 1, Python checks and `git diff --check` | All 23 rows had unique IDs, complete fields, valid statuses and dates, and resolvable local links. Both PNG dimensions, the transparent logo's alpha channel, and the Phase 1 checkbox state matched the register. | Repository and document structure |
+| VER-010 | Phase 1.1 pass 2, source and publication review | Cross-checked the two leadership titles against the owner-confirmed roadmap, the club and event claims against indexed LinkedIn evidence, and portal capability against the university's indexed portal page. | Direct retrieval of the LinkedIn pages, Instagram profile, and club-specific portal page did not succeed. Unsupported claims remain open. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -281,9 +284,25 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Viva takeaway:** Explain what changed, how it works, why it was chosen, and what was checked.
 
 
+### TASK-006 — Create the content register
+
+- **Date:** 19 November 2026.
+- **Roadmap step:** Phase 1.1.
+- **Status:** Register completed and verified in two passes.
+- **Objective:** Establish one place to track which club facts and assets have evidence and who can fill the gaps.
+- **Changes and files:** Created [CONTENT_REGISTER.md](CONTENT_REGISTER.md), checked off 1.1 in the [roadmap](../WEBSITE_ROADMAP.md#phase-1--establish-content-and-scope), and recorded the register and verification here.
+- **How it works:** Each entry has a stable ID, source or accountable owner, verification status, check date, and follow-up. The register covers identity, events, projects, registration, recruitment, and assets.
+- **Why this approach:** Source status controls what can feed public copy. Item-level follow-ups let later steps request the missing material without relying on sample figures or draft roster entries.
+- **Validation:** VER-009 checked the register structure and repository assets. VER-010 reviewed the claims and source limitations.
+- **Delivery notes:** A separate staging patch isolates Phase 1.1 from the existing Phase 3 edits. The first staging attempt could not read the sandbox-local patch, so the retry uses a workspace copy. GitHub remote discovery in the restricted shell failed with a resolver error.
+- **Limitations / remaining work:** The register contains explicit gaps for the roster, domains, contact details, event material, projects, and workflow rules.
+- **Viva Q&A:** **Why record a check date for a missing value?** It identifies when the gap was last reviewed and who can resolve it. **What can you publish from an event recap?** The claims the source supports. Dates, winners, and photographs need their own evidence and permissions.
+
 ## 11. Template for Every Future Task or Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
+
+For each roadmap step, complete two verification passes and record the evidence. Commit and push the verified step as requested by the project owner before starting the next step.
 
 ```markdown
 ### TASK-NNN — Task title
