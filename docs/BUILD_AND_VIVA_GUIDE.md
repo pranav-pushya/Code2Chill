@@ -195,6 +195,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-014 | Phase 1.2 final pass 2, publication and repository review | Checked document links, evidence labels, unfilled contact details, the Phase 1 checkbox sequence, and the staged change scope. `git diff --cached --check` passed. | The general enquiries address and the behavior behind the membership interest action remain open. |
 | VER-015 | Phase 1.3 pass 1, event source cross-check | Rendered both university event pages in Chrome. Python compared their dates, venue, topic details, and publication flags to the register. Confirmed the upcoming state and the On Fire recap separately. | Both event schedules showed zero duration. Byte The Vibe also had conflicting times. |
 | VER-016 | Phase 1.3 pass 2, publication and repository review | Checked evidence links, asset and results statuses, checkbox order, and the staged files with Python and `git diff --cached --check`. | Official placement lists, event media reuse, and some event details remain open. |
+| VER-017 | Phase 1.4 pass 1, project provenance and link check | Read public contributor accounts and GitHub API metadata and README. The NEXUS demo returned HTTP 200 with the expected title. Python matched credits, repository URLs, and attribution against the register. | Demo interaction, camera and mic behavior, and media rights remain unverified. |
+| VER-018 | Phase 1.4 pass 2, publication and repository review | Checked evidence links, distinct project and starter records, missing-asset status, checklist sequence, and the staged scope. `git diff --cached --check` passed. | ChronoAtlas links and approved screenshots remain open. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -341,6 +343,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-015 checked the event facts and conflicting fields. VER-016 checked the staged documentation, links, and roadmap sequence.
 - **Limitations / remaining work:** Event leads must confirm exact times where relevant, official placements, On Fire's date and venue, and which posters and photographs the site may use. The upcoming event list reflects the day it was checked.
 - **Viva Q&A:** **How can both registration figures and attendance figures be accurate?** Registrations count sign-ups. Attendance counts who took part. Give each figure its own label and source. **What happens when an official event page gives different times?** Publish the verified date and keep the time open until the event lead resolves the discrepancy.
+
+### TASK-010 — Collect project material
+
+- **Date:** 19 November 2026.
+- **Roadmap step:** Phase 1.4.
+- **Status:** Project inventory verified with missing links and assets tracked.
+- **Objective:** Find attributable Code2Chill event projects and verify the links and materials that could support a showcase.
+- **Changes and files:** Added NEXUS, ChronoAtlas, and the DOMination starter repository to the [content register](CONTENT_REGISTER.md#events-and-projects). Recorded missing screenshots in the asset inventory and checked off 1.4 in the [roadmap](../WEBSITE_ROADMAP.md#phase-1--establish-content-and-scope).
+- **How it works:** NEXUS uses the contributors' account and README for description and credits. Its GitHub metadata points to the demo. ChronoAtlas relies on the contributor's recap, with its links left open. The starter is recorded as an event resource with attribution from NEXUS.
+- **Why this approach:** A challenge entry belongs to the team that built it. Linking to the authors' project lets the site show the outcome of the club's event while giving the team credit and preserving the starter's attribution.
+- **Validation:** VER-017 checked the evidence and demo response. VER-018 checked publication statuses, repository links, and staged scope.
+- **Limitations / remaining work:** The contributor's shortened link returned HTTP 403. GitHub metadata provided the direct demo link. The starter README returned HTTP 404, so its role comes from the downstream README. ChronoAtlas needs a repository and demo link, and both projects need approved screenshots before assets can be published.
+- **Viva Q&A:** **How did you verify that the demo belongs to NEXUS?** The public repository's homepage points to the deployment, which returned the same project title as the README. **Why credit the starter separately?** The starter gave participants a starting point. The NEXUS contributors created the project built on it.
 
 ## 11. Template for Every Future Task or Step
 
