@@ -62,13 +62,13 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **1.4 Collect project material.** Record project descriptions, contributor credits, verified code and demo links, and missing assets in the [content register](docs/CONTENT_REGISTER.md#events-and-projects).
 - [x] **1.5 Decide registration ownership.** Use the university portal for launch sign-ups, with an event-specific handoff and fallback states defined in the [launch scope](docs/LAUNCH_SCOPE.md#event-registration).
 - [x] **1.6 Define recruitment rules.** Set the cycle requirements, planned application fields, and public state before a cycle is announced in the [launch scope](docs/LAUNCH_SCOPE.md#recruitment).
-- [ ] **1.7 Set launch scope.** Separate essential features from later additions and record unresolved decisions.
+- [x] **1.7 Set launch scope.** Record [first-release features, deferred work, and open decisions](docs/LAUNCH_SCOPE.md#first-public-release).
 
 ### Deliverables
 
-- Verified content inventory and asset list.
-- Launch feature list and deferred-feature list.
-- Written registration and recruitment rules.
+- [Verified content inventory and asset list](docs/CONTENT_REGISTER.md).
+- [Launch and deferred-feature lists](docs/LAUNCH_SCOPE.md#first-public-release), with [open decisions](docs/LAUNCH_SCOPE.md#open-decisions-and-content-gaps).
+- Written [event registration](docs/LAUNCH_SCOPE.md#event-registration) and [recruitment](docs/LAUNCH_SCOPE.md#recruitment) rules.
 
 **Completion criterion:** There is one agreed scope and content inventory, with unknown information explicitly marked.
 

@@ -41,6 +41,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | --- | --- | --- |
 | Roadmap | Written | Eleven phases with steps and completion criteria |
 | Content register | Created and verified | [Register](CONTENT_REGISTER.md) records evidence, checks, asset availability, and open content gaps |
+| Phase 1 launch scope | Defined and verified | [Launch scope](LAUNCH_SCOPE.md) describes the essential release, university registration, recruitment defaults, and open decisions |
 | Brand assets | Existing, inspected | Two 745 × 740 PNG logo variants |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
@@ -52,7 +53,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Automated tests and CI | Planned | No application test suite or CI setup |
 | Deployment | Planned | No deployment created during this work |
 
-**Accurate current viva statement:** “I have reviewed the supplied prototype and assets, documented the implementation phases, and established a build log. The production frontend, Python API, and database are still to be implemented.”
+**Accurate current viva statement:** “I verified the available club content and defined the first release, including event registration through the university and an announcement state before recruitment opens. The prototype and brand assets are available. The production frontend, Python API, and database are planned.”
 
 ## 4. Repository Map
 
@@ -177,6 +178,7 @@ If a future release takes ownership of registration, the proposed local flow is:
 | DEC-008 | Update documentation after every task/step | Confirmed | Accurate viva preparation and handover |
 | DEC-011 | Use the university portal for launch event sign-ups | Selected for launch | One system holds registration records. The organizer confirms each event link and state. |
 | DEC-012 | Show an announcement while no recruitment cycle is approved | Selected for launch | Keeps the Join page usable while the club confirms actual dates, domains, eligibility, application route, and reviewers. |
+| DEC-013 | Use the first-release scope as the baseline for route and workflow planning | Selected for launch | The site can demonstrate dynamic content publication with verified records and official links. Deferred features and open decisions have owners or follow-up phases. |
 
 When replacing a decision, record the reason and affected implementation. Retain the old entry as superseded.
 
@@ -204,6 +206,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-020 | Phase 1.5 pass 2, documentation and repository review | Checked the roadmap, verification and decision IDs, relative links, staged files, and `git diff --cached --check`. | No application implementation or portal integration was exercised. |
 | VER-021 | Phase 1.6 pass 1, recruitment rules and boundary review | Matched the university's interest action and checked documented cycle settings and form fields. A Python walkthrough with demonstration settings checked five cases from unconfigured through the closing instant. | Design walkthrough. No form or real applicant data was used. |
 | VER-022 | Phase 1.6 pass 2, documentation and repository review | Checked the recruitment default, missing official settings, cross-document links, checklist sequence, and staged scope. `git diff --cached --check` passed. | Reviewers, dates, and other actual cycle settings are still to be provided. |
+| VER-023 | Phase 1.7 pass 1, scope and deliverables review | Python checked the essential, deferred, and open sections against the register, the portal decision, the recruitment default, and all seven Phase 1 items. | Scope review covers design commitments and open dependencies. |
+| VER-024 | Phase 1.7 pass 2, repository and sequence review | Checked all Phase 1 task records and verification references, local links and anchors, staged scope, and `git diff --cached --check`. | Application development and testing are later phases. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -389,6 +393,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-021 walked through the planned rules and checked both time boundaries using demonstration values. VER-022 checked the staged documents and roadmap state.
 - **Limitations / remaining work:** The club still needs to supply a real cycle, including dates, eligibility, enabled domains, reviewers, and the approved application route. Form handling and reviewer access controls are planned for Phase 8.
 - **Viva Q&A:** **What is the difference between membership interest and an application?** The university listing has a general interest action. A domain application belongs to a configured recruitment cycle with rules and reviewers. **What happens at the exact closing time?** The local form must reject it because the closing instant is outside the open window.
+
+### TASK-013 — Set the launch scope and close Phase 1
+
+- **Date:** 19 November 2026.
+- **Roadmap step:** Phase 1.7 and Phase 1 completion review.
+- **Status:** Phase 1 planning and content verification complete. Later-phase implementation is planned.
+- **Objective:** Give the first release a defined set of features and record where later choices or missing club material affect launch.
+- **Changes and files:** Added essentials, deferrals, and open decisions to the [launch scope](LAUNCH_SCOPE.md#first-public-release). Linked each Phase 1 deliverable from the [roadmap](../WEBSITE_ROADMAP.md#phase-1--establish-content-and-scope) and updated this guide's status and decision register.
+- **How it works:** The first release uses the [content register](CONTENT_REGISTER.md), the university registration handoff, and recruitment's announcement state. An authenticated content editor and persistent event publication form the planned viva workflow. The scope table identifies a responsible role or phase for each open item.
+- **Why this approach:** Students can find club information and verified event links even when there is no current event or recruitment cycle. The site can demonstrate dynamic content independently of private registration data held by the university.
+- **Validation:** VER-023 checked scope against the Phase 1 deliverables. VER-024 checked the staged documentation, evidence links, and completion sequence.
+- **Limitations / remaining work:** Club leads still need to supply the general contact address, some event details, approved images, and live recruitment settings. Later phases will choose the rendering approach, authentication, and hosting against the assessment and implementation requirements.
+- **Viva Q&A:** **What does Phase 1 prove?** The launch has a sourced content inventory and explicit workflow rules, with missing data identified. **What proves the website is dynamic in the finished demo?** An administrator's saved event update must appear publicly and persist when the backend restarts.
 
 ## 11. Template for Every Future Task or Step
 

@@ -36,3 +36,32 @@ The public Join page starts with **Recruitment dates to be announced**. It can l
 | Short motivation or a public portfolio link | Optional. The club can request the relevant prompt when configuring the cycle. |
 
 The approved dates, eligibility, domains, reviewers, and application route must be present before the public Apply action can appear. Before opening, show the scheduled date. While open, point to the approved route. After closing, show that applications are closed. Phase 8 will enforce the same window, domain choices, and duplicate rule on the backend for local forms. The club still needs to supply the actual cycle settings and assignments.
+
+## First public release
+
+| Area | Essential for the first release |
+| --- | --- |
+| Club identity, team, and contact | Use the confirmed description, roster, logos, and official links from the [content register](CONTENT_REGISTER.md#club-identity-and-contacts). Use the university listing and social links as public contact paths. |
+| Events | Publish an archive using the two dated university event records. Include an upcoming view that handles an empty schedule. Use the [university registration handoff](#event-registration) when an event has a verified link and confirmed availability. |
+| Projects | Credit the teams behind sourced work. Use NEXUS as an initial showcase candidate with its checked repository and demo. Include ChronoAtlas when the available material supports the project detail. |
+| Join | Show the [recruitment announcement](#recruitment) and official membership interest link until the club configures a cycle. |
+| Content management | Provide a protected administrator workflow for editing, previewing, and publishing club content backed by the Python API and persistent database. |
+| Launch checks and viva | Test public pages, mobile and keyboard use, administrator permissions, persistence, and official handoffs. Demonstrate a saved event update appearing publicly. Use clearly labeled demonstration records when needed. |
+
+## Deferred or conditional
+
+- A Code2Chill-owned event registration form, capacity management, and registration exports. Revisit if the club and university change which system owns sign-ups.
+- Live local recruitment intake and application review. Phase 8 covers the configurable workflow. Live use depends on an approved cycle and reviewers.
+- Extended project galleries, winner features, and team or event media. Add the material as credits, permissions, and source facts are confirmed.
+- Optional theme, ink transition, and advanced animation. Assess them in the interaction phase against accessibility and performance needs.
+
+## Open decisions and content gaps
+
+| Item | Who or what resolves it | Behavior meanwhile |
+| --- | --- | --- |
+| General club address, faculty liaison, role terms, and approved portraits | Club leadership and media lead | Use the verified roster titles and official links. |
+| Exact event times, official placements, On Fire details, and approved event media | Event leads and club media lead | Start with verified dates, venue, and summaries. Show upcoming events as announced. |
+| Project screenshots and ChronoAtlas links | Contributing teams | Use checked links and available descriptions. Include images when cleared for publication. |
+| Live registration links and real recruitment cycle details | Event organizers and recruitment lead | Use the pending or announcement states defined above. |
+| Assessment requirements for Python rendering | Project owner or assessment brief | Confirm the requirement before choosing the final frontend rendering approach in scaffolding. |
+| Administrator authentication, hosting, and media storage | Architecture and deployment phases | Record technical choices, build evidence, and ownership when those steps are completed. |
