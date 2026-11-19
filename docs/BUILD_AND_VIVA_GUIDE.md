@@ -70,6 +70,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | [GEMINI.md](../GEMINI.md) | Existing project rules |
 | [AGENTS.md](../AGENTS.md) | Contributor/agent instructions and documentation policy |
 | [CONTENT_REGISTER.md](CONTENT_REGISTER.md) | Phase 1 evidence, ownership, publication readiness, and asset inventory |
+| [LAUNCH_SCOPE.md](LAUNCH_SCOPE.md) | Launch workflow decisions and the boundaries of local data handling |
 | This guide | Current build explanation, decisions, verification, and task history |
 
 ## 5. Existing Prototype — How It Works
@@ -149,9 +150,11 @@ Schema revisions -> Alembic migrations
 
 These choices are proposals, not installed dependencies. Record actual versions and commands when scaffolding happens.
 
-### Proposed registration flow
+### Planned launch registration
 
-If this website owns registration:
+The launch uses the university portal for event sign-ups. Code2Chill will publish event details, show the latest verified registration state, and link to the approved university event page when open. The portal handles student records and confirmation. See the [event registration decision](LAUNCH_SCOPE.md#event-registration).
+
+If a future release takes ownership of registration, the proposed local flow is:
 
 1. Student submits the form.
 2. Backend validates input and checks the event and registration window.
@@ -159,8 +162,6 @@ If this website owns registration:
 4. Database stores the registration.
 5. Backend returns a safe confirmation response.
 6. Frontend displays confirmation; authorized administrators review the record.
-
-If the university portal owns registration, implement an external handoff and document that boundary. Do not claim external registrations are stored locally.
 
 ## 7. Decision Register
 
@@ -170,10 +171,11 @@ If the university portal owns registration, implement an external handoff and do
 | DEC-002 | Use both existing logos according to context | Confirmed | Preserve originals and choose by contrast/placement |
 | DEC-003 | Python backend with dynamic records | Confirmed requirement | Assignment requirement |
 | DEC-004 | React + FastAPI + PostgreSQL | Proposed | Confirm assessment interpretation before scaffolding |
-| DEC-005 | Local versus university registration | Open | Determines ownership and workflow scope |
+| DEC-005 | Local versus university registration | Superseded by DEC-011 | The launch uses an external handoff |
 | DEC-006 | Administrator session strategy | Open | Specify storage, expiry, logout, and relevant request protections |
 | DEC-007 | Production ink transition | Open | Requires performance/accessibility evaluation |
 | DEC-008 | Update documentation after every task/step | Confirmed | Accurate viva preparation and handover |
+| DEC-011 | Use the university portal for launch event sign-ups | Selected for launch | One system holds registration records. The organizer confirms each event link and state. |
 
 When replacing a decision, record the reason and affected implementation. Retain the old entry as superseded.
 
@@ -197,6 +199,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-016 | Phase 1.3 pass 2, publication and repository review | Checked evidence links, asset and results statuses, checkbox order, and the staged files with Python and `git diff --cached --check`. | Official placement lists, event media reuse, and some event details remain open. |
 | VER-017 | Phase 1.4 pass 1, project provenance and link check | Read public contributor accounts and GitHub API metadata and README. The NEXUS demo returned HTTP 200 with the expected title. Python matched credits, repository URLs, and attribution against the register. | Demo interaction, camera and mic behavior, and media rights remain unverified. |
 | VER-018 | Phase 1.4 pass 2, publication and repository review | Checked evidence links, distinct project and starter records, missing-asset status, checklist sequence, and the staged scope. `git diff --cached --check` passed. | ChronoAtlas links and approved screenshots remain open. |
+| VER-019 | Phase 1.5 pass 1, registration design check | Used the observed university event pages to review open, closed, full, ended, and pending scenarios. Python checked the state table, event references, and system of record. | Design verification. Live submission remains untested. |
+| VER-020 | Phase 1.5 pass 2, documentation and repository review | Checked the roadmap, verification and decision IDs, relative links, staged files, and `git diff --cached --check`. | No application implementation or portal integration was exercised. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -356,6 +360,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-017 checked the evidence and demo response. VER-018 checked publication statuses, repository links, and staged scope.
 - **Limitations / remaining work:** The contributor's shortened link returned HTTP 403. GitHub metadata provided the direct demo link. The starter README returned HTTP 404, so its role comes from the downstream README. ChronoAtlas needs a repository and demo link, and both projects need approved screenshots before assets can be published.
 - **Viva Q&A:** **How did you verify that the demo belongs to NEXUS?** The public repository's homepage points to the deployment, which returned the same project title as the README. **Why credit the starter separately?** The starter gave participants a starting point. The NEXUS contributors created the project built on it.
+
+### TASK-011 — Decide event registration ownership
+
+- **Date:** 19 November 2026.
+- **Roadmap step:** Phase 1.5.
+- **Status:** Launch design selected and verified in documentation.
+- **Objective:** Give each event one registration system and define what Code2Chill shows students.
+- **Changes and files:** Wrote the [registration rules](LAUNCH_SCOPE.md#event-registration), updated REG-02 in the [content register](CONTENT_REGISTER.md#registration-and-recruitment), and aligned the [roadmap](../WEBSITE_ROADMAP.md) and guide with the decision.
+- **How it works:** Code2Chill will store and publish event content, a registration status, and an official destination if available. Open events link to a verified university page. Closed, full, ended, and unconfirmed events display the corresponding status. The portal handles bookings and confirmation.
+- **Why this approach:** The university already displays event registration through its existing portal. A handoff keeps sign-ups and capacity in one place. For the viva, use an event publication and handoff to demonstrate the website's dynamic content.
+- **Validation:** VER-019 checked the launch behavior against event states and the available source evidence. VER-020 checked the commit contents and related documentation.
+- **Limitations / remaining work:** No live registration or portal data integration was tested. The organizer still confirms each event's destination and availability. A local sign-up feature would require a future ownership decision.
+- **Viva Q&A:** **Where is a registration saved?** The university portal owns the launch sign-up. Code2Chill stores the event and official link. **How do you show dynamic data in the viva?** Publish an event in the dashboard and show the saved content update on the public page, then demonstrate the external handoff.
 
 ## 11. Template for Every Future Task or Step
 

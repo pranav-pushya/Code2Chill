@@ -7,6 +7,7 @@ This register tracks source evidence, publication readiness, and missing materia
 | Owner-confirmed | The project owner confirmed the specific fact. |
 | Source-confirmed | The cited club or organizer source supports the specific fact. |
 | In repository | The supplied file exists and is available for project design work. |
+| Project decision | A launch behavior selected for this project. |
 | Unverified | A lead or draft needs supporting evidence before publication. |
 | Missing | The value or asset is unknown and needs to be supplied. |
 
@@ -68,7 +69,7 @@ Use the confirmed social profiles and the university listing for membership inte
 | ID | Fact or material | Source or owner | Status | Last checked | Follow-up |
 | --- | --- | --- | --- | --- | --- |
 | REG-01 | The university provides a Clubs & Events portal with event registration. | [University Clubs & Events portal](https://chitkarau.life/) | Source-confirmed | 2026-11-19 | Confirm with the university administrator whether specific Code2Chill events must use that portal. |
-| REG-02 | System of record for Code2Chill event registrations. | Club leadership and university portal administrator | Missing | 2026-11-19 | Decide ownership before adding any live registration action. |
+| REG-02 | The Code2Chill launch design uses the university portal as the system for event sign-ups. | [Launch scope decision](LAUNCH_SCOPE.md#event-registration) | Project decision | 2026-11-19 | Confirm each event-specific URL and registration state with the organizer before publishing its action. |
 | JOIN-01 | Past recruitment drives took place. | [Club recruitment recap](https://www.linkedin.com/posts/code2chill_afreshstart-code2chill-chitkarauniversity-activity-7501545165317115904-f6kU) | Source-confirmed | 2026-11-19 | Ask the recruitment lead for the relevant cycle and verified dates if used in an archive. |
 | JOIN-02 | Current recruitment status, dates, eligibility, application fields, available domains, and reviewers. | Recruitment lead and club leadership | Missing | 2026-11-19 | Confirm the cycle rules and the authorized application route before accepting applications. |
 

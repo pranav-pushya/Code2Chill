@@ -8,7 +8,7 @@
 
 Build a distinctive, responsive club website backed by a Python API, a persistent database, and an administrator dashboard. Club leads should be able to update events, members, projects, and recruitment without editing source code.
 
-The strongest demonstration is a complete workflow: an administrator creates and publishes an event, a student registers, and the administrator sees the saved registration.
+The launch demonstration follows an administrator publishing an event, the update appearing on the public site, and a student reaching the approved university registration page. The [registration decision](docs/LAUNCH_SCOPE.md#event-registration) defines where sign-ups are handled.
 
 ## Existing Material and Constraints
 
@@ -60,7 +60,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **1.2 Consolidate club identity.** Confirm the official description, leadership roster, domains, and public links. Record available contact paths and missing details in the [content register](docs/CONTENT_REGISTER.md#club-identity-and-contacts).
 - [x] **1.3 Collect event material.** Record sourced dates, venues, summaries, upcoming status, and leads or gaps for results and media in the [content register](docs/CONTENT_REGISTER.md#events-and-projects).
 - [x] **1.4 Collect project material.** Record project descriptions, contributor credits, verified code and demo links, and missing assets in the [content register](docs/CONTENT_REGISTER.md#events-and-projects).
-- [ ] **1.5 Decide registration ownership.** Establish whether the website accepts registrations or redirects students to the university portal. Avoid conflicting records across two systems.
+- [x] **1.5 Decide registration ownership.** Use the university portal for launch sign-ups, with an event-specific handoff and fallback states defined in the [launch scope](docs/LAUNCH_SCOPE.md#event-registration).
 - [ ] **1.6 Define recruitment rules.** Establish fields, available domains, opening and closing dates, eligibility, and application reviewers.
 - [ ] **1.7 Set launch scope.** Separate essential features from later additions and record unresolved decisions.
 
@@ -174,7 +174,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [ ] **6.4 Connect event pages.** Render database records on the frontend.
 - [ ] **6.5 Implement registration ownership.** Build local registration or the approved external handoff.
 - [ ] **6.6 Enforce local registration rules.** Validate submissions, prevent duplicates, check deadlines, and allocate seats transactionally where applicable.
-- [ ] **6.7 Complete feedback and review.** Show confirmation and make saved registrations visible to authorized administrators.
+- [ ] **6.7 Complete feedback and review.** Show the event's registration status and its official destination. Surface confirmation and saved records when the website owns registration.
 - [ ] **6.8 Test capacity contention.** Verify simultaneous requests for the last available place if local capacity management is used.
 
 ### Deliverables
