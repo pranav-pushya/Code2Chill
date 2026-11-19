@@ -14,17 +14,39 @@ Use owner-confirmed and source-confirmed facts for public copy within the limits
 
 ## Club identity and contacts
 
+**Code2Chill is a student-led technical club at Chitkara University. Students learn by building through workshops, hackathons, and coding events.** This launch copy paraphrases the [university club listing](https://chitkarau.life/clubs/code2chill).
+
 | ID | Fact or material | Source or owner | Status | Last checked | Follow-up |
 | --- | --- | --- | --- | --- | --- |
-| CLUB-01 | Code2Chill is a technical club of Chitkara University. | [Club LinkedIn profile](https://www.linkedin.com/company/code2chill) | Source-confirmed | 2026-11-19 | Use as the short institutional description. |
-| CLUB-02 | President: Lakshay Kalra. | Project owner, recorded in the [roadmap](../WEBSITE_ROADMAP.md#existing-material-and-constraints) | Owner-confirmed | 2026-11-19 | Confirm terms of office before adding dates. |
-| CLUB-03 | Vice-president: Jiya Arora. | Project owner, recorded in the [roadmap](../WEBSITE_ROADMAP.md#existing-material-and-constraints) | Owner-confirmed | 2026-11-19 | Confirm terms of office before adding dates. |
-| CLUB-04 | Remaining leadership, roles, faculty contact, and any public headshots. | Club leadership and the [earlier specification](../CODE2CHILL_WEBSITE_MASTER.md#3-verified-team-hierarchy--leadership-roster) | Unverified | 2026-11-19 | Confirm the current roster and obtain permission to publish photos and contact details. |
-| CLUB-05 | Current club domains and preferred names. | Club leadership and the [earlier specification](../CODE2CHILL_WEBSITE_MASTER.md#3-verified-team-hierarchy--leadership-roster) | Unverified | 2026-11-19 | Confirm which domains exist and which recruit each cycle. |
+| CLUB-01 | Code2Chill is a student-led technical club at Chitkara University. | [University club listing](https://chitkarau.life/clubs/code2chill) and [club LinkedIn profile](https://www.linkedin.com/company/code2chill) | Source-confirmed | 2026-11-19 | Use the short institutional description above. |
+| CLUB-02 | President: Lakshay Kalra. | Project owner, recorded in the [roadmap](../WEBSITE_ROADMAP.md#existing-material-and-constraints), and listed as Club Leader on the [university club listing](https://chitkarau.life/clubs/code2chill) | Owner-confirmed | 2026-11-19 | Confirm terms of office before adding dates. |
+| CLUB-03 | Vice-president: Jiya Arora. | Project owner, recorded in the [roadmap](../WEBSITE_ROADMAP.md#existing-material-and-constraints). The [university club listing](https://chitkarau.life/clubs/code2chill) shows her as a Core Member. | Owner-confirmed | 2026-11-19 | Confirm terms of office before adding dates. |
+| CLUB-04 | The university lists nine core members and one club leader. See the roster below. | [University club listing](https://chitkarau.life/clubs/code2chill) | Source-confirmed | 2026-11-19 | Recheck titles for changes before launch. Faculty liaison, terms, and approved headshots still need confirmation. |
+| CLUB-05 | The published leadership titles cover Technical, Content, Social Media, and Promotion. | [University club listing](https://chitkarau.life/clubs/code2chill) | Source-confirmed | 2026-11-19 | Ask the recruitment lead which domains accept applications for each cycle. |
 | CLUB-06 | LinkedIn company page. | [Club LinkedIn profile](https://www.linkedin.com/company/code2chill), available in public indexing | Source-confirmed | 2026-11-19 | Recheck the visitor-facing link before launch. |
-| CLUB-07 | Instagram lead: `@code2chill`. | [Supplied Instagram link](https://www.instagram.com/code2chill/) and club media lead | Unverified | 2026-11-19 | Confirm account ownership and link reachability. The profile could not be retrieved during this check. |
-| CLUB-08 | Club-specific university portal page. | [Supplied portal link](https://chitkarau.life/clubs/code2chill) and university portal administrator | Unverified | 2026-11-19 | Verify the club's current URL. The club page could not be retrieved during this check. |
-| CLUB-09 | Dedicated public club email or approved contact channel. | Club leadership | Missing | 2026-11-19 | Obtain a club-managed address or an approved contact route. |
+| CLUB-07 | Official Instagram link: [`@code2chill`](https://www.instagram.com/code2chill/). | Project owner and the Instagram link on the [university club listing](https://chitkarau.life/clubs/code2chill) | Owner-confirmed | 2026-11-19 | Use the clean profile URL. Recheck visitor access before launch. |
+| CLUB-08 | Official university club listing. | Project owner and the rendered [university club listing](https://chitkarau.life/clubs/code2chill) | Source-confirmed | 2026-11-19 | Use as the source for the public roster and campus links. |
+| CLUB-09 | Dedicated public club email or general enquiries address. | Club leadership | Missing | 2026-11-19 | Leave the address out of launch copy until the club supplies one. |
+| CLUB-10 | The university listing shows an “I'm Interested” action for prospective members. | [University club listing](https://chitkarau.life/clubs/code2chill) | Source-confirmed | 2026-11-19 | The club page can be linked for membership interest. The action's sign-in and submission behavior still needs verification. |
+
+### University roster
+
+All rows were checked on 19 November 2026 against the [university club listing](https://chitkarau.life/clubs/code2chill). The first two rows also use the project owner's confirmation of the executive titles.
+
+| Name | University listing | Title for site copy |
+| --- | --- | --- |
+| Lakshay Kalra | Club Leader | President |
+| Jiya Arora | Core Member | Vice-president |
+| Divyana Garg | Core Member | Core Member |
+| Hunar Mehndiratta | Core Member | Core Member |
+| Tamanna Kakkar | Content Head | Content Head |
+| Samanyu Thakur | Technical Head | Technical Head |
+| Bhupinder Singh | Technical Head | Technical Head |
+| Ayush Sharma | Content Head | Content Head |
+| Jashan Bhalla | Social Media Head | Social Media Head |
+| Muskan Dhanda | Promotion Head | Promotion Head |
+
+Use the confirmed social profiles and the university listing for membership interest.
 
 ## Events and projects
 

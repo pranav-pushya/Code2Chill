@@ -189,6 +189,10 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-006 | Python checks of documentation readability, relative links, section/task counts, and maintenance references | Passed: four files readable, local links resolve, twelve guide sections and four historical task entries present | Documentation-only checks; no application tests run |
 | VER-009 | Phase 1.1 pass 1, Python checks and `git diff --check` | All 23 rows had unique IDs, complete fields, valid statuses and dates, and resolvable local links. Both PNG dimensions, the transparent logo's alpha channel, and the Phase 1 checkbox state matched the register. | Repository and document structure |
 | VER-010 | Phase 1.1 pass 2, source and publication review | Cross-checked the two leadership titles against the owner-confirmed roadmap, the club and event claims against indexed LinkedIn evidence, and portal capability against the university's indexed portal page. | Direct retrieval of the LinkedIn pages, Instagram profile, and club-specific portal page did not succeed. Unsupported claims remain open. |
+| VER-011 | Phase 1.2 preliminary source and reachability check | Checked the club's indexed profile, public role evidence, and the supplied portal and social URLs. Direct requests returned generic HTML for Instagram and the university route, and HTTP 403 for LinkedIn. | The browser connection timed out. Chrome reported active user input during the fallback. The approved roster, domain list, and official contact route still require confirmation. |
+| VER-012 | Phase 1.2 preliminary document check | Python checked status labels across all 12 identity rows, relative links, the unchecked 1.2 box, and that the Git index was empty. `git diff --check` passed. | This check covered the research notes and repository state. Final verification depends on the approved identity details. |
+| VER-013 | Phase 1.2 final pass 1, university and owner evidence | Two anonymous Chrome renders exposed the public club page. A Python comparison matched all ten roster entries, four domain labels, the public links, and the visible membership interest action to the register. | The executive titles use owner confirmation. The check did not submit a membership request. |
+| VER-014 | Phase 1.2 final pass 2, publication and repository review | Checked document links, evidence labels, unfilled contact details, the Phase 1 checkbox sequence, and the staged change scope. `git diff --cached --check` passed. | The general enquiries address and the behavior behind the membership interest action remain open. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -283,7 +287,6 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Limitation:** Instructions govern future work; they are not a background service detecting arbitrary manual edits. Manual contributors must follow the update policy too.
 - **Viva takeaway:** Explain what changed, how it works, why it was chosen, and what was checked.
 
-
 ### TASK-006 — Create the content register
 
 - **Date:** 19 November 2026.
@@ -294,9 +297,35 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **How it works:** Each entry has a stable ID, source or accountable owner, verification status, check date, and follow-up. The register covers identity, events, projects, registration, recruitment, and assets.
 - **Why this approach:** Source status controls what can feed public copy. Item-level follow-ups let later steps request the missing material without relying on sample figures or draft roster entries.
 - **Validation:** VER-009 checked the register structure and repository assets. VER-010 reviewed the claims and source limitations.
-- **Delivery notes:** A separate staging patch isolates Phase 1.1 from the existing Phase 3 edits. The first staging attempt could not read the sandbox-local patch, so the retry uses a workspace copy. GitHub remote discovery in the restricted shell failed with a resolver error.
+- **Delivery notes:** A separate staging patch isolated Phase 1.1 from the existing Phase 3 edits. The first staging attempt could not read the sandbox-local patch, so the retry used a workspace copy. Restricted-shell remote discovery failed with a resolver error. The subsequent push succeeded and updated `origin/main` to `486c059`.
 - **Limitations / remaining work:** The register contains explicit gaps for the roster, domains, contact details, event material, projects, and workflow rules.
 - **Viva Q&A:** **Why record a check date for a missing value?** It identifies when the gap was last reviewed and who can resolve it. **What can you publish from an event recap?** The claims the source supports. Dates, winners, and photographs need their own evidence and permissions.
+
+### TASK-007 — Consolidate club identity
+
+- **Date:** 19 November 2026.
+- **Roadmap step:** Phase 1.2.
+- **Status:** Partial at the time. Completed in TASK-008 after the owner supplied the links.
+- **Objective:** Consolidate launch-ready identity copy, leadership, domains, official links, and a public contact route.
+- **Changes and files:** Updated [the identity section of the content register](CONTENT_REGISTER.md#club-identity-and-contacts) with short copy, public evidence for role leads, and link-check results. Recorded the research in this guide.
+- **How it works:** The confirmed description and titles have their own rows. Member profiles and accounts with conflicting affiliations remain leads until club leadership confirms current titles and publication scope.
+- **Why this approach:** A role in an individual profile may reflect one project or a previous term. A server response confirms the server answered. The club record or profile must still identify Code2Chill before its link is ready for public use.
+- **Validation:** VER-011 records the evidence and direct link checks. VER-012 checks that the register and roadmap reflect the open items. Final verification awaits the owner-approved details.
+- **Limitations / remaining work:** Confirm the full roster, domain names, official Instagram and university club URLs, and the public contact route, or obtain approval to omit unavailable items. Step 1.2 remains open.
+- **Viva Q&A:** **Why do you need to confirm individual role titles with the club?** Public profiles may disagree or describe different periods. The club can confirm the current titles to publish. **What did HTTP 200 verify?** The server returned a page, whose contents still need to establish the expected club identity.
+
+### TASK-008 — Verify the club identity against the university listing
+
+- **Date:** 19 November 2026.
+- **Roadmap step:** Phase 1.2.
+- **Status:** Identity inventory completed with explicit contact gaps.
+- **Objective:** Replace provisional role and link leads with the club's published identity, using the two URLs the owner supplied.
+- **Changes and files:** Updated the [content register](CONTENT_REGISTER.md#club-identity-and-contacts) with launch copy, ten roster entries, four domain labels, confirmed URLs, and the university membership interest path. Checked off 1.2 in the [roadmap](../WEBSITE_ROADMAP.md#phase-1--establish-content-and-scope).
+- **How it works:** The university page supplies the club description and public roster. The register preserves the role shown by the university alongside the project-owner titles for president and vice-president. It uses the clean Instagram URL that also appears on the university page.
+- **Why this approach:** The university listing resolves earlier conflicts from individual profiles. The social links and membership interest path give students somewhere to find the club while the general enquiries address remains unknown.
+- **Validation:** VER-013 checked the published facts and source labels. VER-014 checked the commit contents and correct treatment of missing details.
+- **Limitations / remaining work:** The in-app browser connection timed out, so the page was inspected with anonymous Chrome rendering. A general club email, faculty liaison, approved photos, and terms of office remain open. Available recruitment domains may vary by cycle. The interest action's sign-in and submission behavior remain untested.
+- **Viva Q&A:** **Why show two sources for the executive titles?** The university shows Club Leader and Core Member. The owner confirmed the more specific president and vice-president titles for club copy. **How did you resolve the disputed Content Head title?** The club's university listing gives Ayush Sharma that title directly.
 
 ## 11. Template for Every Future Task or Step
 
