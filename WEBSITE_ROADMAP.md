@@ -218,7 +218,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **8.5 Implement review transitions.** Authorized staff can shortlist, accept or reject applications. Each saved decision records the actor, time and status change, and a stale review must reload before saving.
 - [x] **8.6 Complete content editors.** Manage members, projects, media, and site settings.
 - [x] **8.7 Complete publishing controls.** Support draft previews and explicit publication actions.
-- [ ] **8.8 Protect private data.** Restrict applicant information and exports with server-side permissions.
+- [x] **8.8 Protect private data.** Restrict applicant information and exports with server-side permissions. [Verification](docs/BUILD_GUIDE.md#task-077--restrict-applicant-exports-and-audit-downloads)
 - [ ] **8.9 Change staff passwords.** Let signed-in staff verify their current password and set a new one.
 - [ ] **8.10 Show or hide passwords.** Add accessible eye controls to the sign-in and change-password forms.
 

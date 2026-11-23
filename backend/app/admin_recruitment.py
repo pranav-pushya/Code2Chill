@@ -1,7 +1,10 @@
+import csv
 from datetime import datetime
+from io import StringIO
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy import or_, select
 
@@ -97,6 +100,7 @@ class ApplicationPage(BaseModel):
     cycle: CycleSummary
     applications: list[ApplicationSummary]
     has_more: bool
+    can_export: bool
 
 
 @router.get("", response_model=list[CycleSummary])
@@ -108,6 +112,7 @@ def list_cycles(db: Database, account: Reviewer):
 def list_applications(
     cycle: Cycle,
     db: Database,
+    account: Reviewer,
     domain: ClubDomain | None = None,
     status: ApplicationStatus | None = None,
     page: Annotated[int, Query(ge=1, le=1000000)] = 1,
@@ -119,14 +124,81 @@ def list_applications(
         Application.status,
         Application.submitted_at,
     ).where(Application.cycle_id == cycle.id)
+    query = filter_applications(query, domain, status)
+    rows = db.execute(
+        query.order_by(Application.id.desc()).offset((page - 1) * PAGE_SIZE).limit(PAGE_SIZE + 1)
+    ).all()
+    return {
+        "cycle": cycle,
+        "applications": rows[:PAGE_SIZE],
+        "has_more": len(rows) > PAGE_SIZE,
+        "can_export": account.role == AdminRole.ADMIN,
+    }
+
+
+def filter_applications(query, domain, status):
     if domain:
         query = query.where(Application.domain == domain)
     if status:
         query = query.where(Application.status == status)
-    rows = db.execute(
-        query.order_by(Application.id.desc()).offset((page - 1) * PAGE_SIZE).limit(PAGE_SIZE + 1)
-    ).all()
-    return {"cycle": cycle, "applications": rows[:PAGE_SIZE], "has_more": len(rows) > PAGE_SIZE}
+    return query
+
+
+def csv_cell(value):
+    if isinstance(value, datetime):
+        return value.isoformat()
+    text = str(value)
+    if text.startswith(("\t", "\r", "\n")) or text.lstrip().startswith(
+        ("=", "+", "-", "@", "＝", "＋", "－", "＠")
+    ):
+        return "'" + text
+    return text
+
+
+@router.post("/{cycle_id}/export.csv")
+def export_applications(
+    cycle: Cycle,
+    account: Reviewer,
+    db: Database,
+    domain: ClubDomain | None = None,
+    status: ApplicationStatus | None = None,
+):
+    if account.role != AdminRole.ADMIN:
+        raise HTTPException(403, "Only administrators can export applications.")
+    query = select(
+        Application.full_name,
+        Application.university_email,
+        Application.domain,
+        Application.status,
+        Application.submitted_at,
+    ).where(Application.cycle_id == cycle.id)
+    query = filter_applications(query, domain, status).order_by(Application.id.desc())
+    db.add(
+        AuditRecord(
+            actor_id=account.id,
+            target_id=cycle.id,
+            target_type=AuditTarget.RECRUITMENT_CYCLE,
+            action=AuditAction.EXPORT,
+        )
+    )
+    db.commit()
+
+    def csv_rows():
+        buffer = StringIO(newline="")
+        writer = csv.writer(buffer)
+        writer.writerow(["Name", "University email", "Domain", "Status", "Submitted at"])
+        yield buffer.getvalue()
+        for batch in db.execute(query.execution_options(yield_per=200)).partitions(200):
+            buffer.seek(0)
+            buffer.truncate()
+            writer.writerows([csv_cell(value) for value in row] for row in batch)
+            yield buffer.getvalue()
+
+    return StreamingResponse(
+        csv_rows(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="applications-{cycle.id}.csv"'},
+    )
 
 
 def get_application(db, cycle_id, application_id, *, lock=False):

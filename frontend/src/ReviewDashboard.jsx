@@ -107,6 +107,57 @@ function Filter({ label, value, options, onChange }) {
   );
 }
 
+function ExportButton({ cycleId, filters }) {
+  const [busy, setBusy] = useState(false),
+    [message, setMessage] = useState("");
+  async function download() {
+    setBusy(true);
+    setMessage("");
+    try {
+      const query = new URLSearchParams(filters);
+      query.delete("page");
+      const response = await adminRequest(
+        `recruitment/${cycleId}/export.csv?${query}`,
+        { method: "POST" },
+      );
+      if (!response.ok)
+        throw new Error(
+          response.status === 403
+            ? "Export permission denied."
+            : response.status === 401
+              ? "Sign in again to export."
+              : "Couldn’t download the export.",
+        );
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `applications-${cycleId}.csv`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setMessage("Export downloaded.");
+    } catch (e) {
+      setMessage(e.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <>
+      <button
+        className="action"
+        type="button"
+        disabled={busy}
+        onClick={download}
+      >
+        Export CSV
+      </button>
+      {message && <p role="status">{message}</p>}
+    </>
+  );
+}
+
 function ApplicationList({ cycleId }) {
   const [params, setParams] = useSearchParams();
   const filters = new URLSearchParams();
@@ -152,6 +203,9 @@ function ApplicationList({ cycleId }) {
       <ReviewRequest key={path} path={path}>
         {(data) => (
           <>
+            {data.can_export && (
+              <ExportButton cycleId={cycleId} filters={filters} />
+            )}
             {data.applications.length === 0 ? (
               <p>No applications match this selection.</p>
             ) : (

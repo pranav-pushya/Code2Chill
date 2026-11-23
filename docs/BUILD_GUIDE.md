@@ -1177,6 +1177,12 @@ The owner requested placeholders until they can supply images from the club’s 
 
 Chrome at 390px and 1440px followed the gallery anchor, found two labeled event figures with working detail destinations, checked viewport fit and verified the screenshot placeholder on NEXUS. The implementation is complete with placeholders. The original files, reuse permission and photographer or contributor credits remain outstanding under content step 3.7. **Viva question.** What happens when another past event is published? Its published title and venue appear automatically in the archive and gallery.
 
+### TASK-065 — Compare peer Code2Chill repositories
+
+23 November 2026 · Research and planning · Source-reviewed
+
+The owner supplied six member repository links. I inspected their public GitHub metadata, file trees, README files and selected implementation files, then compared their functional scope with our current local working tree. The [comparison](PEER_REPOSITORY_COMPARISON.md) separates implemented source from runtime verification and records one inaccessible repository as unknown. It identifies Ajy's FastAPI/Jinja project as the closest Python full-stack feature competitor, Sagarjit's MERN project as broad community functionality with a different backend language, and the remaining visible projects as narrower or frontend-stage implementations. The review did not run peer code or evaluate matched browser views. No roadmap checkbox changed. **Viva question.** Why does our site qualify as dynamic? Public event, project and team pages read published database snapshots through FastAPI, and authorized editors can publish event changes without changing React source. Project and team editing remain to be built.
+
 ### TASK-066 — Serve discovery metadata and a branded share card
 
 23 November 2026 · Phase 7.8 · Verified locally, VER-119 and VER-120
@@ -1196,6 +1202,12 @@ The first development check exposed the internal API port in canonical URLs. Pre
 The browser displayed NEXUS at `/PROJECTS/nexus` while its initial document returned HTTP 404. The document renderer now matches section names the same way React Router does and emits the lowercase section in canonical links. Published slugs still require an exact match. The regression assertions cover mixed-case document and metadata requests, missing items and the staff noindex rule. [Document renderer](../backend/app/discovery.py) · [Integration tests](../backend/tests/test_discovery.py)
 
 The same HTTP and Chrome checks passed against the reloaded development app and an independent Docker build. The owner-requested placeholders remain ready for supplied media. **Viva question.** Why use a lowercase canonical URL when a mixed-case URL loads? Search engines and link previews can associate both URLs with one published page.
+
+### TASK-068 — Identify strengths and content gaps from peer sites
+
+23 November 2026 · Research and content planning · Source-reviewed
+
+The owner asked what our site does better, where it trails, and what additional material the member repositories contain. I inspected the peers' seed records, static data, components and Join/Contact pages and added a [content opportunity section](PEER_REPOSITORY_COMPARISON.md#content-and-presentation-ideas-found-in-peers). Their useful additions are mostly presentation fields and workflows: member portraits and profiles, social highlights, fuller project details, FAQs, and contact or application paths. Several attractive event names, projects, member bios, figures and FAQ answers are explicitly sample or unsourced, so they cannot be imported as Code2Chill facts. Our verified content register remains the publication gate. **Viva question.** Why not reuse the peer sites' large event counts? Their source marks those numbers as placeholders, and the university currently supports only the records in our content register.
 
 ### TASK-069 — Connect Join to the recruitment application form
 
@@ -1260,6 +1272,14 @@ PostgreSQL tests passed for migration round trips, private access, stale revisio
 Members, projects and settings have protected previews with an explicit Publish button. Public pages read published snapshots. Publishing checks both the revision and preview contents so an intervening edit to a media credit requires a fresh preview. Approved hosted images appear with their credits. [Publication rules](../backend/app/publication.py) · [Preview](../frontend/src/ContentPreview.jsx)
 
 Four database-backed publication and content tests passed. A Chrome walkthrough published a member and an official link and verified the results on Team and Contact. **Viva question.** What does an ordinary draft save change on the public site? The public snapshot changes only when a staff member publishes.
+
+### TASK-077 — Restrict applicant exports and audit downloads
+
+24 November 2026 · Phase 8.8 · Verified locally
+
+Applicant CSV exports are restricted strictly to administrators. Reviewers and unauthenticated requests are rejected with 403 and 401 respectively. Exported values are sanitized against CSV formula injection (`=`, `+`, `-`, `@`, etc.), streamed via HTTP chunks with `no-store` headers, and recorded in `AuditRecord` with action `export`. The review dashboard surfaces the export button only when the user possesses export authorization (`can_export`). [API](../backend/app/admin_recruitment.py) · [Dashboard](../frontend/src/ReviewDashboard.jsx) · [Model](../backend/app/admin_models.py)
+
+Backend pytest tests (`test_export.py`) passed verifying role denial, streaming chunks, formula quoting, and audit trails. Biome linter and Vite build passed cleanly. **Viva question.** How does the export protect against formula injection in spreadsheet software? Any cell value beginning with `=`, `+`, `-`, `@`, or control characters is prepended with a single quote `'` so spreadsheet apps treat it strictly as literal text.
 
 ## 11. Template for Every Future Task or Step
 

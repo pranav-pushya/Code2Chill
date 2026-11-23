@@ -16,6 +16,7 @@ class AdminRole(StrEnum):
 
 
 class AuditAction(StrEnum):
+    EXPORT = "export"
     CREATE = "create"
     UPDATE = "update"
     PUBLISH = "publish"
