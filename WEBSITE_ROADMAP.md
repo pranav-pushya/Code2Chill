@@ -170,7 +170,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 ### Steps
 
-- [ ] **6.1 Implement administrator authentication.** Protect event-management endpoints with server-side authorization.
+- [x] **6.1 Implement administrator authentication.** Staff can sign in and sign out. The server restricts the event-management API to active admins and editors. [Account setup](docs/DEVELOPMENT.md#create-a-staff-account)
 - [ ] **6.2 Build a minimal event editor.** Support creating, editing, previewing, and publishing an event.
 - [ ] **6.3 Implement public event endpoints.** Expose published event lists and event details.
 - [ ] **6.4 Connect event pages.** Render database records on the frontend.

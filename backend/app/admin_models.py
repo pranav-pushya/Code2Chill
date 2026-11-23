@@ -42,6 +42,8 @@ class AdminAccount(Base):
     password_hash: Mapped[str] = mapped_column(String(512))
     role: Mapped[AdminRole] = mapped_column(choices(AdminRole))
     active: Mapped[bool] = mapped_column(Boolean, server_default=true())
+    failed_sign_ins: Mapped[int] = mapped_column(server_default="0")
+    retry_after: Mapped[datetime | None] = mapped_column(UTCDateTime())
 
 
 class AdminSession(Base):

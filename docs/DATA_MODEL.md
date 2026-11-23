@@ -26,7 +26,9 @@ The university portal owns event submissions and confirmations for launch. Step 
 
 ## Administration
 
-Phase 6 will use local administrator accounts and opaque server-side sessions. An account stores its normalized email, password hash, role and active flag. Phase 6 will hash passwords with Argon2id, place a cryptographically random session token in a secure HTTP-only cookie, and look up a SHA-256 digest of the token in the session table. Sessions carry creation, expiry and revocation instants. Request authorization and cookie handling belong to Phase 6.
+Staff accounts store a normalized email address, Argon2id password hash, role and active flag. Revision `0002` adds a failed sign-in counter and a retry time. Sign-in locks the account row while checking the password and updating these fields. Five consecutive failures pause sign-in for five minutes.
+
+After sign-in, the browser receives a random token in a Secure, HTTP-only, SameSite=Strict cookie. PostgreSQL stores its SHA-256 digest, account, creation time, expiry and revocation time. Each protected request checks the session and the account's current role and active flag. Admins and editors can list saved events. Sign-out revokes the session. [Authentication code](../backend/app/admin_auth.py) · [Staff setup](DEVELOPMENT.md#create-a-staff-account)
 
 The reviewer assignment joins an account to a particular recruitment cycle. The audit table stores the actor, action, typed record identifier, time and optional state changes. A typed identifier keeps an audit entry meaningful after the target record is removed. Deactivate accounts with audit history to retain attribution. Audit writes should store state names and record IDs, with applicant details and secrets kept out of the log. [Administrator models](../backend/app/admin_models.py) · [Administrator journey](PAGES_AND_JOURNEYS.md#administrator-journey)
 

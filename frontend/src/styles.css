@@ -20,3 +20,47 @@
 .service-page p {
   margin-block: var(--space-4);
 }
+.sign-in-form {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 26rem;
+}
+.sign-in-form label {
+  display: grid;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+.sign-in-form input {
+  min-height: var(--target);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--muted);
+  border-radius: var(--radius);
+  background: var(--sheet);
+  color: var(--ink);
+  font: inherit;
+}
+.sign-in-form button {
+  justify-self: start;
+}
+.sign-out {
+  margin-top: var(--space-8);
+}
+.admin-events {
+  max-width: 55rem;
+  list-style: none;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+}
+.admin-events li {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--rule);
+}
+.admin-events strong {
+  flex: 1 1 16rem;
+  overflow-wrap: anywhere;
+}

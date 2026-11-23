@@ -1,3 +1,4 @@
+import { AdminArea, SignIn } from "./Admin.jsx";
 import Status from "./Status.jsx";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Link, Route, Routes } from "react-router";
@@ -72,6 +73,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/status" element={<Status />} />
+          <Route path="/admin/sign-in" element={<SignIn />} />
+          <Route path="/admin" element={<AdminArea key="dashboard" />} />
+          <Route
+            path="/admin/content/events"
+            element={<AdminArea key="events" events />}
+          />
           <Route
             path="*"
             element={
@@ -89,6 +96,7 @@ function App() {
         <div className="wrap foot-inner">
           <span>Code2Chill · Chitkara University</span>
           <Link to="/status">Service status</Link>
+          <Link to="/admin">Admin sign-in</Link>
         </div>
       </footer>
     </BrowserRouter>
