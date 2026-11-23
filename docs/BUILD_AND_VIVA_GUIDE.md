@@ -254,6 +254,9 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-055 | Phase 3.7 pass 1 | Checked the two figures on each page at 1440 and 768 px over HTTP. Verified visible labels, media bounds, asset loading, keyboard focus and archive navigation. | Desktop and tablet design samples. |
 | VER-056 | Phase 3.7 pass 2 | Repeated the checks offline at 320 and 390 px, inspected desktop and phone captures, and independently resolved local assets, link fragments and the two distinct figure types with the HTML parser. | No documentary image, image crop or photographer credit can be verified yet. |
 
+| VER-057 | Phase 3 audit pass 1 | Fresh Chrome rendered both previews over a loopback server at 320, 390, 768, 1024 and 1440 px. Fonts and images loaded. Menu dismissal, keyboard focus, project navigation and the archive/detail return worked. No JavaScript exceptions or document overflow occurred. | Static previews with the approved media placeholders. |
+| VER-058 | Phase 3 audit pass 2 | Repeated both previews directly from disk at 320, 390, 768 and 1440 px. Checked the controls and event status again, inspected a full-height phone capture, decoded all brand files, and checked favicon sizes, original PNG bytes, local resources and link fragments. | Chrome emulation. Authentic media and the production application remain pending. |
+
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
 ## 9. Viva Answer Foundations
@@ -673,6 +676,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-055 and VER-056. Both passes found two labeled placements per page and no horizontal overflow. The navigation and archive return path still passed.
 - **Limitations / remaining work:** Step 3.7 stays open for an approved DOMination event photograph and NEXUS screenshot, with credits and permission. The owner confirmed these are currently unavailable.
 - **Viva Q&A:** **What would finish the media step?** Record permission and credit, replace the corresponding placeholders with the actual images in both views, supply informative alternative text, then verify the crops at phone and desktop widths.
+
+### TASK-030 — Verify the Phase 3 deliverables
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 3 follow-up audit.
+- **Status:** Both previews and the approved placeholder layouts passed two verification runs.
+- **Objective:** Check the pushed visual identity deliverables through their browser entry points.
+- **Changes and files:** Recorded this audit in the [build guide](BUILD_AND_VIVA_GUIDE.md). The [Home](design/index.html), [event detail](design/domination.html), fonts, brand files and navigation passed the checks.
+- **How it works:** Served the previews through a temporary loopback server, exercised the controls in Chrome, then opened the same files directly from disk and repeated the checks.
+- **Why this approach:** The first run covers served use. The second confirms the files can be reviewed offline with their local assets.
+- **Validation:** VER-057 and VER-058 passed. An initial element-bound probe included links inside a closed disclosure. Document-width checks confirmed they create no visible overflow. All five brand exports decoded, all three favicon sizes existed, and the original PNGs matched Git byte for byte. The repository check initially used an unpadded task ID, then passed with the documented three-digit format.
+- **Limitations / remaining work:** Step 3.7 awaits the actual event photograph and project screenshot. Both previews show the approved labeled placeholders. The API, database and remaining production routes belong to later phases.
+- **Viva Q&A:** **How was navigation checked?** Followed Explore events to the archive, opened DOMination and returned to the same archive section. Tested menu dismissal and visible keyboard focus at narrow widths.
 
 ## 11. Template for Every Future Task or Step
 
