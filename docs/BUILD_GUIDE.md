@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 8.1 is implemented. Local submission opens once persistence and receipt handling are connected.
+**Current stage:** Phase 8.2 is implemented. Local submission opens once persistence and receipt handling are connected.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -56,7 +56,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Verified in development and staging | [Schema, diagram and repeatable seed](DATA_MODEL.md#migrations-and-initial-records) are implemented. |
 | Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
-| Recruitment | Phase 8.1 | Published cycle information and the application form are in place. Local intake is under construction. |
+| Recruitment | Phase 8.2 | Published cycle information and the application form are in place. Local intake is under construction. |
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
 | Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
@@ -1204,6 +1204,14 @@ The same HTTP and Chrome checks passed against the reloaded development app and 
 Join reads the published title, eligibility, dates and domains. An open local cycle links to the labeled application form. An open external cycle links to its approved destination. Without a published cycle, the university interest link stays available. When cycles overlap, Join prefers the open cycle closing first, then the next scheduled cycle, then the most recently closed cycle. Form values stay in page memory. [Join and application form](../frontend/src/Recruitment.jsx) · [Page metadata](../backend/app/discovery.py)
 
 The production frontend passed lint, formatting and build checks. A headless Chrome check against simulated API responses passed at 390px and 1440px. It covered direct access without a cycle, required fields and labels, the email step, an interrupted response, unchanged retry data and the receipt. **Viva question.** Why load the cycle again on the form page? A direct visit or stale link must still resolve to the currently offered local cycle.
+
+### TASK-070 — Verify applicant email and enforce the published cycle
+
+24 November 2026 · Phase 8.2 · Verified locally
+
+Local cycles include the approved email domain and an optional motivation or portfolio field. The server checks the published window and enabled domains, current reviewer assignment and exact email domain. It sends a random 15-minute email code, stores its digest, and limits code requests by address and cycle. Free-text eligibility requirements remain for reviewers to assess. [Publication rules](../backend/app/publication.py) · [Intake API](../backend/app/recruitment.py) · [Mail settings](DEVELOPMENT.md#enable-local-recruitment-on-a-configured-cycle)
+
+The PostgreSQL integration tests covered scheduled, open and closed cycles, draft isolation, disabled reviewers, email and domain restrictions, code rejection, repeat requests and duplicate submissions. Tests captured outgoing codes in memory. Real mailbox delivery needs the club's SMTP configuration and a delivery check. **Viva question.** Why verify the address before reporting a duplicate? Only the mailbox owner should learn whether that address has applied.
 
 ## 11. Template for Every Future Task or Step
 

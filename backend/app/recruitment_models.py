@@ -51,6 +51,8 @@ class RecruitmentCycle(PublicationFields, Base):
     opens_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
     closes_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
     eligibility: Mapped[str | None] = mapped_column(Text)
+    email_domain: Mapped[str | None] = mapped_column(String(253))
+    optional_field: Mapped[str | None] = mapped_column(String(16))
     route: Mapped[ApplicationRoute] = mapped_column(
         choices(ApplicationRoute), server_default=ApplicationRoute.PENDING
     )
@@ -68,6 +70,18 @@ class RecruitmentDomain(Base):
     )
     domain: Mapped[ClubDomain] = mapped_column(choices(ClubDomain), primary_key=True)
     cycle: Mapped[RecruitmentCycle] = relationship(back_populates="domains")
+
+
+class EmailChallenge(Base):
+    __tablename__ = "recruitment_email_challenge"
+
+    cycle_id: Mapped[int] = mapped_column(
+        ForeignKey("recruitment_cycle.id", ondelete="CASCADE"), primary_key=True
+    )
+    attempt_id: Mapped[UUID] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(String(254))
+    digest: Mapped[str] = mapped_column(String(64))
+    sent_at: Mapped[datetime] = mapped_column(UTCDateTime(), index=True)
 
 
 class Application(Base):

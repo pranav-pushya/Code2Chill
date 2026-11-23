@@ -155,6 +155,11 @@ def public_payload(session: Session, record: Publishable) -> dict[str, object]:
         if not record.external_url:
             raise PublicationError("Set the approved external application URL.")
         https_link(record.external_url)
+    if record.route == ApplicationRoute.LOCAL:
+        if not valid_email_domain(record.email_domain):
+            raise PublicationError("Set the approved university email domain for this cycle.")
+        if record.optional_field not in (None, "motivation", "portfolio_url"):
+            raise PublicationError("Choose motivation, portfolio link or no optional field.")
     return payload | {
         "opens_at": record.opens_at,
         "closes_at": record.closes_at,
@@ -162,7 +167,18 @@ def public_payload(session: Session, record: Publishable) -> dict[str, object]:
         "route": record.route,
         "external_url": record.external_url if record.route == ApplicationRoute.EXTERNAL else None,
         "domains": sorted(item.domain.value for item in record.domains),
+        "email_domain": record.email_domain if record.route == ApplicationRoute.LOCAL else None,
+        "optional_field": record.optional_field if record.route == ApplicationRoute.LOCAL else None,
     }
+
+
+def valid_email_domain(value):
+    return (
+        isinstance(value, str)
+        and len(value) <= 253
+        and re.fullmatch(r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}", value)
+        is not None
+    )
 
 
 def snapshot_for(session: Session, record: Publishable) -> dict[str, object]:
