@@ -208,6 +208,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-022 | Phase 1.6 pass 2, documentation and repository review | Checked the recruitment default, missing official settings, cross-document links, checklist sequence, and staged scope. `git diff --cached --check` passed. | Reviewers, dates, and other actual cycle settings are still to be provided. |
 | VER-023 | Phase 1.7 pass 1, scope and deliverables review | Python checked the essential, deferred, and open sections against the register, the portal decision, the recruitment default, and all seven Phase 1 items. | Scope review covers design commitments and open dependencies. |
 | VER-024 | Phase 1.7 pass 2, repository and sequence review | Checked all Phase 1 task records and verification references, local links and anchors, staged scope, and `git diff --cached --check`. | Application development and testing are later phases. |
+| VER-025 | Phase 1 audit and correction pass 1, evidence and behavior | GitHub reported the Phase 1 tip. Rendered the club and two event records, found all ten named roster entries and an empty upcoming list, and confirmed both public project repositories and the NEXUS demo response. Compared the corrected roadmap to the portal and recruitment decisions. | Indexed club social evidence and the university's Instagram link support attribution. Live submissions and third-party demo interactions were outside the check. |
+| VER-026 | Phase 1 correction pass 2, staged document review | Checked the corrected roadmap, dated content observation, local links and anchors, and exact staged scope. `git diff --cached --check` passed. | Repository and planning verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -406,6 +408,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-023 checked scope against the Phase 1 deliverables. VER-024 checked the staged documentation, evidence links, and completion sequence.
 - **Limitations / remaining work:** Club leads still need to supply the general contact address, some event details, approved images, and live recruitment settings. Later phases will choose the rendering approach, authentication, and hosting against the assessment and implementation requirements.
 - **Viva Q&A:** **What does Phase 1 prove?** The launch has a sourced content inventory and explicit workflow rules, with missing data identified. **What proves the website is dynamic in the finished demo?** An administrator's saved event update must appear publicly and persist when the backend restarts.
+
+### TASK-014 — Audit and correct Phase 1 deliverables
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 1 follow-up before Phase 2.
+- **Status:** Seven original deliverables checked. Roadmap inconsistencies corrected and verified twice.
+- **Objective:** Verify the pushed commits, source evidence, and agreement between the roadmap and the launch rules.
+- **Changes and files:** Corrected the [roadmap](../WEBSITE_ROADMAP.md) to reflect the confirmed event dates, the university registration handoff, and the recruitment announcement default. Updated the dated upcoming-events observation in the [content register](CONTENT_REGISTER.md#events-and-projects).
+- **How it works:** The planned demo verifies that Code2Chill's published event content and destination persist. The university owns the registration. Recruitment follows the announcement path until the club approves a cycle.
+- **Why this approach:** Old summary and demo language pointed to work that the launch decision had already assigned to the university or made conditional. Aligning it before the route work prevents those assumptions from reaching the interface.
+- **Validation:** VER-025 checked the live GitHub tip, 29 evidence rows, ten roster entries, both logos, university records, project sources, and planned behavior. VER-026 checked the staged correction and repository links.
+- **Limitations / remaining work:** Live booking, membership interest submission, and project interactions remain untested. Club-owned content and recruitment decisions still open in [launch scope](LAUNCH_SCOPE.md#open-decisions-and-content-gaps) remain explicitly recorded.
+- **Viva Q&A:** **What should survive a restart in the public-launch demo?** The published event content, registration state, and approved destination. **What does the external handoff prove?** Code2Chill can direct students to the right university event without owning the booking workflow.
 
 ## 11. Template for Every Future Task or Step
 

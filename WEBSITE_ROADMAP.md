@@ -2,7 +2,7 @@
 
 **Prepared:** 16 November 2026  
 **Project:** Dynamic Python full-stack website for Code2Chill, Chitkara University  
-**Status:** Planning; checkboxes represent work still to complete.
+**Status:** Planning. Checked steps are complete, and unchecked steps are pending.
 
 ## Objective
 
@@ -31,7 +31,9 @@ The launch demonstration follows an administrator publishing an event, the updat
 | [Noddal](https://noddal.xyz/) | Positive design reference supplied by the tech lead |
 | [Ksen Panchenko](https://ksenpanchenko.com/) | Positive design reference supplied by the tech lead |
 
-**Research limitation:** The supplied Instagram page, university club page, and design-reference sites could not be retrieved during the initial research session. Their current visual designs and content have not been independently inspected. Indexed club LinkedIn content names BYTE THE VIBE and DOMination; exact dates and other publication details still need verification.
+**Club content:** The university listing and event records support the club details and the dates and venue for Byte The Vibe and DOMination. The [content register](docs/CONTENT_REGISTER.md) records checked facts and outstanding publication details.
+
+**Design research:** The design references could not be retrieved during the initial research session.
 
 ## Proposed Technical Foundation
 
@@ -78,7 +80,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 - [ ] **2.1 Define public routes.** Plan Home, About, Events, Event Detail, Projects, Project Detail, Team, Join, and Contact.
 - [ ] **2.2 Map event discovery.** Define discover club → explore activities → inspect event → register or follow the official registration link.
-- [ ] **2.3 Map recruitment.** Define choose domain → complete application → receive confirmation.
+- [ ] **2.3 Map recruitment.** Define the announcement and interest paths, plus application and confirmation when an approved cycle opens.
 - [ ] **2.4 Map administration.** Define sign in → create content → preview → publish → manage submissions.
 - [ ] **2.5 Specify interface states.** Include loading, empty, closed, full, error, and success states.
 - [ ] **2.6 Create wireframes.** Sketch desktop and mobile layouts using realistic content lengths.
@@ -293,8 +295,8 @@ Select compatible, maintained dependency versions during setup rather than copyi
 | --- | --- |
 | Original responsive design | Representative desktop and mobile pages |
 | Integrated Python backend | An event published from the dashboard appears on the public site |
-| Persistent business workflows | Registrations and applications remain available after restart |
-| Useful administration | Club leads update content and review submissions themselves |
+| Persistent business workflows | Published event content survives a restart. Local recruitment records persist when the approved workflow is enabled. |
+| Useful administration | Club leads update content and authorized reviewers handle applications when local recruitment is active. |
 | Reliable delivery | Passing checks, deployed workflows, recovery procedure, and clear documentation |
 
 ## Suggested Demonstration Sequence
@@ -302,9 +304,9 @@ Select compatible, maintained dependency versions during setup rather than copyi
 1. Open the homepage on desktop and mobile.
 2. Sign in as an administrator and create an event draft.
 3. Publish the event and show it on the public website.
-4. Complete registration, or demonstrate the approved university-portal handoff.
-5. For local registration, show the saved record and duplicate/capacity handling.
-6. Submit a recruitment application and review it in the dashboard.
+4. Show the event registration state and demonstrate the approved university-portal handoff.
+5. Show that the published event and registration destination persist after restarting the backend.
+6. Show the recruitment announcement or demonstrate the approved cycle. Use synthetic records for any local application and review demonstration.
 7. Update a team member or project and show the public change.
 8. Explain the request flow, database constraints, authorization, tests, and deployment.
 
