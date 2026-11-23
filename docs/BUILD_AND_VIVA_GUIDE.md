@@ -72,6 +72,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | [AGENTS.md](../AGENTS.md) | Contributor/agent instructions and documentation policy |
 | [CONTENT_REGISTER.md](CONTENT_REGISTER.md) | Phase 1 evidence, ownership, publication readiness, and asset inventory |
 | [LAUNCH_SCOPE.md](LAUNCH_SCOPE.md) | Launch workflow decisions and the boundaries of local data handling |
+| [PAGES_AND_JOURNEYS.md](PAGES_AND_JOURNEYS.md) | Planned routes, navigation, and user journeys |
 | This guide | Current build explanation, decisions, verification, and task history |
 
 ## 5. Existing Prototype — How It Works
@@ -210,6 +211,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-024 | Phase 1.7 pass 2, repository and sequence review | Checked all Phase 1 task records and verification references, local links and anchors, staged scope, and `git diff --cached --check`. | Application development and testing are later phases. |
 | VER-025 | Phase 1 audit and correction pass 1, evidence and behavior | GitHub reported the Phase 1 tip. Rendered the club and two event records, found all ten named roster entries and an empty upcoming list, and confirmed both public project repositories and the NEXUS demo response. Compared the corrected roadmap to the portal and recruitment decisions. | Indexed club social evidence and the university's Instagram link support attribution. Live submissions and third-party demo interactions were outside the check. |
 | VER-026 | Phase 1 correction pass 2, staged document review | Checked the corrected roadmap, dated content observation, local links and anchors, and exact staged scope. `git diff --cached --check` passed. | Repository and planning verification. |
+| VER-027 | Phase 2.1 pass 1, route walkthrough | Compared the route table and sitemap, matched named route examples to the content register, and walked through navigation and missing-content paths. | Route design. No router is implemented. |
+| VER-028 | Phase 2.1 pass 2, repository review | Verified the route plan and roadmap links, checkbox sequence, task record, and staged scope. `git diff --cached --check` passed. | Document validation. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -421,6 +424,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-025 checked the live GitHub tip, 29 evidence rows, ten roster entries, both logos, university records, project sources, and planned behavior. VER-026 checked the staged correction and repository links.
 - **Limitations / remaining work:** Live booking, membership interest submission, and project interactions remain untested. Club-owned content and recruitment decisions still open in [launch scope](LAUNCH_SCOPE.md#open-decisions-and-content-gaps) remain explicitly recorded.
 - **Viva Q&A:** **What should survive a restart in the public-launch demo?** The published event content, registration state, and approved destination. **What does the external handoff prove?** Code2Chill can direct students to the right university event without owning the booking workflow.
+
+### TASK-015 — Define public routes
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 2.1.
+- **Status:** Nine public routes planned and verified.
+- **Objective:** Give each first-release public page a stable address and a way to reach it.
+- **Changes and files:** Created the [public sitemap](PAGES_AND_JOURNEYS.md#public-sitemap) and linked it from the [roadmap](../WEBSITE_ROADMAP.md#phase-2--define-pages-and-user-journeys).
+- **How it works:** The route table and tree show the public pages, the two detail patterns, direct entry, and recovery paths. The header and footer share navigation across public pages.
+- **Why this approach:** Dedicated list and detail URLs support shared links and let visitors recover from a missing item. The plan is usable with either frontend rendering approach still under consideration.
+- **Validation:** VER-027 checked route coverage and examples against the content register. VER-028 checked staged documentation and step order.
+- **Limitations / remaining work:** The site router, data loading, and visual navigation are planned. Journeys and screen states are specified in later Phase 2 steps.
+- **Viva Q&A:** **What is a slug?** It is the unique readable identifier for a published item within its content type. **What happens if an event slug is unknown?** The site shows a not-found state with a link back to Events.
 
 ## 11. Template for Every Future Task or Step
 
