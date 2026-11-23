@@ -1281,6 +1281,14 @@ Applicant CSV exports are restricted strictly to administrators. Reviewers and u
 
 Backend pytest tests (`test_export.py`) passed verifying role denial, streaming chunks, formula quoting, and audit trails. Biome linter and Vite build passed cleanly. **Viva question.** How does the export protect against formula injection in spreadsheet software? Any cell value beginning with `=`, `+`, `-`, `@`, or control characters is prepended with a single quote `'` so spreadsheet apps treat it strictly as literal text.
 
+### TASK-078 — Add staff password change endpoint and view
+
+24 November 2026 · Phase 8.9 · Verified locally
+
+Authenticated staff can update their password via `POST /api/admin/change-password`. The endpoint verifies the current password using Argon2id, enforces password length between 15 and 256 characters, rejects identical old and new passwords, updates the password hash, revokes other active sessions for that account while preserving the current active session, and logs an `AuditRecord` with action `update` for `admin_account`. The admin dashboard presents the change-password form with current password, new password, confirmation matching validation, and feedback notifications. [Auth API](../backend/app/admin_auth.py) · [Admin Dashboard](../frontend/src/Admin.jsx) · [Styles](../frontend/src/styles.css)
+
+Backend test `test_change_password_workflow` in `test_admin_auth.py` verified 401 unauthenticated denial, 403 CSRF header enforcement, 400 invalid current password rejection, 422 length and match validation, password hash update, audit record creation, and subsequent sign-in with the new credentials. Biome linter and Vite build passed with zero errors. **Viva question.** What happens to existing login sessions when a staff member changes their password? All other active sessions for that staff account are immediately revoked in the database, while the current session remains authenticated.
+
 ## 11. Template for Every Future Task or Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.

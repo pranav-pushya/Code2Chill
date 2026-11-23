@@ -5,7 +5,14 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.admin_auth import COOKIE, token_digest
-from app.admin_models import AdminAccount, AdminRole, AdminSession
+from app.admin_models import (
+    AdminAccount,
+    AdminRole,
+    AdminSession,
+    AuditAction,
+    AuditRecord,
+    AuditTarget,
+)
 from app.content_models import Event
 from app.create_admin import create_account
 
@@ -113,3 +120,83 @@ def test_credential_checks_and_cooldown(api_db):
     )
     assert sign_in(client).status_code == 200
     assert connection.scalar(select(AdminAccount.retry_after)) is None
+
+
+def test_change_password_workflow(api_db):
+    client, connection = api_db
+    provision(connection)
+    path = "/api/admin/change-password"
+    new_password = "a brand new secure password 123"
+
+    # Unauthorized when not signed in
+    assert (
+        client.post(
+            path,
+            headers=HEADER,
+            json={"current_password": PASSWORD, "new_password": new_password},
+        ).status_code
+        == 401
+    )
+
+    sign_in(client)
+
+    # Missing admin header
+    assert (
+        client.post(
+            path,
+            json={"current_password": PASSWORD, "new_password": new_password},
+        ).status_code
+        == 403
+    )
+
+    # Incorrect current password
+    bad_current = client.post(
+        path,
+        headers=HEADER,
+        json={"current_password": "incorrect-password", "new_password": new_password},
+    )
+    assert bad_current.status_code == 400
+    assert "Current password is incorrect" in bad_current.text
+
+    # Too short new password
+    too_short = client.post(
+        path,
+        headers=HEADER,
+        json={"current_password": PASSWORD, "new_password": "short"},
+    )
+    assert too_short.status_code == 422
+
+    # Same password
+    same_pass = client.post(
+        path,
+        headers=HEADER,
+        json={"current_password": PASSWORD, "new_password": PASSWORD},
+    )
+    assert same_pass.status_code == 422
+
+    # Successful change
+    ok = client.post(
+        path,
+        headers=HEADER,
+        json={"current_password": PASSWORD, "new_password": new_password},
+    )
+    assert ok.status_code == 200
+    assert ok.json() == {"status": "ok", "message": "Password changed successfully."}
+
+    # Verify audit record
+    user_id = connection.scalar(select(AdminAccount.id))
+    target_id = connection.scalar(
+        select(AuditRecord.target_id).where(
+            AuditRecord.action == AuditAction.UPDATE,
+            AuditRecord.target_type == AuditTarget.ADMIN_ACCOUNT,
+            AuditRecord.actor_id == user_id,
+        )
+    )
+    assert target_id == user_id
+
+    # Verify old password cannot sign in
+    sign_out_res = client.post("/api/admin/sign-out", headers=HEADER)
+    assert sign_out_res.status_code == 204
+    assert sign_in(client, password=PASSWORD).status_code == 401
+    assert sign_in(client, password=new_password).status_code == 200
+

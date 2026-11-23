@@ -43,6 +43,15 @@
 .sign-in-form button {
   justify-self: start;
 }
+.change-password-section {
+  margin-block-start: var(--space-8);
+  border-top: 1px solid var(--rule);
+  padding-top: var(--space-6);
+}
+.change-password-section h2 {
+  font: 700 1.5rem var(--display);
+  margin-bottom: var(--space-4);
+}
 .draft-form {
   max-width: 46rem;
 }

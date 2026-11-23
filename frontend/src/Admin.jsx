@@ -221,6 +221,7 @@ export function AdminArea({ events = false }) {
                 </Link>
               )}
             </div>
+            <ChangePassword />
           </>
         ))}
       {(result.data || result.forbidden) && (
@@ -236,6 +237,112 @@ export function AdminArea({ events = false }) {
           </button>
         </div>
       )}
+    </section>
+  );
+}
+
+export function ChangePassword() {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  async function submit(event) {
+    event.preventDefault();
+    const fields = new FormData(event.currentTarget);
+    const currentPassword = fields.get("current_password");
+    const newPassword = fields.get("new_password");
+    const confirmPassword = fields.get("confirm_password");
+
+    setError("");
+    setSuccess("");
+
+    if (newPassword !== confirmPassword) {
+      setError("New passwords do not match.");
+      return;
+    }
+    if (
+      typeof newPassword !== "string" ||
+      newPassword.length < 15 ||
+      newPassword.length > 256
+    ) {
+      setError("Use a new password between 15 and 256 characters.");
+      return;
+    }
+    if (newPassword === currentPassword) {
+      setError("New password must be different from current password.");
+      return;
+    }
+
+    setBusy(true);
+    try {
+      const response = await adminRequest("change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+      });
+      if (response.status === 401) {
+        setError("Sign in again to change your password.");
+        return;
+      }
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.detail || "Couldn’t change password.");
+        return;
+      }
+      setSuccess("Password changed successfully.");
+      event.target.reset();
+    } catch {
+      setError("Couldn’t reach the server. Try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <section className="change-password-section">
+      <h2>Change password</h2>
+      <form className="sign-in-form" method="post" onSubmit={submit}>
+        <label>
+          Current password
+          <input
+            name="current_password"
+            type="password"
+            autoComplete="current-password"
+            maxLength={256}
+            required
+          />
+        </label>
+        <label>
+          New password (15 to 256 characters)
+          <input
+            name="new_password"
+            type="password"
+            autoComplete="new-password"
+            minLength={15}
+            maxLength={256}
+            required
+          />
+        </label>
+        <label>
+          Confirm new password
+          <input
+            name="confirm_password"
+            type="password"
+            autoComplete="new-password"
+            minLength={15}
+            maxLength={256}
+            required
+          />
+        </label>
+        {error && <p role="alert">{error}</p>}
+        {success && <p role="status">{success}</p>}
+        <button type="submit" className="action" disabled={busy}>
+          {busy ? "Updating…" : "Update password"}
+        </button>
+      </form>
     </section>
   );
 }

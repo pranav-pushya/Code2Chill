@@ -10,7 +10,14 @@ from pydantic import BaseModel, SecretStr
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
-from .admin_models import AdminAccount, AdminRole, AdminSession
+from .admin_models import (
+    AdminAccount,
+    AdminRole,
+    AdminSession,
+    AuditAction,
+    AuditRecord,
+    AuditTarget,
+)
 from .database import request_session
 
 router = APIRouter(prefix="/api/admin", tags=["Administrator access"])
@@ -25,6 +32,11 @@ _DUMMY_HASH = PASSWORD_HASHER.hash(secrets.token_urlsafe(32))
 class Credentials(BaseModel):
     email: str
     password: SecretStr
+
+
+class ChangePasswordPayload(BaseModel):
+    current_password: SecretStr
+    new_password: SecretStr
 
 
 class AccountInfo(BaseModel):
@@ -128,6 +140,52 @@ def sign_out(request: Request, response: Response, db: Database):
     revoke_cookie_session(request, db, datetime.now(UTC))
     db.commit()
     response.delete_cookie(COOKIE, path="/", secure=True, httponly=True, samesite="strict")
+
+
+@router.post("/change-password")
+def change_password(
+    payload: ChangePasswordPayload,
+    account: Annotated[AdminAccount, Depends(current_account)],
+    request: Request,
+    db: Database,
+):
+    current_plain = payload.current_password.get_secret_value()
+    new_plain = payload.new_password.get_secret_value()
+    try:
+        matches = PASSWORD_HASHER.verify(account.password_hash, current_plain)
+    except (VerificationError, InvalidHashError):
+        matches = False
+    if not matches:
+        raise HTTPException(400, "Current password is incorrect.")
+    if not 15 <= len(new_plain) <= 256:
+        raise HTTPException(422, "Use a new password between 15 and 256 characters.")
+    if current_plain == new_plain:
+        raise HTTPException(422, "New password must be different from current password.")
+
+    account.password_hash = PASSWORD_HASHER.hash(new_plain)
+    now = datetime.now(UTC)
+    token = request.cookies.get(COOKIE)
+    current_digest = token_digest(token) if token else None
+    if current_digest:
+        db.execute(
+            update(AdminSession)
+            .where(
+                AdminSession.account_id == account.id,
+                AdminSession.revoked_at.is_(None),
+                AdminSession.token_digest != current_digest,
+            )
+            .values(revoked_at=now)
+        )
+    db.add(
+        AuditRecord(
+            actor_id=account.id,
+            target_id=account.id,
+            target_type=AuditTarget.ADMIN_ACCOUNT,
+            action=AuditAction.UPDATE,
+        )
+    )
+    db.commit()
+    return {"status": "ok", "message": "Password changed successfully."}
 
 
 def event_editor(account: Annotated[AdminAccount, Depends(current_account)]) -> AdminAccount:
