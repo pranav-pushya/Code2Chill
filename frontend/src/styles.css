@@ -48,7 +48,8 @@
   border-color: var(--ink);
 }
 .sign-in-form input:focus {
-  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 1px;
   border-color: var(--focus);
   box-shadow: 0 0 0 3px rgba(33, 79, 197, 0.16);
 }
@@ -144,7 +145,8 @@
 }
 .draft-form textarea:focus,
 .draft-form select:focus {
-  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 1px;
   border-color: var(--focus);
   box-shadow: 0 0 0 3px rgba(33, 79, 197, 0.16);
 }
@@ -393,6 +395,7 @@
   flex-direction: column;
   flex: 1;
   width: 100%;
+  pointer-events: auto;
   will-change: opacity, transform;
   animation: page-enter 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -412,6 +415,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  pointer-events: auto;
   will-change: opacity, transform;
   animation: data-enter 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -516,5 +520,24 @@ span[role="status"]:empty {
   }
   .menu-toggle:active {
     opacity: 0.75;
+  }
+}
+
+@media print {
+  .site-head {
+    position: static;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: transparent;
+  }
+  .skip,
+  .menu-toggle,
+  .password-toggle {
+    display: none;
+  }
+  .page-enter,
+  .data-enter {
+    animation: none;
+    transform: none;
   }
 }

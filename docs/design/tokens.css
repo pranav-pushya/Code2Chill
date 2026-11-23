@@ -137,6 +137,11 @@
 }
 
 @media (forced-colors: active) {
-  :focus-visible { outline-color: Highlight; }
+  :focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline-color: Highlight;
+  }
   .action { border-color: ButtonText; }
 }

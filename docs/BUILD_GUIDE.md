@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 9.1 through 9.4 are implemented and verified. Keeping actions usable (9.5), asset optimization (9.6), and experiment controls removal (9.7) are next.
+**Current stage:** Phase 9.1 through 9.5 are implemented and verified. Asset optimization (9.6) and experiment controls removal (9.7) are next.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1382,6 +1382,19 @@ Conducted an empirical engineering evaluation of the proposed ink-bleed transiti
 - **Decision:** Formally resolved **DEC-007** by rejecting heavy canvas/SVG ink simulations in production. Retained the lightweight, zero-dependency CSS hardware-accelerated deceleration transition paired with in-memory public data caching.
 
 Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files) and `vite build` (passed in 2.21s). **Viva question.** What are the performance and accessibility tradeoffs of an SVG/Canvas ink transition, and why was it rejected for production? SVG displacement filters and Canvas overlays cannot be composited on the GPU without CPU software rasterization, degrading mobile frame rates and consuming 25MB+ of memory per route change; furthermore, artificial animation delays conflict with dynamic API data arrival and violate reduced-motion accessibility guidelines, whereas CSS compositor transitions provide instantaneous response at 0 KB bundle cost.
+
+### TASK-087 — Ensure actions remain usable when visual effects load or fail (Step 9.5)
+
+24 November 2026 · Phase 9.5 · Verified locally
+
+Guaranteed that all essential user actions, navigation paths, form submissions, and feedback remain fully functional, visible, and responsive regardless of animation state, hardware acceleration, sticky layering, or high contrast mode:
+- **Sticky Header Offset Protection:** Updated `html { scroll-padding-top: 5.5rem; }` in [pages.css](design/pages.css) to account for the 4.75rem sticky header height, preventing the keyboard accessibility skip link (`#main`) and anchor links from obscuring content under the pinned navigation bar.
+- **Immediate Event Registration During Transitions:** Added explicit `pointer-events: auto;` to `.page-enter` and `.data-enter` in [styles.css](../frontend/src/styles.css) ensuring button clicks, tab navigation, and form inputs are never blocked while entry transitions are active.
+- **Forced Colors / Windows High Contrast Resilience:** Added `outline: 2px solid transparent; outline-offset: 1px;` across input, textarea, and select controls in [styles.css](../frontend/src/styles.css) and updated `@media (forced-colors: active)` in [tokens.css](design/tokens.css) to map `outline-color: Highlight;` so keyboard focus indicators remain distinct when custom CSS `box-shadow` glows are stripped by operating system high contrast themes.
+- **Accessible Async State Indication:** Wired `aria-busy={busy || undefined}` to the application form in [Recruitment.jsx](../frontend/src/Recruitment.jsx), ensuring assistive technologies announce pending network operations.
+- **Print Stylesheet Resilience:** Added `@media print` rules in [styles.css](../frontend/src/styles.css) to flatten sticky headers (`position: static; background: transparent;`), strip decorative motion and interactive toggles (skip link, hamburger menu, password toggle), and ensure crisp printing on physical paper. [Design Tokens](design/tokens.css) · [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Recruitment View](../frontend/src/Recruitment.jsx)
+
+Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files), production client build `vite build` (passed in 1.03s), motion CDP check (`phase9-motion-check.mjs`), and end-to-end recruitment UI check (`phase8-ui-check.mjs`). **Viva question.** Why must `scroll-padding-top` be configured when using a sticky header, and how does it affect usability? When a sticky header is pinned to the top of the viewport (`position: sticky; top: 0`), standard browser anchor scrolling (`#id` or skip-to-content links) aligns the target element with the viewport edge, causing the sticky header to overlap and obscure the top lines of content. Setting `scroll-padding-top` equal to or greater than the sticky header height instructs the browser's scroll engine to stop before the target, keeping the focused content and its visual context fully visible.
 
 ## 11. Template for Every Future Task or Step
 

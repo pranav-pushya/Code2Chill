@@ -177,7 +177,11 @@ function ApplicationForm({ cycle }) {
     <Page title="Recruitment application">
       <CycleDetails cycle={cycle} />
       <p>Name, university email and domain are required.</p>
-      <form className="sign-in-form draft-form" onSubmit={submit}>
+      <form
+        className="sign-in-form draft-form"
+        onSubmit={submit}
+        aria-busy={busy || undefined}
+      >
         <fieldset disabled={busy}>
           <label>
             Full name
