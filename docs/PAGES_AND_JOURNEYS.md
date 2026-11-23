@@ -59,3 +59,31 @@ On `/events`, put Upcoming before Past. Offer section links to `/events#upcoming
 | Request failure | Show an error with **Try again** for the same view and keep public navigation available. |
 
 The [launch registration rules](LAUNCH_SCOPE.md#event-registration) apply across list and detail. Code2Chill displays the organizer-verified state. A student who sees a different outcome on the university site can return with the browser Back action.
+
+## Recruitment journey
+
+```mermaid
+flowchart TD
+    J[Join page] --> C{Recruitment cycle state}
+    C -->|No approved cycle| A[Dates to be announced]
+    A --> I[University club listing for membership interest]
+    C -->|Scheduled or closed| T[Show the relevant dates or status]
+    C -->|Open with approved external route| E[Official application destination]
+    C -->|Open with approved local route| D[Read eligibility and choose an enabled domain]
+    D --> F[Complete and submit local application]
+    F -->|Saved successfully| R[Show confirmation and reference]
+    F -->|Submission needs attention| S[Show error and recovery]
+```
+
+| Cycle or submission state | Student experience |
+| --- | --- |
+| No approved cycle | `/join` shows **Recruitment dates to be announced**. **View the club on the university portal** opens the official listing for general membership interest. |
+| Scheduled cycle | Show the enabled domains, eligibility, and opening time in India Standard Time. |
+| Open with an approved external route | **Apply through the official form** opens the approved destination. That provider handles the submission and confirmation. |
+| Open with an approved local route | **Start application** opens the planned `/join/apply` page. Show eligibility and enabled domains. Collect the name, university email, and domain with the cycle's configured optional prompt. |
+| Invalid local submission | Explain the field errors beside the inputs and in a focusable summary. Keep the student's entered values while they correct the form. |
+| Local request fails or its result is uncertain | Keep the entered values in the current page and offer **Try again**. The server's duplicate rule prevents a retry from creating another record. |
+| Local save confirmed | Show **Application received** and the confirmation reference. Keep applicant details out of the URL. Give the student a link back to Join. |
+| Window closes, including while the local form is open | Show **Applications are closed** and return students to Join. The server checks the time again before accepting a submission. |
+
+For a local application, only show duplicate-record details after verifying that the requester controls the university email. The implementation phase will choose how to verify ownership. The [recruitment rules](LAUNCH_SCOPE.md#recruitment) define cycle configuration and time boundaries. A direct visit to `/join/apply` when the local route is unavailable returns the student to the current Join state.

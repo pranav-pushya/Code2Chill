@@ -215,6 +215,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-028 | Phase 2.1 pass 2, repository review | Verified the route plan and roadmap links, checkbox sequence, task record, and staged scope. `git diff --cached --check` passed. | Document validation. |
 | VER-029 | Phase 2.2 pass 1, event journey walkthrough | Checked list entry, archive and shared links, registration conditions, missing details, error recovery, and the external handoff against the Phase 1 rules. | Planned journey only. |
 | VER-030 | Phase 2.2 pass 2, repository review | Checked the staged diagram references, repository links, checklist sequence, and task record. `git diff --cached --check` passed. | No booking was attempted. |
+| VER-031 | Phase 2.3 pass 1, recruitment walkthrough | Checked inactive, scheduled, external, local, invalid, retry, saved, and closed paths against the cycle rules and graph. | No active cycle or application service is available in the project. |
+| VER-032 | Phase 2.3 pass 2, repository review | Verified staged links, roadmap sequence, task log, and the launch versus conditional route distinction. `git diff --cached --check` passed. | Document validation. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -452,6 +454,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-029 walked the event cases against the launch scope. The first assertion expected eleven links in the diagram. Manual review found twelve, including both shared-URL outcomes, and the corrected assertion passed. VER-030 reviewed the staged documentation and sequence.
 - **Limitations / remaining work:** These are planned routes and actions. A live portal sign-up and browser Back behavior will need testing when Code2Chill has a working frontend.
 - **Viva Q&A:** **Why can a published event omit a registration button?** Publication makes its information visible. The button requires an open registration state and a verified official destination.
+
+### TASK-017 — Map the recruitment journey
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 2.3.
+- **Status:** Recruitment paths planned and verified.
+- **Objective:** Give students a useful Join page before recruitment opens and a clear path during an approved cycle.
+- **Changes and files:** Added the [recruitment journey](PAGES_AND_JOURNEYS.md#recruitment-journey) and checked off Step 2.3 in the [roadmap](../WEBSITE_ROADMAP.md#phase-2--define-pages-and-user-journeys).
+- **How it works:** Join shows the announcement or the published cycle state. An open cycle points to one approved external or local route. The planned local flow handles domain selection, validation, uncertain responses, successful save, and closure.
+- **Why this approach:** Students can express general membership interest while the club configures recruitment. Server checks at submission protect the approved window and duplicate rule even when a form was open earlier.
+- **Validation:** VER-031 walked the state outcomes and checked the diagram against Phase 1. VER-032 checked the staged plan and current roadmap status.
+- **Limitations / remaining work:** The club must supply a real cycle. The local form, email ownership check, and reviewer workflow still need implementation.
+- **Viva Q&A:** **Can an open tab submit after the closing instant?** The backend verifies the deadline when it receives the request. The planned form shows the closed state if the window has ended.
 
 ## 11. Template for Every Future Task or Step
 
