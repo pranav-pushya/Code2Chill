@@ -6,8 +6,8 @@ This guide details prerequisites, local environment configuration, and execution
 
 ## 🛠️ Prerequisites
 
-* **Python**: `3.13` or `3.14` (with [`uv`](https://github.com/astral-sh/uv) recommended, or standard `venv`)
-* **Node.js**: `22+` with `npm`
+* **Python**: `3.13` or `3.14` (with [`uv`](https://github.com/astral-sh/uv) for the locked environment)
+* **Node.js**: `24.x` with `npm`
 * **Docker / Docker Compose**: For local PostgreSQL 17 database service
 
 ---
@@ -16,14 +16,16 @@ This guide details prerequisites, local environment configuration, and execution
 
 The local development PostgreSQL container is configured via [backend/compose.yaml](../backend/compose.yaml):
 
+On first setup, copy `backend/.env.example` to `backend/.env` and set `POSTGRES_PASSWORD` to a unique local password. Reuse that file for this database volume on later starts. Run the following from the repository root.
+
 ```bash
-# Start the PostgreSQL 17 container in the background
-docker compose -f backend/compose.yaml up -d
+# Start PostgreSQL and wait for readiness
+docker compose -p code2chill-dev --env-file backend/.env -f backend/compose.yaml up -d --wait db
 ```
 
 The database port binds to `127.0.0.1:55432` by default. Verify its health status:
 ```bash
-docker compose -f backend/compose.yaml ps
+docker compose -p code2chill-dev --env-file backend/.env -f backend/compose.yaml ps
 ```
 
 ---
@@ -33,17 +35,11 @@ docker compose -f backend/compose.yaml ps
 ```bash
 cd backend
 
-# Create local environment configuration from template
-cp .env.example .env
-
-# Set your secure local POSTGRES_PASSWORD in .env
-# DATABASE_URL=postgresql+psycopg://code2chill:<password>@127.0.0.1:55432/code2chill
-
-# Install dependencies using uv
-uv sync
+# Use the configuration created before starting PostgreSQL
+uv sync --locked
 
 # Run the API development server
-uv run uvicorn app.main:app --reload --port 8000
+uv run --locked uvicorn app.main:app --reload --port 8000
 ```
 
 ### Verification Endpoints
@@ -52,6 +48,8 @@ uv run uvicorn app.main:app --reload --port 8000
 * **OpenAPI Schema**: [http://localhost:8000/api/openapi.json](http://localhost:8000/api/openapi.json)
 
 ---
+
+Keep the API running and start the frontend in a second terminal from the repository root.
 
 ## 3. Frontend Setup (React + Vite + Tailwind)
 
@@ -91,9 +89,11 @@ npm run build
 cd backend
 
 # Run Ruff linter and format check
-uv run ruff check .
-uv run ruff format --check .
+uv run --locked ruff check app tests
+uv run --locked ruff format --check app tests
 
 # Run test suite
-uv run pytest
+uv run --locked python -m pytest -q
 ```
+
+[GitHub Actions](../.github/workflows/ci.yml) runs these checks on pushes and pull requests with a fresh PostgreSQL service. The positive health test requires a reachable database. The failure test directs its own request to an unavailable port.

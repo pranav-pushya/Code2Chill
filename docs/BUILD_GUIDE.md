@@ -56,7 +56,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Database and migrations | Local PostgreSQL verified | [Connection management](../backend/app/database.py) is implemented. Models and migrations are planned. |
 | Registration and recruitment | Planned | Prototype buttons do not save submissions |
 | Authentication and dashboard | Planned | Not implemented |
-| Automated tests and CI | Health tests verified | Database success and failure are covered. CI follows in step 4.7. |
+| Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
 | Deployment | Planned | No deployment created during this work |
 
 **Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile design previews demonstrate the event discovery and return path. The FastAPI scaffold serves its schema.”
@@ -266,6 +266,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-068 | Phase 4.5 pass 2 | A separate Python process connected from the host, ran SELECT 1 and verified the connection returned to the pool. | Scaffold verification. |
 | VER-081 | Phase 4.6 pass 1 | Both backend tests passed, covering a real query and HTTP 503 for an unreachable database. | Scaffold verification. |
 | VER-082 | Phase 4.6 pass 2 | Verified direct and proxied HTTP responses, navigation and refresh in Chrome at 390 and 1440 px. Blocking the request produced the failure message and retry recovered. | Scaffold verification. |
+| VER-083 | Phase 4.7 pass 1 | Validated Compose settings and ran locked Python install, Ruff lint and format, and both database tests. Ran npm ci, format check, lint and the TypeScript/Vite production build. | Scaffold verification. |
+| VER-084 | Phase 4.7 pass 2 | Parsed the workflow, verified triggers, PostgreSQL settings and npm script names, and resolved the README and setup links. | Scaffold verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -829,6 +831,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-081 and VER-082. Both backend tests passed, covering a real query and HTTP 503 for an unreachable database. Verified direct and proxied HTTP responses, navigation and refresh in Chrome at 390 and 1440 px. Blocking the request produced the failure message and retry recovered.
 - **Limitations / remaining work:** The first browser probe raced API startup. Waiting for readiness resolved it. Chrome teardown later timed out after the browser assertions passed. TestClient emitted an httpx deprecation warning.
 - **Viva Q&A:** **When can the frontend report success?** After the API returns a successful response with the expected readiness status.
+
+### TASK-043 — Add continuous integration and correct the setup guide
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 4.7.
+- **Status:** Verified.
+- **Objective:** Add continuous integration and correct the setup guide.
+- **Changes and files:** Added the [CI workflow](../.github/workflows/ci.yml), updated [development setup](DEVELOPMENT.md) and aligned the [README](../README.md) architecture with the running scaffold.
+- **How it works:** GitHub Actions installs the locked dependencies, starts a disposable PostgreSQL service and runs the backend tests and frontend checks. Local instructions create private settings before starting the existing named Compose project.
+- **Why this approach:** Matching the package engine, database volume name and API behavior makes a fresh checkout reproducible.
+- **Validation:** VER-083 and VER-084. Validated Compose settings and ran locked Python install, Ruff lint and format, and both database tests. Ran npm ci, format check, lint and the TypeScript/Vite production build. Parsed the workflow, verified triggers, PostgreSQL settings and npm script names, and resolved the README and setup links.
+- **Limitations / remaining work:** Hosted CI results are available after the workflow is pushed. The API test client emits a dependency deprecation warning.
+- **Viva Q&A:** **Why give CI its own database?** Each job can test a real query independently of developer machines and data.
 
 ## 11. Template for Every Future Task or Step
 

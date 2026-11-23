@@ -31,29 +31,26 @@ This repository houses the **dynamic Python full-stack club portal**, featuring 
 
 ---
 
-## ✨ Key Capabilities
+The current scaffold serves Home and Service Status. The status page checks PostgreSQL through FastAPI.
+
+## ✨ Planned club features
 
 * **Dynamic Event Hub**: Real-time discovery for upcoming hackathons, coding sprints, and historical archives (*DOMination*, *Byte The Vibe*).
 * **Official University Handoff**: Pragmatic registration flow integrating seamlessly with Chitkara University's official student portal.
 * **Open Source Showcase**: Highlights real, member-built projects (such as *NEXUS* emotion detection and *ChronoAtlas*).
 * **Verified Team Hierarchy**: Dynamic roster management for club leadership and domain heads.
-* **Campus Event Programme Aesthetic**: An original, high-contrast visual design system built with self-hosted typography (*Barlow Condensed* & *DM Sans*) and WCAG-compliant accessibility focus rings.
+
+The scaffold uses the campus event programme design, local Barlow Condensed and DM Sans fonts, and visible keyboard focus rings.
 
 ---
 
 ## 🏛️ System Architecture
 
 ```text
-CLIENT (Browser)                 BACKEND GATEWAY (FastAPI)           PERSISTENCE
-┌──────────────────┐            ┌──────────────────────────┐       ┌─────────────────┐
-│ React 19 SPA     │            │ SlowAPI (Rate Limiter)   │       │ PostgreSQL 17   │
-│ - Vite & TS      │ HTTP JSON  │           │              │       │ (Async Engine)  │
-│ - Tailwind CSS   │───────────▶│ Pydantic v2 Validation   │       │                 │
-│ - Route Router   │◀───────────│           │              │       │ - Members       │
-│ - Service Status │            │ FastAPI APIRouter (/api) │       │ - Events        │
-└──────────────────┘            │           │              │ Async │ - Projects      │
-                                │ SQLAlchemy 2.0 AsyncPool ├──────▶│ - Applications  │
-                                └──────────────────────────┘       └─────────────────┘
+React /status → GET /api/health → FastAPI → SQLAlchemy + psycopg → PostgreSQL 17
+                                                  SELECT 1
+Healthy response      HTTP 200     {"status":"ok"}
+Database unavailable  HTTP 503     {"detail":"Database unavailable"}
 ```
 
 ---
