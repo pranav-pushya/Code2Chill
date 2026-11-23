@@ -63,3 +63,11 @@ Keep the original proportions and gradient in both full-logo exports. In an imag
 | [Favicon](design/brand/favicon.ico) | Browser icon with embedded 16, 32 and 48 px sizes. |
 
 The icon uses the connected silhouette of the numeral and seated figure from the original alpha mask. A light fill on navy keeps it readable in a small tab. The full marks preserve the gradient. Each export is smaller than its source PNG.
+
+## Responsive page previews
+
+Open [Home](design/index.html) or [DOMination event detail](design/domination.html) in a browser. Both pages use the same offline assets, font files and token stylesheet. The home preview uses a local archive section for **Explore events**. Its featured event opens the detail preview, and **Back to events** returns to the same section. The project credit links to its public repository. The membership action opens the university club page.
+
+The wide layout pairs the introduction with a printed club panel and places the ticket beside the event name. Below 48 rem each becomes a vertical reading sequence. The compact navigation uses a native disclosure. Escape closes it and returns focus to Menu. The primary action, archived status and ticket information are available without scripting.
+
+The two preview files cover the representative designs. Their section links stand in for the dedicated About, Events, Projects, Team and Join routes specified in the [production page plan](PAGES_AND_JOURNEYS.md#public-sitemap). The static files contain sample views of verified club records. Database publishing, remaining routes and live state changes belong to later phases.

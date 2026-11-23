@@ -47,6 +47,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Design reference analysis | Reviewed at two widths | Three rendered homepages, including the Noddal scene after loading. See [reference analysis](DESIGN_REFERENCE_ANALYSIS.md) |
 | Visual direction | Specified | [Campus event programme composition](VISUAL_IDENTITY.md) for Home and Event Detail |
 | Brand assets | Exported and checked | Two preserved originals and five [browser-ready brand files](VISUAL_IDENTITY.md#brand-exports) |
+| Representative page designs | Verified static HTML | [Home](design/index.html) and [event detail](design/domination.html) work at phone and desktop widths |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
 | React/Vite scaffold | Planned | No application scaffold created |
@@ -57,7 +58,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Automated tests and CI | Planned | No application test suite or CI setup |
 | Deployment | Planned | No deployment created during this work |
 
-**Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile wireframes show the planned content and actions. The production frontend, Python API, and database are planned.”
+**Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile design previews demonstrate the event discovery and return path. The production frontend, Python API, and database are planned.”
 
 ## 4. Repository Map
 
@@ -247,6 +248,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-050 | Phase 3.4 pass 2 | Compared both original PNGs byte for byte with Git, measured the 481 × 420 alpha bounds and checked all five placement rules, clear space and accessible naming. | Usage specification. Export checks follow in Step 3.5. |
 | VER-051 | Phase 3.5 pass 1 | Decoded all five exports, checked transparent and opaque variants, dimensions and the ICO’s 16, 32 and 48 px frames, and compared the two original PNGs byte for byte with HEAD. | File integrity and source preservation. |
 | VER-052 | Phase 3.5 pass 2 | Inspected a contact sheet showing both full variants, the compact icon and each embedded favicon frame at its intended pixel size. | Visual review at the tested sizes. |
+| VER-053 | Phase 3.6 pass 1 | Served both pages over loopback HTTP and tested them in Chrome at 1440 and 768 px. Checked fonts, images, layout width, skip-link focus and the full archive–detail–return path. | Static views of the two representative pages. |
+| VER-054 | Phase 3.6 pass 2 | Opened both HTML files directly at 320 and 390 px with reduced motion requested. Checked the menu, Escape focus, logo size, archived date and venue, loaded assets, and the same return path. Inspected captured desktop and phone layouts. | Chrome phone emulation, without physical-device or assistive-technology testing. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -641,6 +644,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-051 and VER-052. All five decoded. The two responsive files are 24,180 and 60,688 bytes. The tab remains a recognizable numeral at 16 px.
 - **Limitations / remaining work:** A 16 px tab carries only the silhouette. Use the full mark for prominent branding.
 - **Viva Q&A:** **Why deliver an ICO with three sizes?** Browsers can select a raster close to the tab’s display size, with the same recognizable shape in every frame.
+
+### TASK-028 — Build the Home and Event Detail design previews
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 3.6.
+- **Status:** Two responsive design previews verified on desktop, tablet and phone.
+- **Objective:** Show how a student can discover an archived event, read its details and return to the archive.
+- **Changes and files:** Added [Home](design/index.html), [DOMination event detail](design/domination.html), [page styles](design/pages.css), [mobile navigation](design/navigation.js) and [preview notes](VISUAL_IDENTITY.md#responsive-page-previews).
+- **How it works:** Shared tokens and offline brand assets style both pages. Home introduces the club, then links its featured archive entry to the event detail. The ticket shows the confirmed date and venue. The ended event offers a return link. Menu uses a native disclosure plus keyboard behavior.
+- **Why this approach:** Two linked HTML files let a reviewer exercise the design and real event content before the application router or API exists.
+- **Validation:** VER-053 and VER-054. The initial sandbox preview was unreachable. A loopback-only server in the browser environment worked. The first render found a missing working copy of the committed PNG icon. Restored it byte for byte and repeated both browser passes. The width check uses the document client width to account for the desktop scrollbar.
+- **Limitations / remaining work:** Several production destinations use local section links in the design. The API, database, application router and live recruitment remain planned.
+- **Viva Q&A:** **How can you demonstrate the design today?** Open Home, follow Explore events, open DOMination and follow Back to events. Reduce the window width to see the menu and stacked event ticket.
 
 ## 11. Template for Every Future Task or Step
 
