@@ -52,14 +52,14 @@ Club records will be stored in a database and returned through the backend. Admi
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
 | React/Vite scaffold | Planned | No application scaffold created |
-| Python API | Planned | No FastAPI implementation created |
+| Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Planned | No models or migrations created |
 | Registration and recruitment | Planned | Prototype buttons do not save submissions |
 | Authentication and dashboard | Planned | Not implemented |
 | Automated tests and CI | Planned | No application test suite or CI setup |
 | Deployment | Planned | No deployment created during this work |
 
-**Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile design previews demonstrate the event discovery and return path. The production frontend, Python API, and database are planned.”
+**Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile design previews demonstrate the event discovery and return path. The FastAPI scaffold serves its schema.”
 
 ## 4. Repository Map
 
@@ -260,6 +260,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-060 | Phase 4.1 pass 2 | Imported the new Python package from the repository root. | Scaffold verification. |
 | VER-061 | Phase 4.2 pass 1 | Installed from the uv lock and ran Ruff lint and format checks. | Scaffold verification. |
 | VER-062 | Phase 4.2 pass 2 | Ran npm ci, Biome lint and format checks. Verified ignore rules and public registry hosts in both locks. | Scaffold verification. |
+| VER-063 | Phase 4.3 pass 1 | Imported the entry point in the locked environment, checked schema metadata and ran Ruff. | Scaffold verification. |
+| VER-064 | Phase 4.3 pass 2 | The sandbox request test stalled. The same test outside it verified the documentation, schema and unknown route. | Scaffold verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -719,6 +721,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-061 and VER-062. Installed from the uv lock and ran Ruff lint and format checks. Ran npm ci, Biome lint and format checks. Verified ignore rules and public registry hosts in both locks.
 - **Limitations / remaining work:** The example database URL requires local credentials.
 - **Viva Q&A:** **Why keep two lockfiles?** Python and JavaScript use different package managers and dependency graphs.
+
+### TASK-033 — Initialize the FastAPI application
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 4.3.
+- **Status:** Verified.
+- **Objective:** Initialize the FastAPI application.
+- **Changes and files:** Added the [FastAPI entry point](../backend/app/main.py).
+- **How it works:** Uvicorn imports app.main:app. Its schema and interactive reference live under /api.
+- **Why this approach:** A shared API prefix leaves room for the frontend at the same origin.
+- **Validation:** VER-063 and VER-064. Imported the entry point in the locked environment, checked schema metadata and ran Ruff. The sandbox request test stalled. The same test outside it verified the documentation, schema and unknown route.
+- **Limitations / remaining work:** Database readiness follows in steps 4.5 and 4.6.
+- **Viva Q&A:** **What is ASGI?** The interface Uvicorn uses to send requests to Python applications.
 
 ## 11. Template for Every Future Task or Step
 
