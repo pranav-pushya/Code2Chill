@@ -18,7 +18,12 @@ function Home() {
           Code2Chill is a student-led technical club. We bring students together
           for workshops, hackathons and coding events.
         </p>
-        <a className="action" href="https://chitkarau.life/clubs/code2chill">
+        <a
+          className="action"
+          href="https://chitkarau.life/clubs/code2chill"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Explore the club
         </a>
       </div>
@@ -43,9 +48,24 @@ function App() {
             <img src={icon} width="32" height="32" alt="" />
             Code2Chill
           </Link>
-          <a className="text-link" href="https://www.instagram.com/code2chill/">
-            Instagram
-          </a>
+          <div className="nav-links">
+            <a
+              className="text-link"
+              href="https://www.instagram.com/code2chill.osl?utm_source=ig_web_button_share_sheet&lqvp=ZDNlZDc0MzIxNw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+            <a
+              className="text-link"
+              href="https://www.linkedin.com/company/code2chill/posts/?feedView=all"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+          </div>
         </div>
       </header>
       <main id="main">

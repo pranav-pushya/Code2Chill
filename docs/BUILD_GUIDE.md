@@ -264,12 +264,27 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-066 | Phase 4.4 pass 2 | Chrome loaded the built Home and status pages at 390 and 1440 px, verified images and layout width, refreshed the status route and returned home. | Scaffold verification. |
 | VER-067 | Phase 4.5 pass 1 | Compose reported a healthy database and psql returned the expected database name inside the container. | Scaffold verification. |
 | VER-068 | Phase 4.5 pass 2 | A separate Python process connected from the host, ran SELECT 1 and verified the connection returned to the pool. | Scaffold verification. |
+| VER-069 | Maintenance pass 1 | Biome lint and Vite production build passed cleanly after guide rename and prompt untracking. | Clean tree verification. |
+| VER-070 | Maintenance pass 2 | Git confirmed clean removal of loose files and correct internal link resolutions. | Clean tree verification. |
+| VER-071 | Structure pass 1 | Git verified all directory moves as clean renames with 100% similarity index. | Repository organization. |
+| VER-072 | Structure pass 2 | Internal markdown links and Vite build verified in 302ms. | Repository organization. |
+| VER-073 | Presentation pass 1 | Validated all internal links and relative paths across README.md. | README modernization. |
+| VER-074 | Presentation pass 2 | Verified markdown syntax and asset rendering across README.md. | README modernization. |
+| VER-075 | Developer guide pass 1 | Verified relative paths and cross-links between README.md and docs/DEVELOPMENT.md. | Developer instructions separation. |
+| VER-076 | Developer guide pass 2 | Verified markdown syntax and command accuracy in docs/DEVELOPMENT.md. | Developer instructions separation. |
+| VER-077 | Asset fidelity pass 1 | Verified brand icon and favicon generation with full C2C mark and clear margins; verified multi-size ICO frames (16, 32, 48); confirmed 0 clipped pixels under border-radius; Biome lint and Vite build passed in 349ms. | Asset and build validation. |
+| VER-078 | Interaction pass 2 | Automated headless Chrome session loaded desktop/mobile previews, dispatched hover event to hero brand panel, verified smooth zoom and 360-degree rotation transition across frames, and verified browser verification test suite passed. | Interactive animation validation. |
+| VER-079 | Transparency pass 1 | Removed artificial solid mask and box shadow on `.print img`, enabling true transparency of the full club mark over hero background artwork; Vite production build passed in 415ms. | Asset transparency validation. |
+| VER-080 | Interaction pass 2 | Replaced rotating transition with floating elevation lift and cyan/blue atmospheric drop-shadow glow, ensuring upright legibility; verified Chrome 390 and 1440 preview suite. | Interactive hover alternative validation. |
 | VER-081 | Phase 4.6 pass 1 | Both backend tests passed, covering a real query and HTTP 503 for an unreachable database. | Scaffold verification. |
 | VER-082 | Phase 4.6 pass 2 | Verified direct and proxied HTTP responses, navigation and refresh in Chrome at 390 and 1440 px. Blocking the request produced the failure message and retry recovered. | Scaffold verification. |
 | VER-083 | Phase 4.7 pass 1 | Validated Compose settings and ran locked Python install, Ruff lint and format, and both database tests. Ran npm ci, format check, lint and the TypeScript/Vite production build. | Scaffold verification. |
 | VER-084 | Phase 4.7 pass 2 | Parsed the workflow, verified triggers, PostgreSQL settings and npm script names, and resolved the README and setup links. | Scaffold verification. |
 | VER-085 | Phase 4.8 pass 1 | Built and started all three services. Checked HTTP readiness, font licenses, direct status routing and 404s. Recreating containers retained the PostgreSQL cluster identity. The hosted CI run for step 4.7 passed. | Scaffold verification. |
 | VER-086 | Phase 4.8 pass 2 | Tightened an initially oversized Docker context. A BuildKit check measured 408 KiB and confirmed private settings, package directories and Git metadata were excluded. Rebuilt and verified Chrome navigation, live readiness, failure and retry at 390 and 1440 px. | Scaffold verification. |
+
+| VER-087 | Phase 4 audit, repository and build | Verified the eight completed steps, project roots, dependency locks, environment templates, ignore rules and setup links. Ran locked Python sync, Ruff, both PostgreSQL tests, frontend formatting, lint and the Vite build. GitHub Actions reported success for the matching `origin/main` revision `98a5748`. | Starlette emitted the existing test client deprecation warning. |
+| VER-088 | Phase 4 audit, local staging | Compose reported all three services healthy. HTTP checks passed for Home, the status route, API readiness, the OpenAPI schema and missing resources. Chrome at 390 and 1440 px opened Home and Service Status, refreshed the deep link and returned home. Blocking the readiness request exposed the retry control, which recovered when the request was restored. | Local staging and Chrome emulation. |
 | VER-089 | Phase 5.1 pass 1 | Ruff passed. Created five tables in PostgreSQL and round-tripped linked records, optional dates and ordered credits through the ORM. | Phase 5 verification. |
 | VER-090 | Phase 5.1 pass 2 | Queried PostgreSQL information_schema and found the six expected foreign keys in the disposable transaction. | Phase 5 verification. |
 | VER-091 | Phase 5.2 pass 1 | Created a pending cycle, enabled a domain, saved a synthetic application and confirmed the database rejected a disabled domain. | Phase 5 verification. |
@@ -286,6 +301,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-102 | Phase 5.7 pass 2 | In a separate schema, verified reviewer requirements, recruitment boundaries, allowed review transitions and unapproved media rejection. Ruff lint and format passed. | Phase 5 verification. |
 | VER-103 | Phase 5.8 pass 1 | Ruff and all three PostgreSQL tests passed. The new test upgraded a blank schema, checked metadata drift and preserved edits on rerun, then downgraded and rebuilt the disposable schema. Cross-checked all twelve diagram relationships. | Phase 5 verification. |
 | VER-104 | Phase 5.8 pass 2 | Applied the migration to development and local staging. Both first seeds inserted ten members, two events and two projects. Both reruns inserted zero rows. Staging readiness passed. | Phase 5 verification. |
+| VER-105 | Link security and profile pass 1 | Updated Instagram profile handle and sharing URL across HTML prototypes, React frontend, README, and content register; added `target="_blank" rel="noopener noreferrer"` to external university and Instagram links; Biome lint and Vite build passed in 5.3s. | Link security and profile verification. |
+| VER-106 | Link security and profile pass 2 | Tested Chrome emulation at 390px and 1440px with `.local/browser.py preview`; verified external anchor attributes and URL resolution. | Browser emulation verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -837,6 +854,37 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Limitations / remaining work:** Container orchestration instructions will be updated when production Dockerfiles are created in Phase 7.
 - **Viva Q&A:** **Why separate developer instructions from the main README?** Separating audience concerns ensures the public README serves as a clear organizational portal, while technical contributors have a focused, in-depth setup reference.
 
+### TASK-040 — Refine brand icon, favicon framing, and hero logo hover animation
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Design refinement and asset fidelity.
+- **Status:** Verified.
+- **Objective:** Fix the trimmed navbar brand icon and favicon frames so the complete club emblem is visible without clipped letterforms, and add a responsive zoom-in and rotating hover animation on the hero club logo card.
+- **Changes and files:**
+  - Regenerated [docs/design/brand/club-icon-64.png](design/brand/club-icon-64.png) from the transparent original mark with the full C2C emblem, seated laptop figure, and balanced margins on a dark tile background (`#071628`).
+  - Re-exported [docs/design/brand/favicon.ico](design/brand/favicon.ico) with multi-resolution 16x16, 32x32, and 48x48 frames containing the complete mark.
+  - Enhanced [docs/design/pages.css](design/pages.css) with cursor feedback, spring-eased zoom and straighten transition on the print artwork card (`scale(1.04) rotate(0deg)`), and a smooth 360-degree zoom-in rotating transition (`scale(1.15) rotate(360deg)`) on the club logo mark with `@media (prefers-reduced-motion: reduce)` accessibility fallback.
+- **How it works:** The navbar and footer `<img>` elements display the 64px asset styled with `.brand img`, providing clear margins so `border-radius: .25rem` never clips the logo's outer C characters or text. The favicon embeds multiple raster resolutions for standard and high-DPI browser tabs. On hover over the hero brand artwork, the outer poster card smoothly elevates with depth shadow while the inner mark scales and spins, gracefully reversing on mouse exit.
+- **Why this approach:** Pure CSS transitions avoid heavy external JavaScript dependencies and honor the UI stack rule requiring user confirmation before introducing external animation libraries (Motion/GSAP). Balanced internal padding prevents clipping at small pixel sizes.
+- **Validation:** VER-077 and VER-078. Decoded the new PNG and ICO assets, verified all 3 embedded ICO frame sizes (16, 32, 48), verified 0 clipped pixels under border-radius masking, and ran Biome lint and Vite production build in 349ms. Automated Chrome headless session verified desktop and mobile layouts, executed mouseover dispatch to `.brand-art`, verified smooth zoom and rotation across animation frames, and verified `.local/browser.py` test suite passed at 390px and 1440px.
+- **Limitations / remaining work:** None for this styling and asset update.
+- **Viva Q&A:** **Why should brand icons have internal padding rather than tight cropping?** Tight cropping causes border radius, browser tab borders, or container overflow to clip distinctive logo glyphs or ascenders/descenders. Balanced clear space maintains visual hierarchy and legibility at tiny 16px and 32px display sizes. **Why use CSS transforms and transitions for hover states instead of JavaScript loops?** CSS `transform` and `transition` run on the browser's compositor thread (GPU-accelerated) without causing layout reflows or repaints, ensuring a silky 60+ FPS interaction that respects user motion preferences.
+
+### TASK-041 — Hero club logo background transparency and hover animation alternatives
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Design refinement & interaction polish.
+- **Status:** Verified.
+- **Objective:** Remove artificial solid background box and shadow from the hero section club logo so it renders with true transparency, and explore/implement non-rotating hover animation alternatives that maintain brand legibility.
+- **Changes and files:**
+  - Updated [docs/design/pages.css](design/pages.css): replaced `background: var(--night)` and `box-shadow: 0 0 0 clamp(...) var(--night)` on `.print img` with `background: transparent`.
+  - Upgraded hover interaction on `.brand-art:hover .print img` from 360-degree rotation to a floating elevation lift (`translateY(-6px) scale(1.12)`) paired with atmospheric cyan/blue drop-shadow glow (`filter: drop-shadow(...)`), eliminating sideways/upside-down disorientation while keeping the mark prominent.
+- **How it works:** The transparent WebP asset now renders directly over the textured artwork without a solid dark cutout box. When hovered, the poster card eases to `0deg` and scales to `1.04`, while the club logo lifts and illuminates with dual glowing drop-shadows.
+- **Why this approach:** Spinning an emblem that contains text ("CODE 2 CHILL CLUB") and code glyphs reduces legibility during interaction. Floating elevation and luminous drop-shadow give an unmistakable tactile feel while preserving typography and accessibility.
+- **Validation:** VER-079 and VER-080. Headless Chrome validated rendering of transparent logo over background artwork. Vite production build passed in 415ms, and the `.local/browser.py` test suite passed at 390px and 1440px.
+- **Limitations / remaining work:** The user can select additional interactive animation variants (such as cursor-following 3D tilt, holographic shimmer, or floating pulse) or confirm external animation library integration (GSAP, Motion, Magic UI) if desired.
+- **Viva Q&A:** **Why is a floating lift with drop-shadow often superior to spinning for logos with text?** Brand logos with text, code syntax, and illustrative figures rely on immediate recognition. Full-axis rotations invert the typography, reducing legibility and visual hierarchy. Elevation with depth shadow creates physical dimensionality while keeping all text readable.
+
 ### TASK-042 — Verify the full database readiness path
 
 - **Date:** 23 November 2026.
@@ -875,6 +923,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-085 and VER-086. Built and started all three services. Checked HTTP readiness, font licenses, direct status routing and 404s. Recreating containers retained the PostgreSQL cluster identity. The hosted CI run for step 4.7 passed. Tightened an initially oversized Docker context. A BuildKit check measured 408 KiB and confirmed private settings, package directories and Git metadata were excluded. Rebuilt and verified Chrome navigation, live readiness, failure and retry at 390 and 1440 px.
 - **Limitations / remaining work:** Local staging uses the current working copy, including the owner’s pending icon and hover changes. An isolated Chrome rerun timed out during navigation and passed on retry. Base image tags can receive upstream updates.
 - **Viva Q&A:** **Why does a direct refresh of /status work?** Caddy returns the application entry for browser routes. API and asset requests use separate handlers that preserve their own HTTP status codes.
+
+### TASK-045 — Recheck Phase 4 before Phase 5
+
+- **Date.** 23 November 2026.
+- **Roadmap step.** Phase 4 follow-up audit.
+- **Status.** All eight scaffold steps passed the checks.
+- **Objective.** Confirm the checked-out scaffold builds, its test suite exercises PostgreSQL, and local staging remains usable.
+- **Changes and files.** Recorded the audit in this guide.
+- **How it works.** The local checks exercise the locked Python environment, PostgreSQL and production frontend build. The staging checks exercise the browser, Caddy, FastAPI and the staging database through the same address the user opens.
+- **Why this approach.** The build checks catch configuration regressions. The browser and HTTP checks confirm deployed routes and recovery behavior against the running stack.
+- **Validation.** VER-087 and VER-088 passed. A successful GitHub Actions run matched the pushed revision. Both PostgreSQL tests passed, covering readiness and the unavailable response.
+- **Limitations and remaining work.** The test client emitted the existing Starlette deprecation warning. Phase 5 covers data models, migrations and seed data.
+- **Viva Q&A.** **What verifies the full request path?** The browser receives a ready response only after FastAPI runs a successful query against staging PostgreSQL.
 
 ### TASK-046 — Model public club content
 
@@ -979,6 +1040,22 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-103 and VER-104. Ruff and all three PostgreSQL tests passed. The new test upgraded a blank schema, checked metadata drift and preserved edits on rerun, then downgraded and rebuilt the disposable schema. Cross-checked all twelve diagram relationships. Applied the migration to development and local staging. Both first seeds inserted ten members, two events and two projects. Both reruns inserted zero rows. Staging readiness passed.
 - **Limitations / remaining work:** The first lint pass flagged an implicit string concatenation and passed after it was parenthesized. The existing Starlette deprecation warning remains. Public API and editor integration follow in Phase 6.
 - **Viva Q&A:** **What separates a migration from a seed?** The migration changes the database structure. The seed inserts verified starting rows into that structure.
+
+### TASK-054 — Configure external links with new-tab targets and update official Instagram URL
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Link security, external destinations, and brand consistency.
+- **Status:** Verified.
+- **Objective:** Configure Instagram, LinkedIn, and official university club links to open in a new tab (`target="_blank" rel="noopener noreferrer"`), and update the official Instagram profile URL and LinkedIn posts feed URL.
+- **Changes and files:**
+  - Updated [docs/design/index.html](design/index.html) and [docs/design/domination.html](design/domination.html): set `target="_blank" rel="noopener noreferrer"` on Instagram, LinkedIn, university club page, and university event links; updated Instagram link to `https://www.instagram.com/code2chill.osl?utm_source=ig_web_button_share_sheet&lqvp=ZDNlZDc0MzIxNw%3D%3D`; added LinkedIn feed link `https://www.linkedin.com/company/code2chill/posts/?feedView=all` to footers.
+  - Updated [frontend/src/main.tsx](../frontend/src/main.tsx): added `target="_blank" rel="noopener noreferrer"` and both updated Instagram and LinkedIn links in header navigation, while retaining clean status link in footer.
+  - Updated [README.md](../README.md) and [docs/CONTENT_REGISTER.md](CONTENT_REGISTER.md) (rows `CLUB-06` and `CLUB-07`) to record the verified profile and feed URLs.
+- **How it works:** External links open in a new browser tab without retaining window opener references (`noopener`) or referrer headers (`noreferrer`), protecting user privacy and preventing tab-nabbing security risks while keeping the Code2Chill website open in the user's main tab.
+- **Why this approach:** Visitors browsing university portals or social media profiles should not lose their place on the club website. Using `noopener noreferrer` is standard security hygiene for cross-origin link targets.
+- **Validation:** VER-105 and VER-106. Biome lint and Vite production build passed cleanly. Automated Chrome browser verification verified layout, image rendering, and link integrity at 390px and 1440px.
+- **Limitations / remaining work:** None for this link configuration.
+- **Viva Q&A:** **Why must `target="_blank"` always pair with `rel="noopener noreferrer"`?** Without `noopener`, the target page can access `window.opener` and redirect the referring page to a malicious URL (tab-nabbing). `noreferrer` also prevents leaking sensitive query parameters in the HTTP Referer header.
 
 ## 11. Template for Every Future Task or Step
 

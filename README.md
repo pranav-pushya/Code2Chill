@@ -135,6 +135,6 @@ The project enforces continuous living documentation updated across all developm
 
 ## 🌐 Community & Connect
 
-* **Instagram**: [@code2chill](https://www.instagram.com/code2chill/)
+* **Instagram**: [@code2chill.osl](https://www.instagram.com/code2chill.osl?utm_source=ig_web_button_share_sheet&lqvp=ZDNlZDc0MzIxNw%3D%3D)
 * **University Listing**: [Chitkara University &bull; Code2Chill](https://chitkarau.life/clubs/code2chill)
-* **LinkedIn**: [Code2Chill on LinkedIn](https://www.linkedin.com/company/code2chill)
+* **LinkedIn**: [Code2Chill on LinkedIn](https://www.linkedin.com/company/code2chill/posts/?feedView=all)
