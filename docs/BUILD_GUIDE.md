@@ -278,6 +278,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-094 | Phase 5.3 pass 2 | Verified there is no local booking table. The first invalid value exceeded the column length. Reran with a shorter invalid value and PostgreSQL rejected it at the state constraint. | Phase 5 verification. |
 | VER-095 | Phase 5.4 pass 1 | Round-tripped synthetic accounts, a session digest, a cycle assignment and an audit state change in PostgreSQL. | Phase 5 verification. |
 | VER-096 | Phase 5.4 pass 2 | Inspected the composite reviewer key and verified that PostgreSQL rejected an audit row for an unknown actor. Ruff passed. | Phase 5 verification. |
+| VER-097 | Phase 5.5 pass 1 | Direct PostgreSQL inserts rejected invalid content, slugs and media. Deleted a test member and project to verify credit preservation and removal. | Phase 5 verification. |
+| VER-098 | Phase 5.5 pass 2 | A separate transaction rejected duplicate applications, attempts and uppercase email, accepted a second cycle and confirmed the reviewer list indexes. Ruff passed. | Phase 5 verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -919,6 +921,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-095 and VER-096. Round-tripped synthetic accounts, a session digest, a cycle assignment and an audit state change in PostgreSQL. Inspected the composite reviewer key and verified that PostgreSQL rejected an audit row for an unknown actor. Ruff passed.
 - **Limitations / remaining work:** Sign-in, Argon2id hashing, token issuance and authorization are scheduled for Phases 6 and 8.
 - **Viva Q&A:** **Why store a token digest?** A database reader cannot use the stored digest as the bearer token.
+
+### TASK-050 — Enforce the database integrity rules
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 5.5.
+- **Status:** Verified.
+- **Objective:** Enforce the database integrity rules.
+- **Changes and files:** Added constraints and lookup indexes across the public, recruitment and administrator models. Recorded the rules in the [data model](DATA_MODEL.md#integrity-rules).
+- **How it works:** PostgreSQL rejects malformed or duplicate slugs, blank required content, uncredited approved media, duplicate application attempts and duplicate email addresses in a cycle. Foreign keys preserve ordered credits and scoped relationships.
+- **Why this approach:** Database constraints protect integrity through concurrent writes and direct SQL.
+- **Validation:** VER-097 and VER-098. Direct PostgreSQL inserts rejected invalid content, slugs and media. Deleted a test member and project to verify credit preservation and removal. A separate transaction rejected duplicate applications, attempts and uppercase email, accepted a second cycle and confirmed the reviewer list indexes. Ruff passed.
+- **Limitations / remaining work:** Email ownership and application response handling remain application work.
+- **Viva Q&A:** **Why enforce duplicates in PostgreSQL?** Two requests may pass the same application precheck. A database constraint permits only one to commit.
 
 ## 11. Template for Every Future Task or Step
 

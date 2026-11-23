@@ -1,11 +1,11 @@
 from datetime import datetime
 from enum import StrEnum
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, String, func, true
+from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, Index, String, func, true
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .domain import choices
-from .model_base import Base
+from .model_base import Base, normalized_email, required_text
 
 
 class AdminRole(StrEnum):
@@ -34,9 +34,10 @@ class AuditTarget(StrEnum):
 
 class AdminAccount(Base):
     __tablename__ = "admin_account"
+    __table_args__ = (normalized_email("email"), required_text("password_hash"))
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(String(254))
+    email: Mapped[str] = mapped_column(String(254), unique=True)
     password_hash: Mapped[str] = mapped_column(String(512))
     role: Mapped[AdminRole] = mapped_column(choices(AdminRole))
     active: Mapped[bool] = mapped_column(Boolean, server_default=true())
@@ -44,10 +45,13 @@ class AdminAccount(Base):
 
 class AdminSession(Base):
     __tablename__ = "admin_session"
+    __table_args__ = (CheckConstraint("token_digest ~ '^[0-9a-f]{64}$'", name="digest_format"),)
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    account_id: Mapped[int] = mapped_column(ForeignKey("admin_account.id", ondelete="CASCADE"))
-    token_digest: Mapped[str] = mapped_column(String(64))
+    account_id: Mapped[int] = mapped_column(
+        ForeignKey("admin_account.id", ondelete="CASCADE"), index=True
+    )
+    token_digest: Mapped[str] = mapped_column(String(64), unique=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
@@ -66,6 +70,7 @@ class RecruitmentReviewer(Base):
 
 class AuditRecord(Base):
     __tablename__ = "audit_record"
+    __table_args__ = (Index("ix_audit_record_target", "target_type", "target_id", "occurred_at"),)
 
     id: Mapped[int] = mapped_column(primary_key=True)
     actor_id: Mapped[int] = mapped_column(ForeignKey("admin_account.id"))

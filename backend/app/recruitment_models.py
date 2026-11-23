@@ -2,11 +2,20 @@ from datetime import datetime
 from enum import StrEnum
 from uuid import UUID, uuid4
 
-from sqlalchemy import DateTime, ForeignKey, ForeignKeyConstraint, String, Text, func
+from sqlalchemy import (
+    DateTime,
+    ForeignKey,
+    ForeignKeyConstraint,
+    Index,
+    String,
+    Text,
+    UniqueConstraint,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .domain import ClubDomain, choices
-from .model_base import Base
+from .model_base import Base, normalized_email, required_text, route_slug
 
 
 class ApplicationRoute(StrEnum):
@@ -24,9 +33,10 @@ class ApplicationStatus(StrEnum):
 
 class RecruitmentCycle(Base):
     __tablename__ = "recruitment_cycle"
+    __table_args__ = (route_slug(), required_text("title"))
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    slug: Mapped[str] = mapped_column(String(120))
+    slug: Mapped[str] = mapped_column(String(120), unique=True)
     title: Mapped[str] = mapped_column(String(200))
     opens_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     closes_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
@@ -53,6 +63,12 @@ class RecruitmentDomain(Base):
 class Application(Base):
     __tablename__ = "application"
     __table_args__ = (
+        normalized_email("university_email"),
+        required_text("full_name"),
+        UniqueConstraint("cycle_id", "university_email", name="uq_application_cycle_email"),
+        UniqueConstraint("cycle_id", "attempt_id", name="uq_application_cycle_attempt"),
+        Index("ix_application_cycle_status_domain", "cycle_id", "status", "domain"),
+        Index("ix_application_cycle_domain", "cycle_id", "domain"),
         ForeignKeyConstraint(
             ["cycle_id", "domain"],
             ["recruitment_domain.cycle_id", "recruitment_domain.domain"],
@@ -70,7 +86,7 @@ class Application(Base):
         choices(ApplicationStatus), server_default=ApplicationStatus.PENDING
     )
     attempt_id: Mapped[UUID]
-    receipt: Mapped[UUID] = mapped_column(default=uuid4)
+    receipt: Mapped[UUID] = mapped_column(default=uuid4, unique=True)
     submitted_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

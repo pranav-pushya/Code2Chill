@@ -1,11 +1,11 @@
 from datetime import date
 from enum import StrEnum
 
-from sqlalchemy import Boolean, ForeignKey, String, Text, false
+from sqlalchemy import Boolean, CheckConstraint, ForeignKey, Index, String, Text, false
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .domain import ClubDomain, choices
-from .model_base import Base
+from .model_base import Base, required_text, route_slug
 
 
 class RegistrationStatus(StrEnum):
@@ -18,9 +18,17 @@ class RegistrationStatus(StrEnum):
 
 class MediaAsset(Base):
     __tablename__ = "media_asset"
+    __table_args__ = (
+        required_text("storage_key"),
+        required_text("content_type"),
+        CheckConstraint(
+            "NOT approved_for_publication OR (alt_text ~ '[^[:space:]]' AND credit ~ '[^[:space:]]')",
+            name="approved_metadata",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    storage_key: Mapped[str] = mapped_column(String(512))
+    storage_key: Mapped[str] = mapped_column(String(512), unique=True)
     content_type: Mapped[str] = mapped_column(String(100))
     alt_text: Mapped[str] = mapped_column(String(300))
     credit: Mapped[str] = mapped_column(String(200))
@@ -30,9 +38,16 @@ class MediaAsset(Base):
 
 class Member(Base):
     __tablename__ = "member"
+    __table_args__ = (
+        route_slug(),
+        required_text("name"),
+        required_text("role_title"),
+        CheckConstraint("display_order >= 0", name="display_order"),
+        Index("ix_member_display_order", "display_order", "id"),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    slug: Mapped[str] = mapped_column(String(120))
+    slug: Mapped[str] = mapped_column(String(120), unique=True)
     name: Mapped[str] = mapped_column(String(160))
     role_title: Mapped[str] = mapped_column(String(120))
     domain: Mapped[ClubDomain | None] = mapped_column(choices(ClubDomain))
@@ -44,12 +59,17 @@ class Member(Base):
 
 class Event(Base):
     __tablename__ = "event"
+    __table_args__ = (
+        route_slug(),
+        required_text("title"),
+        required_text("summary"),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    slug: Mapped[str] = mapped_column(String(120))
+    slug: Mapped[str] = mapped_column(String(120), unique=True)
     title: Mapped[str] = mapped_column(String(200))
     summary: Mapped[str] = mapped_column(Text)
-    event_date: Mapped[date | None]
+    event_date: Mapped[date | None] = mapped_column(index=True)
     venue: Mapped[str | None] = mapped_column(String(240))
     official_url: Mapped[str | None] = mapped_column(Text)
     registration_url: Mapped[str | None] = mapped_column(Text)
@@ -62,14 +82,19 @@ class Event(Base):
 
 class Project(Base):
     __tablename__ = "project"
+    __table_args__ = (
+        route_slug(),
+        required_text("title"),
+        required_text("summary"),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    slug: Mapped[str] = mapped_column(String(120))
+    slug: Mapped[str] = mapped_column(String(120), unique=True)
     title: Mapped[str] = mapped_column(String(200))
     summary: Mapped[str] = mapped_column(Text)
     repository_url: Mapped[str | None] = mapped_column(Text)
     demo_url: Mapped[str | None] = mapped_column(Text)
-    event_id: Mapped[int | None] = mapped_column(ForeignKey("event.id"))
+    event_id: Mapped[int | None] = mapped_column(ForeignKey("event.id"), index=True)
     screenshot_id: Mapped[int | None] = mapped_column(ForeignKey("media_asset.id"))
     event: Mapped[Event | None] = relationship()
     screenshot: Mapped[MediaAsset | None] = relationship()
@@ -82,6 +107,10 @@ class Project(Base):
 
 class ProjectCredit(Base):
     __tablename__ = "project_credit"
+    __table_args__ = (
+        required_text("name"),
+        CheckConstraint("position >= 0", name="position"),
+    )
 
     project_id: Mapped[int] = mapped_column(
         ForeignKey("project.id", ondelete="CASCADE"), primary_key=True
