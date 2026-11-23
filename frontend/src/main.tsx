@@ -1,3 +1,4 @@
+import Status from "./Status";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Link, Route, Routes } from "react-router";
 import icon from "../../docs/design/brand/club-icon-64.png";
@@ -26,17 +27,6 @@ function Home() {
           <img src={mark} width="480" height="419" alt="" />
         </div>
       </div>
-    </section>
-  );
-}
-
-function Status() {
-  return (
-    <section className="wrap service-page">
-      <h1>Service status</h1>
-      <Link className="text-link" to="/">
-        Back to home
-      </Link>
     </section>
   );
 }

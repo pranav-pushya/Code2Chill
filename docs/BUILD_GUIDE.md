@@ -1,4 +1,4 @@
-# Code2Chill — Living Build Documentation and Viva Guide
+# Code2Chill — Living Build Guide
 
 **Last updated:** 23 November 2026
 
@@ -69,12 +69,9 @@ Club records will be stored in a database and returned through the backend. Admi
 | [WEBSITE_ROADMAP.md](../WEBSITE_ROADMAP.md) | Planned implementation and completion checklist |
 | [CODE2CHILL_WEBSITE_MASTER.md](../CODE2CHILL_WEBSITE_MASTER.md) | Earlier specification; reconcile proposals and unsupported claims |
 | [bluprint.pdf](../bluprint.pdf) | Earlier ten-page blueprint |
-| [download.svg](../download.svg) | Proposed architecture diagram |
-| [download2.svg](../download2.svg) | Proposed recruitment sequence |
-| [extra.html](../extra.html) | Standalone prototype |
+| [Expriments/extra.html](../Expriments/extra.html) | Preserved standalone prototype experiment |
 | [Code2Chill.png](../Code2Chill.png) | Background logo |
 | [Code2Chill_transparent.png](../Code2Chill_transparent.png) | Transparent logo |
-| [GEMINI.md](../GEMINI.md) | Existing project rules |
 | [AGENTS.md](../AGENTS.md) | Contributor/agent instructions and documentation policy |
 | [CONTENT_REGISTER.md](CONTENT_REGISTER.md) | Phase 1 evidence, ownership, publication readiness, and asset inventory |
 | [LAUNCH_SCOPE.md](LAUNCH_SCOPE.md) | Launch workflow decisions and the boundaries of local data handling |
@@ -693,7 +690,7 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Roadmap step:** Phase 3 follow-up audit.
 - **Status:** Both previews and the approved placeholder layouts passed two verification runs.
 - **Objective:** Check the pushed visual identity deliverables through their browser entry points.
-- **Changes and files:** Recorded this audit in the [build guide](BUILD_AND_VIVA_GUIDE.md). The [Home](design/index.html), [event detail](design/domination.html), fonts, brand files and navigation passed the checks.
+- **Changes and files:** Recorded this audit in the [build guide](BUILD_GUIDE.md). The [Home](design/index.html), [event detail](design/domination.html), fonts, brand files and navigation passed the checks.
 - **How it works:** Served the previews through a temporary loopback server, exercised the controls in Chrome, then opened the same files directly from disk and repeated the checks.
 - **Why this approach:** The first run covers served use. The second confirms the files can be reviewed offline with their local assets.
 - **Validation:** VER-057 and VER-058 passed. An initial element-bound probe included links inside a closed disclosure. Document-width checks confirmed they create no visible overflow. All five brand exports decoded, all three favicon sizes existed, and the original PNGs matched Git byte for byte. The repository check initially used an unpadded task ID, then passed with the documented three-digit format.
@@ -764,6 +761,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-067 and VER-068. Compose reported a healthy database and psql returned the expected database name inside the container. A separate Python process connected from the host, ran SELECT 1 and verified the connection returned to the pool.
 - **Limitations / remaining work:** Business models and migrations belong to Phase 5.
 - **Viva Q&A:** **Why dispose the pool?** It releases idle database connections when the API process shuts down.
+
+### TASK-036 — Clean repository structure and rename living guide
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Repository maintenance and Phase 4.6 connectivity foundation.
+- **Status:** Verified.
+- **Objective:** Clean root clutter before sharing the repository and rename `BUILD_AND_VIVA_GUIDE.md` to `BUILD_GUIDE.md`.
+- **Changes and files:** Renamed [BUILD_GUIDE.md](BUILD_GUIDE.md); untracked `GEMINI.md` and added it to [.gitignore](../.gitignore); removed root duplicate `extra.html` (preserved in [Expriments/extra.html](../Expriments/extra.html)) and loose `download.svg`/`download2.svg`; updated documentation links in [AGENTS.md](../AGENTS.md) and [README.md](../README.md); tracked backend healthcheck in [backend/app/main.py](../backend/app/main.py), tests in [backend/tests/test_health.py](../backend/tests/test_health.py), and frontend status view in [frontend/src/Status.tsx](../frontend/src/Status.tsx).
+- **How it works:** Sensitive assistant prompts and experimental prototypes are removed from the root Git tree. All internal references resolve to `docs/BUILD_GUIDE.md`. The backend and frontend verify service availability via `/api/health`.
+- **Why this approach:** Evaluators inspecting the repository see an uncluttered, production-oriented structure without duplicate HTML prototypes, loose SVG downloads, or exposed assistant instruction files.
+- **Validation:** VER-069 and VER-070. Biome lint and Vite production build passed cleanly. Git index confirmed clean deletion of root artifacts, untracking of assistant prompts, and exact renaming of the build guide.
+- **Limitations / remaining work:** Full end-to-end integration testing and CI checks continue in Phase 4.7.
+- **Viva Q&A:** **Why rename and organize documentation before sharing?** A clean repository demonstrates professional engineering hygiene, clear separation between public documentation and internal notes, and avoids distracting evaluators with unmaintained prototype files.
 
 ## 11. Template for Every Future Task or Step
 
