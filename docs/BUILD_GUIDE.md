@@ -73,6 +73,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | [Code2Chill.png](design/brand/originals/Code2Chill.png) | Background logo |
 | [Code2Chill_transparent.png](design/brand/originals/Code2Chill_transparent.png) | Transparent logo |
 | [AGENTS.md](AGENTS.md) | Contributor/agent instructions and documentation policy |
+| [DEVELOPMENT.md](DEVELOPMENT.md) | Local developer environment prerequisites, database, and setup instructions |
 | [CONTENT_REGISTER.md](CONTENT_REGISTER.md) | Phase 1 evidence, ownership, publication readiness, and asset inventory |
 | [LAUNCH_SCOPE.md](LAUNCH_SCOPE.md) | Launch workflow decisions and the boundaries of local data handling |
 | [PAGES_AND_JOURNEYS.md](PAGES_AND_JOURNEYS.md) | Planned routes, navigation, and user journeys |
@@ -800,6 +801,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-073 and VER-074. Markdown links tested and verified. Markdown syntax and image resolution verified.
 - **Limitations / remaining work:** CI badges will be linked when Phase 4.7 CI workflows are committed.
 - **Viva Q&A:** **What makes a repository README professional?** Clear project mission, badge indicators for maintained stack versions, architecture diagram, reproduction steps for local setup, and navigation to deeper engineering specifications.
+
+### TASK-039 — Move local development setup instructions to dedicated guide
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Documentation refinement and README optimization.
+- **Status:** Verified.
+- **Objective:** Move developer terminal commands (Docker, uv, npm) from the public README into a dedicated development guide.
+- **Changes and files:** Added [docs/DEVELOPMENT.md](DEVELOPMENT.md); updated [README.md](../README.md) and repository map in this guide.
+- **How it works:** `README.md` focuses exclusively on club identity, core capabilities, architecture, and living documentation links. Detailed developer commands and environment setups are consolidated in `docs/DEVELOPMENT.md`.
+- **Why this approach:** Maintains a prestigious, uncluttered presentation on GitHub for students, club members, and visitors while providing full execution commands to developers and evaluators via a clean link.
+- **Validation:** VER-075 and VER-076. Verified all relative links between `README.md` and `docs/DEVELOPMENT.md`. Verified Markdown syntax.
+- **Limitations / remaining work:** Container orchestration instructions will be updated when production Dockerfiles are created in Phase 7.
+- **Viva Q&A:** **Why separate developer instructions from the main README?** Separating audience concerns ensures the public README serves as a clear organizational portal, while technical contributors have a focused, in-depth setup reference.
 
 ## 11. Template for Every Future Task or Step
 

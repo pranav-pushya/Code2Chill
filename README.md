@@ -75,6 +75,7 @@ Code2Chill/
 │   └── biome.json            # Biome formatting and linting configuration
 ├── docs/                     # Living documentation, design system & planning
 │   ├── BUILD_GUIDE.md        # Living build guide & technical viva preparation
+│   ├── DEVELOPMENT.md        # Local environment & developer setup guide
 │   ├── CONTENT_REGISTER.md   # Verified club facts, events, and asset inventory
 │   ├── LAUNCH_SCOPE.md       # Scope boundaries, registration, and recruitment rules
 │   ├── PAGES_AND_JOURNEYS.md # 9 route specs, user flows, and error resilience
@@ -95,44 +96,9 @@ Code2Chill/
 
 ---
 
-## 🚀 Quick Start & Local Setup
+## 🛠️ Local Development & Setup
 
-### Prerequisites
-* **Python 3.13+** with [`uv`](https://github.com/astral-sh/uv) (recommended) or `pip`
-* **Node.js 22+** and `npm`
-* **Docker** (for running local PostgreSQL)
-
-### 1. Database Setup
-Start the local PostgreSQL 17 container:
-```bash
-docker compose -f backend/compose.yaml up -d
-```
-
-### 2. Backend API Setup
-```bash
-cd backend
-
-# Copy environment template
-cp .env.example .env
-
-# Run FastAPI server
-uv run uvicorn app.main:app --reload --port 8000
-```
-* **Interactive API Docs (Swagger)**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
-* **Health Check**: [http://localhost:8000/api/health](http://localhost:8000/api/health)
-
-### 3. Frontend Client Setup
-```bash
-cd frontend
-
-# Install dependencies
-npm ci
-
-# Start development server
-npm run dev
-```
-* **Local Web Server**: [http://localhost:5173](http://localhost:5173)
-* **Code Verification**: `npm run lint` & `npm run build`
+For step-by-step local developer setup, Docker container commands, and backend/frontend startup instructions, please refer to the **[Local Development Guide](docs/DEVELOPMENT.md)**.
 
 ---
 
@@ -144,6 +110,7 @@ The project enforces continuous living documentation updated across all developm
 | :--- | :--- |
 | **[Implementation Roadmap](WEBSITE_ROADMAP.md)** | 11-phase master execution plan with strict completion criteria. |
 | **[Living Build Guide](docs/BUILD_GUIDE.md)** | Chronological task history (`TASK-001`+), verification logs, and viva defense answers. |
+| **[Local Development Guide](docs/DEVELOPMENT.md)** | Prerequisites, local PostgreSQL container, FastAPI startup, and Vite client execution. |
 | **[Content Register](docs/CONTENT_REGISTER.md)** | Verified club facts, leadership roster, past events, and media provenance. |
 | **[Launch Scope & Rules](docs/LAUNCH_SCOPE.md)** | MVP feature boundaries, university registration handoff, and recruitment rules. |
 | **[Pages & User Journeys](docs/PAGES_AND_JOURNEYS.md)** | Route specifications, interaction flows, and system resilience states. |
