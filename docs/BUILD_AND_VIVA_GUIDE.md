@@ -258,6 +258,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-058 | Phase 3 audit pass 2 | Repeated both previews directly from disk at 320, 390, 768 and 1440 px. Checked the controls and event status again, inspected a full-height phone capture, decoded all brand files, and checked favicon sizes, original PNG bytes, local resources and link fragments. | Chrome emulation. Authentic media and the production application remain pending. |
 | VER-059 | Phase 4.1 pass 1 | Checked all three directories and resolved the frontend reference. | Scaffold verification. |
 | VER-060 | Phase 4.1 pass 2 | Imported the new Python package from the repository root. | Scaffold verification. |
+| VER-061 | Phase 4.2 pass 1 | Installed from the uv lock and ran Ruff lint and format checks. | Scaffold verification. |
+| VER-062 | Phase 4.2 pass 2 | Ran npm ci, Biome lint and format checks. Verified ignore rules and public registry hosts in both locks. | Scaffold verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -704,6 +706,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-059 and VER-060. Checked all three directories and resolved the frontend reference. Imported the new Python package from the repository root.
 - **Limitations / remaining work:** Application entry points follow in steps 4.3 and 4.4.
 - **Viva Q&A:** **Why track a file in each directory?** Git stores files, so a fresh checkout includes the layout.
+
+### TASK-032 — Configure reproducible development tooling
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 4.2.
+- **Status:** Verified.
+- **Objective:** Configure reproducible development tooling.
+- **Changes and files:** Added [.gitignore](../.gitignore), backend and frontend environment templates, [Python tooling](../backend/pyproject.toml), [npm scripts](../frontend/package.json), Biome configuration and both lockfiles.
+- **How it works:** uv resolves the server dependencies. npm resolves the browser dependencies. Each runtime has a formatter and linter. Local settings, packages and build output are ignored.
+- **Why this approach:** Fresh installs can resolve the same dependency versions on another computer.
+- **Validation:** VER-061 and VER-062. Installed from the uv lock and ran Ruff lint and format checks. Ran npm ci, Biome lint and format checks. Verified ignore rules and public registry hosts in both locks.
+- **Limitations / remaining work:** The example database URL requires local credentials.
+- **Viva Q&A:** **Why keep two lockfiles?** Python and JavaScript use different package managers and dependency graphs.
 
 ## 11. Template for Every Future Task or Step
 
