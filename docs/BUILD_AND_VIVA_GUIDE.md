@@ -2,7 +2,7 @@
 
 **Last updated:** 23 November 2026
 
-**Current stage:** Research and planning, with an existing standalone prototype.  
+**Current stage:** Application scaffolding and local integration.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -256,6 +256,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 
 | VER-057 | Phase 3 audit pass 1 | Fresh Chrome rendered both previews over a loopback server at 320, 390, 768, 1024 and 1440 px. Fonts and images loaded. Menu dismissal, keyboard focus, project navigation and the archive/detail return worked. No JavaScript exceptions or document overflow occurred. | Static previews with the approved media placeholders. |
 | VER-058 | Phase 3 audit pass 2 | Repeated both previews directly from disk at 320, 390, 768 and 1440 px. Checked the controls and event status again, inspected a full-height phone capture, decoded all brand files, and checked favicon sizes, original PNG bytes, local resources and link fragments. | Chrome emulation. Authentic media and the production application remain pending. |
+| VER-059 | Phase 4.1 pass 1 | Checked all three directories and resolved the frontend reference. | Scaffold verification. |
+| VER-060 | Phase 4.1 pass 2 | Imported the new Python package from the repository root. | Scaffold verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -689,6 +691,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-057 and VER-058 passed. An initial element-bound probe included links inside a closed disclosure. Document-width checks confirmed they create no visible overflow. All five brand exports decoded, all three favicon sizes existed, and the original PNGs matched Git byte for byte. The repository check initially used an unpadded task ID, then passed with the documented three-digit format.
 - **Limitations / remaining work:** Step 3.7 awaits the actual event photograph and project screenshot. Both previews show the approved labeled placeholders. The API, database and remaining production routes belong to later phases.
 - **Viva Q&A:** **How was navigation checked?** Followed Explore events to the archive, opened DOMination and returned to the same archive section. Tested menu dismissal and visible keyboard focus at narrow widths.
+
+### TASK-031 — Create the application directories
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 4.1.
+- **Status:** Verified.
+- **Objective:** Create the application directories.
+- **Changes and files:** Added the [application package](../backend/app/__init__.py) and [frontend source directory](../frontend/src/README.md).
+- **How it works:** Git tracks a Python package and a frontend source note alongside the existing documentation.
+- **Why this approach:** Separate roots let each runtime manage its own dependencies.
+- **Validation:** VER-059 and VER-060. Checked all three directories and resolved the frontend reference. Imported the new Python package from the repository root.
+- **Limitations / remaining work:** Application entry points follow in steps 4.3 and 4.4.
+- **Viva Q&A:** **Why track a file in each directory?** Git stores files, so a fresh checkout includes the layout.
 
 ## 11. Template for Every Future Task or Step
 

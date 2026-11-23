@@ -127,7 +127,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 ### Steps
 
-- [ ] **4.1 Create the directory structure.** Establish `frontend/`, `backend/`, and `docs/`.
+- [x] **4.1 Create the directory structure.** Establish `frontend/`, `backend/`, and `docs/`.
 - [ ] **4.2 Configure repository tooling.** Add environment templates, ignore rules, formatting, linting, and dependency lock files.
 - [ ] **4.3 Initialize the backend.** Configure the Python environment and FastAPI application.
 - [ ] **4.4 Initialize the frontend.** Configure React, TypeScript, routing, and the styling system.
