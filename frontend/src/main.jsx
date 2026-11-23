@@ -7,6 +7,8 @@ import { About, Contact } from "./ClubPages.jsx";
 import { Join } from "./Recruitment.jsx";
 import { ReviewDashboard } from "./ReviewDashboard.jsx";
 import { ContentEditor } from "./ContentEditor.jsx";
+import { SiteLinksProvider } from "./SiteLinks.jsx";
+import { ContentPreview } from "./ContentPreview.jsx";
 import { EventDetail, Events } from "./Events.jsx";
 import Home from "./Home.jsx";
 import { ProjectDetail, Projects } from "./Projects.jsx";
@@ -19,7 +21,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<SiteLayout />}>
+        <Route
+          element={
+            <SiteLinksProvider>
+              <SiteLayout />
+            </SiteLinksProvider>
+          }
+        >
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
@@ -42,6 +50,14 @@ function App() {
             element={<EventWorkspace preview />}
           />
           <Route path="admin" element={<AdminArea key="dashboard" />} />
+          <Route
+            path="admin/content/:kind/:id/preview"
+            element={<ContentPreview />}
+          />
+          <Route
+            path="admin/settings/preview"
+            element={<ContentPreview settings />}
+          />
           <Route path="admin/content/:kind/:id?" element={<ContentEditor />} />
           <Route
             path="admin/media/:id?"

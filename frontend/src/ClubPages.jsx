@@ -1,5 +1,6 @@
 import { Link } from "react-router";
-import { ExternalLink, Page, profiles, university } from "./SiteLayout.jsx";
+import { ExternalLink, Page } from "./SiteLayout.jsx";
+import { useSiteLinks } from "./SiteLinks.jsx";
 
 export function About() {
   return (
@@ -29,7 +30,10 @@ export function About() {
   );
 }
 
-export function Contact() {
+export function Contact({ preview }) {
+  const links = useSiteLinks();
+  const { university, instagram, linkedin } = preview ?? links;
+  const profiles = { Instagram: instagram, LinkedIn: linkedin };
   return (
     <Page title="Contact Code2Chill">
       <p className="lede">

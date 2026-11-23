@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { PublishedImage } from "./Gallery.jsx";
 import { PublicData } from "./PublicData.jsx";
 import { Page } from "./SiteLayout.jsx";
 
@@ -16,6 +17,12 @@ export function Roster({ members }) {
         <div key={member.slug}>
           <dt>{member.name}</dt>
           <dd>{member.role_title}</dd>
+          {member.bio && <dd>{member.bio}</dd>}
+          {member.portrait?.asset_url && (
+            <dd>
+              <PublishedImage image={member.portrait} />
+            </dd>
+          )}
         </div>
       ))}
     </dl>

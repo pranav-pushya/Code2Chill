@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 8.6 content editors are implemented. Publishing controls are next.
+**Current stage:** Phase 8.7 publishing controls are implemented. Private exports are next.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1252,6 +1252,14 @@ The change was checked against the owner's request and existing roadmap sequence
 The staff dashboard opens member, project and hosted media editors. Administrators can also edit the official club links. Saving checks the revision and writes an audit entry. Media records describe externally hosted images. Members and projects retain their published copy while a draft is edited. [Editor](../frontend/src/ContentEditor.jsx) · [API](../backend/app/admin_content.py)
 
 PostgreSQL tests passed for migration round trips, private access, stale revisions and contributor order. Chrome created and reopened a member draft using the real API. **Viva question.** Why keep a revision? It prevents an older tab from overwriting a newer save.
+
+### TASK-076 — Preview and publish saved content
+
+24 November 2026 · Phase 8.7 · Verified locally
+
+Members, projects and settings have protected previews with an explicit Publish button. Public pages read published snapshots. Publishing checks both the revision and preview contents so an intervening edit to a media credit requires a fresh preview. Approved hosted images appear with their credits. [Publication rules](../backend/app/publication.py) · [Preview](../frontend/src/ContentPreview.jsx)
+
+Four database-backed publication and content tests passed. A Chrome walkthrough published a member and an official link and verified the results on Team and Contact. **Viva question.** What does an ordinary draft save change on the public site? The public snapshot changes only when a staff member publishes.
 
 ## 11. Template for Every Future Task or Step
 

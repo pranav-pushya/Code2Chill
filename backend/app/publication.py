@@ -14,14 +14,15 @@ from .admin_models import (
     AuditTarget,
     RecruitmentReviewer,
 )
-from .content_models import Event, MediaAsset, Member, Project, RegistrationStatus
+from .content_models import Event, MediaAsset, Member, Project, RegistrationStatus, SiteSettings
 from .publication_fields import PublicationState
 from .recruitment_models import ApplicationRoute, ApplicationStatus, RecruitmentCycle
 from .time_rules import as_utc, campus_date, window_is_open
 
-Publishable = Event | Member | Project | RecruitmentCycle
+Publishable = Event | Member | Project | RecruitmentCycle | SiteSettings
 
 TARGETS = {
+    SiteSettings: AuditTarget.SITE_SETTINGS,
     Event: AuditTarget.EVENT,
     Member: AuditTarget.MEMBER,
     Project: AuditTarget.PROJECT,
@@ -76,10 +77,20 @@ def media_snapshot(asset: MediaAsset | None) -> dict[str, str] | None:
         return None
     if not asset.approved_for_publication:
         raise PublicationError("Approve the selected asset before publishing.")
-    return {"storage_key": asset.storage_key, "alt_text": asset.alt_text, "credit": asset.credit}
+    return {
+        "storage_key": asset.storage_key,
+        "asset_url": asset.asset_url,
+        "alt_text": asset.alt_text,
+        "credit": asset.credit,
+    }
 
 
 def public_payload(session: Session, record: Publishable) -> dict[str, object]:
+    if isinstance(record, SiteSettings):
+        links = {key: getattr(record, key) for key in ("university", "instagram", "linkedin")}
+        for link in links.values():
+            https_link(link)
+        return links
     if isinstance(record, Member):
         return {
             "slug": record.slug,
@@ -190,7 +201,7 @@ def snapshot_for(session: Session, record: Publishable) -> dict[str, object]:
 
 def change_publication(
     session: Session,
-    model: type[Event] | type[Member] | type[Project] | type[RecruitmentCycle],
+    model: type[Publishable],
     record_id: int,
     *,
     expected_revision: int,

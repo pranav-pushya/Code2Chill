@@ -1,5 +1,20 @@
 import { Link } from "react-router";
 
+export function PublishedImage({ image }) {
+  if (!image?.asset_url) return null;
+  return (
+    <figure>
+      <img
+        style={{ maxWidth: "100%", height: "auto" }}
+        loading="lazy"
+        src={image.asset_url}
+        alt={image.alt_text}
+      />
+      <figcaption>{image.credit}</figcaption>
+    </figure>
+  );
+}
+
 export function MediaPlaceholder({ project = false, children }) {
   return (
     <figure

@@ -1,4 +1,7 @@
+import hashlib
+import json
 from collections import defaultdict, deque
+from datetime import UTC, datetime
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -10,7 +13,13 @@ from .admin_auth import Database, current_account
 from .admin_models import AdminAccount, AdminRole, AuditAction, AuditRecord, AuditTarget
 from .content_models import Event, MediaAsset, Member, Project, ProjectCredit, SiteSettings
 from .domain import ClubDomain
-from .publication import https_link
+from .publication import (
+    DraftConflict,
+    PublicationError,
+    change_publication,
+    https_link,
+    snapshot_for,
+)
 
 router = APIRouter(prefix="/api/admin/content", tags=["Content management"])
 Kind = Literal["members", "projects", "media", "settings"]
@@ -216,3 +225,57 @@ def create_record(kind: Kind, edit: Edit, db: Database, actor: Account):
 def update_record(kind: Kind, item_id: int, edit: Edit, db: Database, actor: Account):
     check_permission(kind, actor)
     return write_record(db, kind, get_record(db, kind, item_id, lock=True), edit, actor, False)
+
+
+class PublishRequest(BaseModel):
+    revision: int
+    fingerprint: str
+
+
+def preview_data(db, record):
+    snapshot = snapshot_for(db, record)
+    encoded = json.dumps(snapshot, sort_keys=True).encode()
+    return {
+        "content": snapshot,
+        "revision": record.revision,
+        "fingerprint": hashlib.sha256(encoded).hexdigest(),
+    }
+
+
+PublishKind = Literal["members", "projects", "settings"]
+
+
+@router.get("/{kind}/{item_id}/preview")
+def preview(kind: PublishKind, item_id: int, db: Database, actor: Account):
+    check_permission(kind, actor)
+    try:
+        return preview_data(db, get_record(db, kind, item_id))
+    except PublicationError as exc:
+        raise HTTPException(422, str(exc)) from None
+
+
+@router.post("/{kind}/{item_id}/publish")
+def publish(kind: PublishKind, item_id: int, version: PublishRequest, db: Database, actor: Account):
+    check_permission(kind, actor)
+    record = get_record(db, kind, item_id, lock=True)
+    asset_id = getattr(record, "portrait_id", None) or getattr(record, "screenshot_id", None)
+    if asset_id:
+        db.get(MediaAsset, asset_id, with_for_update={"read": True})
+    try:
+        if preview_data(db, record)["fingerprint"] != version.fingerprint:
+            raise DraftConflict("The preview changed. Reload it before publishing.")
+        change_publication(
+            db,
+            type(record),
+            item_id,
+            expected_revision=version.revision,
+            actor_id=actor.id,
+            now=datetime.now(UTC),
+            publish=True,
+        )
+    except DraftConflict as exc:
+        raise HTTPException(409, str(exc)) from None
+    except PublicationError as exc:
+        raise HTTPException(422, str(exc)) from None
+    db.commit()
+    return {"published": True}

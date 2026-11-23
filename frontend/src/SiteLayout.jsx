@@ -3,12 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from "react-router";
 import icon from "../../docs/design/brand/club-icon-64.png";
 import { PageMetadata } from "./PageMetadata.jsx";
 
-export const university = "https://chitkarau.life/clubs/code2chill";
-export const profiles = {
-  Instagram:
-    "https://www.instagram.com/code2chill.osl?utm_source=ig_web_button_share_sheet&lqvp=ZDNlZDc0MzIxNw%3D%3D",
-  LinkedIn: "https://www.linkedin.com/company/code2chill/posts/?feedView=all",
-};
+import { useSiteLinks } from "./SiteLinks.jsx";
 
 export function ExternalLink({ href, children, className = "text-link" }) {
   return (
@@ -97,6 +92,8 @@ function Header() {
 }
 
 export function SiteLayout() {
+  const { instagram, linkedin } = useSiteLinks();
+  const profiles = { Instagram: instagram, LinkedIn: linkedin };
   const { pathname, hash } = useLocation();
   const previous = useRef(pathname);
   const main = useRef(null);

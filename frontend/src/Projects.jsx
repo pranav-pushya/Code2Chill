@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router";
-import { MediaPlaceholder } from "./Gallery.jsx";
+import { MediaPlaceholder, PublishedImage } from "./Gallery.jsx";
 import { PublicData } from "./PublicData.jsx";
 import { ExternalLink, Missing, Page } from "./SiteLayout.jsx";
 
@@ -60,43 +60,49 @@ export function ProjectDetail() {
         <Missing item="Project" to="/projects" action="Browse projects" />
       }
     >
-      {(project) => (
-        <Page title={project.title}>
-          <p className="lede">{project.summary}</p>
-          {project.credits.length > 0 && (
-            <section className="content-block">
-              <h2>Contributors</h2>
-              <p>{project.credits.join(", ")}</p>
-            </section>
-          )}
-          <div className="page-actions">
-            {project.demo_url && (
-              <ExternalLink className="action" href={project.demo_url}>
-                Open project demo
-              </ExternalLink>
-            )}
-            {project.repository_url && (
-              <ExternalLink
-                className={project.demo_url ? "text-link" : "action"}
-                href={project.repository_url}
-              >
-                View source repository
-              </ExternalLink>
-            )}
-            <Link
-              className={
-                project.demo_url || project.repository_url
-                  ? "text-link"
-                  : "action"
-              }
-              to="/projects"
-            >
-              Browse projects
-            </Link>
-          </div>
-          <MediaPlaceholder project>{project.title}</MediaPlaceholder>
-        </Page>
-      )}
+      {(project) => <ProjectArticle project={project} />}
     </PublicData>
+  );
+}
+
+export function ProjectArticle({ project }) {
+  return (
+    <Page title={project.title}>
+      <p className="lede">{project.summary}</p>
+      {project.credits.length > 0 && (
+        <section className="content-block">
+          <h2>Contributors</h2>
+          <p>{project.credits.join(", ")}</p>
+        </section>
+      )}
+      <div className="page-actions">
+        {project.demo_url && (
+          <ExternalLink className="action" href={project.demo_url}>
+            Open project demo
+          </ExternalLink>
+        )}
+        {project.repository_url && (
+          <ExternalLink
+            className={project.demo_url ? "text-link" : "action"}
+            href={project.repository_url}
+          >
+            View source repository
+          </ExternalLink>
+        )}
+        <Link
+          className={
+            project.demo_url || project.repository_url ? "text-link" : "action"
+          }
+          to="/projects"
+        >
+          Browse projects
+        </Link>
+      </div>
+      {project.screenshot?.asset_url ? (
+        <PublishedImage image={project.screenshot} />
+      ) : (
+        <MediaPlaceholder project>{project.title}</MediaPlaceholder>
+      )}
+    </Page>
   );
 }

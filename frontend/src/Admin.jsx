@@ -43,7 +43,7 @@ export function SignIn() {
       const eventPath =
         account.role !== "reviewer" &&
         typeof from === "string" &&
-        /^\/admin\/content\/events(?:\/(?:new|[1-9]\d*(?:\/preview)?))?$/.test(
+        /^\/admin\/(?:content\/(?:events|members|projects)|media)(?:\/(?:new|[1-9]\d*(?:\/preview)?))?$/.test(
           from,
         );
       const reviewPath =
@@ -52,7 +52,12 @@ export function SignIn() {
         /^\/admin\/recruitment(?:\/[1-9]\d*\/applications(?:\/[1-9]\d*)?)?(?:\?[^#]*)?$/.test(
           from,
         );
-      navigate(eventPath || reviewPath ? from : "/admin", { replace: true });
+      const settingsPath =
+        account.role === "admin" &&
+        ["/admin/settings", "/admin/settings/preview"].includes(from);
+      navigate(eventPath || reviewPath || settingsPath ? from : "/admin", {
+        replace: true,
+      });
     } catch {
       setError("Couldn’t reach the sign-in service. Try again.");
     } finally {

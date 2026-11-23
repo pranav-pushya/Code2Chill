@@ -80,6 +80,7 @@ function Workspace({ kind, id }) {
     [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(location.state?.saved ? "Saved." : "");
   const [reload, setReload] = useState(0);
+  const [dirty, setDirty] = useState(false);
   const [options, setOptions] = useState({ domains, media: [], events: [] });
   const base = paths[kind],
     api = `content/${kind}`;
@@ -176,6 +177,7 @@ function Workspace({ kind, id }) {
         });
       else {
         setData(saved);
+        setDirty(false);
         setNotice("Saved.");
       }
     } catch (e) {
@@ -231,7 +233,11 @@ function Workspace({ kind, id }) {
             </ul>
           </>
         ) : (
-          <form className="draft-form sign-in-form" onSubmit={save}>
+          <form
+            className="draft-form sign-in-form"
+            onSubmit={save}
+            onChange={() => setDirty(true)}
+          >
             {controls[kind].map(([name, label, type, required]) => (
               <label key={name} htmlFor={name}>
                 {label}
@@ -287,6 +293,27 @@ function Workspace({ kind, id }) {
             </button>
           </form>
         ))}
+      {data && id && id !== "new" && kind !== "media" && (
+        <Link
+          onClick={(event) => {
+            if (
+              dirty &&
+              !window.confirm(
+                "Leave unsaved edits and preview the saved draft?",
+              )
+            )
+              event.preventDefault();
+          }}
+          className="text-link"
+          to={
+            kind === "settings"
+              ? "/admin/settings/preview"
+              : `${base}/${id}/preview`
+          }
+        >
+          Preview saved draft
+        </Link>
+      )}
       {notice && <p role="status">{notice}</p>}
     </section>
   );

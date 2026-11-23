@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from .content_models import Event, Member, Project, RegistrationStatus
+from .content_models import Event, Member, Project, RegistrationStatus, SiteSettings
 from .database import request_session
 from .domain import ClubDomain
 from .publication import event_registration
@@ -33,7 +33,14 @@ class Schedule(BaseModel):
     past: list[PublicEvent]
 
 
+class PublicImage(BaseModel):
+    asset_url: str | None = None
+    alt_text: str
+    credit: str
+
+
 class PublicProject(BaseModel):
+    screenshot: PublicImage | None = None
     slug: str
     title: str
     summary: str
@@ -43,6 +50,7 @@ class PublicProject(BaseModel):
 
 
 class PublicMember(BaseModel):
+    portrait: PublicImage | None = None
     slug: str
     name: str
     role_title: str
@@ -55,6 +63,11 @@ def published(model):
     if model is Event:
         query = query.where(model.public_snapshot["is_demo"].as_boolean().is_not(True))
     return query
+
+
+@router.get("/site-links")
+def published_links(db: Database):
+    return db.scalar(select(SiteSettings.public_snapshot).where(SiteSettings.id == 1))
 
 
 def detail(db, model, slug):

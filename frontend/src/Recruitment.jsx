@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
 import { Link, Navigate, useSearchParams } from "react-router";
 import { PublicData } from "./PublicData.jsx";
-import { ExternalLink, Page, university } from "./SiteLayout.jsx";
+import { ExternalLink, Page } from "./SiteLayout.jsx";
+import { useSiteLinks } from "./SiteLinks.jsx";
 
 const labels = {
   technical: "Technical",
@@ -34,6 +35,7 @@ function CycleDetails({ cycle }) {
 }
 
 export function Join({ apply = false }) {
+  const { university } = useSiteLinks();
   const [params] = useSearchParams();
   return (
     <PublicData
