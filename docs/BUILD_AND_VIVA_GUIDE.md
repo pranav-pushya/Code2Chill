@@ -53,7 +53,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
 | React/Vite scaffold | Built and browser-verified | [React routes](../frontend/src/main.tsx) and shared visual assets |
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
-| Database and migrations | Planned | No models or migrations created |
+| Database and migrations | Local PostgreSQL verified | [Connection management](../backend/app/database.py) is implemented. Models and migrations are planned. |
 | Registration and recruitment | Planned | Prototype buttons do not save submissions |
 | Authentication and dashboard | Planned | Not implemented |
 | Automated tests and CI | Planned | No application test suite or CI setup |
@@ -264,6 +264,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-064 | Phase 4.3 pass 2 | The sandbox request test stalled. The same test outside it verified the documentation, schema and unknown route. | Scaffold verification. |
 | VER-065 | Phase 4.4 pass 1 | TypeScript, Vite production build and Biome lint passed. | Scaffold verification. |
 | VER-066 | Phase 4.4 pass 2 | Chrome loaded the built Home and status pages at 390 and 1440 px, verified images and layout width, refreshed the status route and returned home. | Scaffold verification. |
+| VER-067 | Phase 4.5 pass 1 | Compose reported a healthy database and psql returned the expected database name inside the container. | Scaffold verification. |
+| VER-068 | Phase 4.5 pass 2 | A separate Python process connected from the host, ran SELECT 1 and verified the connection returned to the pool. | Scaffold verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -749,6 +751,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-065 and VER-066. TypeScript, Vite production build and Biome lint passed. Chrome loaded the built Home and status pages at 390 and 1440 px, verified images and layout width, refreshed the status route and returned home.
 - **Limitations / remaining work:** The full public routes and event content are scheduled for later phases.
 - **Viva Q&A:** **How do two routes share one build?** The host serves the entry document and React Router chooses the view from the URL.
+
+### TASK-035 — Connect the development PostgreSQL database
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 4.5.
+- **Status:** Verified.
+- **Objective:** Connect the development PostgreSQL database.
+- **Changes and files:** Added [Compose](../compose.yaml), [SQLAlchemy connection management](../backend/app/database.py) and FastAPI lifespan handling. Updated the backend environment template.
+- **How it works:** A persistent Compose volume stores PostgreSQL 17 data. SQLAlchemy creates a pool for each API process, checks connections before use and disposes it at shutdown. An external DATABASE_URL can override the local settings.
+- **Why this approach:** The host port binds to loopback. The generated development password stays in an ignored file.
+- **Validation:** VER-067 and VER-068. Compose reported a healthy database and psql returned the expected database name inside the container. A separate Python process connected from the host, ran SELECT 1 and verified the connection returned to the pool.
+- **Limitations / remaining work:** Business models and migrations belong to Phase 5.
+- **Viva Q&A:** **Why dispose the pool?** It releases idle database connections when the API process shuts down.
 
 ## 11. Template for Every Future Task or Step
 

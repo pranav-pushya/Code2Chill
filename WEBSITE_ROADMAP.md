@@ -131,7 +131,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **4.2 Configure repository tooling.** Add environment templates, ignore rules, formatting, linting, and dependency lock files.
 - [x] **4.3 Initialize the backend.** Configure the Python environment and FastAPI application.
 - [x] **4.4 Initialize the frontend.** Configure React, TypeScript, routing, and the styling system.
-- [ ] **4.5 Connect PostgreSQL.** Establish development database configuration and connection management.
+- [x] **4.5 Connect PostgreSQL.** Establish development database configuration and connection management.
 - [ ] **4.6 Verify connectivity.** Add a health endpoint and call it from the frontend.
 - [ ] **4.7 Add CI and setup documentation.** Check builds, formatting, and relevant tests; document startup commands.
 - [ ] **4.8 Deploy an early staging build.** Verify hosting configuration before substantial implementation.
