@@ -219,6 +219,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-032 | Phase 2.3 pass 2, repository review | Verified staged links, roadmap sequence, task log, and the launch versus conditional route distinction. `git diff --cached --check` passed. | Document validation. |
 | VER-033 | Phase 2.4 pass 1, administrator walkthrough | Checked the content and reviewer branches, protected preview, session recovery, stale drafts, publish feedback, and ownership of submissions. | Planned permission checks and editor behavior. |
 | VER-034 | Phase 2.4 pass 2, repository review | Verified staged links, the admin route plan, task log, and roadmap sequence. `git diff --cached --check` passed. | No sign-in service or dashboard was exercised. |
+| VER-035 | Phase 2.5 pass 1, state coverage and precedence | Checked 21 state definitions against the event, recruitment, and administrator journeys. Walked through success, failure, empty, status, and access recovery. | Design review. Accessibility behaviors still need implementation and browser testing. |
+| VER-036 | Phase 2.5 pass 2, repository review | Verified staged links, checklist order, task log, and exact change scope. `git diff --cached --check` passed. | Document validation. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -482,6 +484,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-033 walked through administrator and reviewer cases. VER-034 checked documentation and step sequence in the staged files.
 - **Limitations / remaining work:** Authentication, permission checks, draft versions, editor screens, and application review remain implementation work.
 - **Viva Q&A:** **Why protect the preview path?** A draft can contain unfinished material. Access to it follows the same authorization check as the editor.
+
+### TASK-019 — Specify interface states and recovery
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 2.5.
+- **Status:** Twenty-one interface states planned and verified.
+- **Objective:** Define what the interface says and what students or staff can do as data and workflow conditions change.
+- **Changes and files:** Added the [interface state matrix](PAGES_AND_JOURNEYS.md#interface-states) and checked off Step 2.5 in the [roadmap](../WEBSITE_ROADMAP.md#phase-2--define-pages-and-user-journeys).
+- **How it works:** The matrix ties each condition to a visible message and an available action. A load failure takes priority over an empty result. An ended event takes priority over an older registration state.
+- **Why this approach:** Accurate status copy helps users recover. Text and keyboard feedback communicate the outcome without relying on color alone.
+- **Validation:** VER-035 checked coverage and state precedence against the planned journeys. VER-036 checked the staged plan and linked records.
+- **Limitations / remaining work:** These messages and behaviors still need UI components, server responses, and browser accessibility testing.
+- **Viva Q&A:** **Why distinguish a failed request from an empty list?** The server may have records even when the request fails. A retry addresses the failure, while an empty result can direct visitors to other content.
 
 ## 11. Template for Every Future Task or Step
 

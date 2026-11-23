@@ -118,3 +118,33 @@ The server verifies authorization for each protected read and change. After auth
 Saving a draft, previewing it, and publishing it are distinct operations. Public routes keep serving the last published version while someone edits a draft. Opening the preview displays its saved draft and keeps it behind authentication. A publish request validates the required fields and uses the current saved version. If another edit changes that version or the request fails, retain the saved draft and let the editor reload or retry before announcing success. After publishing, offer **View published page**. Event editors can set a verified university sign-up destination and its currently confirmed status.
 
 Use the local review paths only when recruitment uses a local cycle. Signed-in reviewers need an assignment for the requested cycle. Filter lists and open individual submissions only within that authorization. Review actions record the user and time. University event registrations and approved external recruitment follow their own provider workflows.
+
+## Interface states
+
+| ID | Condition | Message or behavior | Available action |
+| --- | --- | --- | --- |
+| UI-01 | A public list, detail, or dashboard is loading | Keep the heading and navigation stable. Show loading feedback in the content area. | Use the available navigation. |
+| UI-02 | A requested view fails to load | Show **This content couldn't load**. Keep the current address and any usable navigation. | **Try again** in the same view. |
+| UI-03 | A public page or item is missing | Show **Page not found**, **Event not found**, or **Project not found**. Use the same public item state for an unpublished record. | **Go home**, **Browse events**, or **Browse projects**, respectively. |
+| UI-04 | The Upcoming section loaded with zero events | Show **No upcoming events are listed**. | **Browse past events** jumps to Past. |
+| UI-05 | The Past section loaded with zero events | Show **No past events are listed**. | **Back to upcoming events** jumps to Upcoming. |
+| UI-06 | Projects or Team loaded with zero published records | Show **No projects are published yet** or **Team information is coming soon**. | **Explore events** opens `/events`. |
+| UI-07 | Optional approved media is missing or fails to load | Keep the usable text, credits, and links in their normal reading order. | Use any existing verified link. |
+| UI-08 | Event registration is open and its destination is verified | Show **Registration open**. | **Register on the university portal**. |
+| UI-09 | Event status is unknown or open lacks a verified link | Show **Registration details pending**. | **Back to events**. |
+| UI-10 | Event registration is explicitly closed or full | Show **Registration closed** or **Event full**, as applicable. | **Back to events**. |
+| UI-11 | The event has ended | Show **Event ended** and keep the archived details. | **Back to events** returns to Past. |
+| UI-12 | Recruitment has no approved cycle | Show **Recruitment dates to be announced**. | **View the club on the university portal**. |
+| UI-13 | An approved cycle is scheduled or has closed | Show the future opening time in India Standard Time or **Applications are closed**. | Provide the official membership interest link. A local form that closes while open offers **Back to Join**. |
+| UI-14 | An approved cycle is open | Show the enabled domains, eligibility, and deadline. | **Apply through the official form** or **Start application**, according to the approved route. |
+| UI-15 | A form has actionable validation errors | Show field messages and a focusable summary. Preserve input in the current page. | Correct fields and submit again. |
+| UI-16 | A save, publish, or submission is in progress | Give progress feedback and disable duplicate activation of the pending action. | Wait for the result. |
+| UI-17 | A write fails, its result is uncertain, or the saved draft version changed | Preserve usable input and the last saved draft. Explain the failure. Confirm saved state before reporting success. | Retry a safe request or **Reload draft** when the saved version changed. |
+| UI-18 | A write is confirmed | Display **Draft saved**, **Published**, or **Application received** with an application reference when applicable. | **Preview draft**, **View published page**, or **Back to Join**, respectively. |
+| UI-19 | A protected session expires | Ask the user to sign in again. Restore the last saved draft when permitted. | **Sign in**. |
+| UI-20 | A signed-in user lacks permission | Show **Access denied** and keep protected content private. | **Back to dashboard**. |
+| UI-21 | An administrator list loaded empty | Explain whether there are no records or no results for the active filters. | **New draft** for an empty content list or **Clear filters** when filters are active. An empty application list has a **Back to dashboard** route. |
+
+An initial load error takes priority over an empty result. Only show an empty state after a successful load. For event details, an ended event takes priority over a saved registration state. For other events, use the confirmed full or closed status before evaluating the registration link. Recruitment applies the [configured cycle rules](LAUNCH_SCOPE.md#recruitment) again at submission.
+
+Use visible status text alongside color. Announce progress and confirmed results in a status region and associate field errors with their inputs. Focus the error summary after an invalid submit. Keep keyboard focus available during loading and errors, and make each recovery action usable from the keyboard.
