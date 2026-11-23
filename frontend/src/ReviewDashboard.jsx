@@ -207,7 +207,58 @@ function ApplicationList({ cycleId }) {
   );
 }
 
-function Detail({ item }) {
+function Detail({ initial, path, reload }) {
+  const [item, setItem] = useState(initial);
+  const [choice, setChoice] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
+  const [needsReload, setNeedsReload] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  async function save(event) {
+    event.preventDefault();
+    if (!choice || saving) return;
+    setSaving(true);
+    setMessage("");
+    try {
+      const response = await adminRequest(path, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ expected_status: item.status, status: choice }),
+      });
+      if (response.status === 401) {
+        navigate("/admin/sign-in", {
+          replace: true,
+          state: { from: location.pathname + location.search },
+        });
+        return;
+      }
+      if (response.status === 403 || response.status === 404) {
+        reload();
+        return;
+      }
+      if (response.status === 409) {
+        setNeedsReload(true);
+        setMessage(
+          "The status changed. Reload the application before recording a decision.",
+        );
+        return;
+      }
+      if (!response.ok) throw new Error();
+      const updated = await response.json();
+      setItem(updated);
+      setChoice("");
+      setMessage("Decision saved.");
+    } catch {
+      setNeedsReload(true);
+      setMessage(
+        "Couldn’t confirm the save. Reload to check the recorded status.",
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
   return (
     <section className="content-block">
       <h2>{item.full_name}</h2>
@@ -237,11 +288,61 @@ function Detail({ item }) {
           </>
         )}
       </dl>
+      {item.allowed_statuses.length > 0 && (
+        <form onSubmit={save} className="sign-in-form draft-form">
+          <label>
+            Review decision
+            <select
+              required
+              value={choice}
+              disabled={saving || needsReload}
+              onChange={(event) => setChoice(event.target.value)}
+            >
+              <option value="">Choose a decision</option>
+              {item.allowed_statuses.map((status) => (
+                <option key={status} value={status}>
+                  {statuses[status]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            type="submit"
+            className="action"
+            disabled={!choice || saving || needsReload}
+          >
+            {saving ? "Saving…" : "Save decision"}
+          </button>
+        </form>
+      )}
+      {message && <p role="status">{message}</p>}
+      {needsReload && (
+        <button className="action" type="button" onClick={reload}>
+          Reload application
+        </button>
+      )}
+      {item.history.length > 0 && (
+        <section className="content-block">
+          <h2>Decision history</h2>
+          <ol>
+            {item.history.map((entry) => (
+              <li key={entry.new_state}>
+                {statuses[entry.previous_state]} → {statuses[entry.new_state]} ·{" "}
+                {entry.reviewer} ·{" "}
+                <time dateTime={entry.occurred_at}>
+                  {campusDate.format(new Date(entry.occurred_at))} IST
+                </time>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
     </section>
   );
 }
 
 export function ReviewDashboard() {
+  const [revision, setRevision] = useState(0);
   const { cycleId, applicationId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -264,8 +365,14 @@ export function ReviewDashboard() {
       </Link>
       <h1>{applicationId ? "Application details" : "Review applications"}</h1>
       {applicationId ? (
-        <ReviewRequest key={detail} path={detail}>
-          {(item) => <Detail item={item} />}
+        <ReviewRequest key={`${detail}:${revision}`} path={detail}>
+          {(item) => (
+            <Detail
+              initial={item}
+              path={detail}
+              reload={() => setRevision((value) => value + 1)}
+            />
+          )}
         </ReviewRequest>
       ) : (
         <ReviewRequest path="recruitment">

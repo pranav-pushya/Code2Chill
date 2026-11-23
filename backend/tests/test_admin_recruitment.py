@@ -1,9 +1,16 @@
 from uuid import uuid4
 
 from sqlalchemy import delete, insert, select, update
-from test_admin_auth import EMAIL, provision, sign_in
+from test_admin_auth import EMAIL, HEADER, provision, sign_in
 
-from app.admin_models import AdminAccount, AdminRole, RecruitmentReviewer
+from app.admin_models import (
+    AdminAccount,
+    AdminRole,
+    AuditAction,
+    AuditRecord,
+    AuditTarget,
+    RecruitmentReviewer,
+)
 from app.recruitment_models import (
     Application,
     ApplicationRoute,
@@ -81,3 +88,60 @@ def test_review_scope_filters_and_private_detail(api_db):
         == client.get(f"{path}/{first_id}").status_code
         == 403
     )
+
+
+def test_record_decision_and_audit_are_atomic_and_cycle_scoped(api_db):
+    client, connection = api_db
+    cycle, application = cycle_with_applicant(connection, "review", "Test submission")
+    other, other_application = cycle_with_applicant(connection, "other", "Another submission")
+    path = f"{ROOT}/{cycle}/applications/{application}"
+    provision(connection, AdminRole.REVIEWER)
+    actor = connection.scalar(select(AdminAccount.id).where(AdminAccount.email == EMAIL))
+    connection.execute(insert(RecruitmentReviewer).values(account_id=actor, cycle_id=cycle))
+    sign_in(client)
+
+    def decide(expected, new, target=path, headers=HEADER):
+        return client.patch(
+            target, headers=headers, json={"expected_status": expected, "status": new}
+        )
+
+    assert client.get(path).json()["allowed_statuses"] == ["shortlisted", "accepted", "rejected"]
+    assert decide("pending", "accepted", headers={}).status_code == 403
+    assert (
+        decide(
+            "pending", "accepted", f"{ROOT}/{other}/applications/{other_application}"
+        ).status_code
+        == 404
+    )
+    assert (
+        decide(
+            "pending", "accepted", f"{ROOT}/{cycle}/applications/{other_application}"
+        ).status_code
+        == 404
+    )
+    assert decide("pending", "pending").status_code == 409
+    shortlisted = decide("pending", "shortlisted")
+    assert shortlisted.status_code == 200
+    assert shortlisted.json()["allowed_statuses"] == ["accepted", "rejected"]
+    assert decide("pending", "rejected").status_code == 409
+    accepted = decide("shortlisted", "accepted").json()
+    assert accepted["allowed_statuses"] == []
+    assert accepted["status"] == "accepted"
+    assert [
+        (row["previous_state"], row["new_state"], row["reviewer"]) for row in accepted["history"]
+    ] == [("pending", "shortlisted", EMAIL), ("shortlisted", "accepted", EMAIL)]
+    assert decide("accepted", "rejected").status_code == 409
+    assert client.get(path).json() == accepted
+    rows = connection.execute(
+        select(
+            AuditRecord.actor_id, AuditRecord.target_id, AuditRecord.target_type, AuditRecord.action
+        )
+    ).all()
+    assert rows == [(actor, application, AuditTarget.APPLICATION, AuditAction.REVIEW)] * 2
+    connection.execute(
+        update(AdminAccount).where(AdminAccount.id == actor).values(role=AdminRole.ADMIN)
+    )
+    result = decide(
+        "pending", "rejected", f"{ROOT}/{other}/applications/{other_application}"
+    ).json()
+    assert result["status"] == "rejected" and not result["allowed_statuses"]

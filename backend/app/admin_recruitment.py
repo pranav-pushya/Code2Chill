@@ -6,8 +6,16 @@ from pydantic import BaseModel
 from sqlalchemy import or_, select
 
 from .admin_auth import Database, current_account
-from .admin_models import AdminAccount, AdminRole, RecruitmentReviewer
+from .admin_models import (
+    AdminAccount,
+    AdminRole,
+    AuditAction,
+    AuditRecord,
+    AuditTarget,
+    RecruitmentReviewer,
+)
 from .domain import ClubDomain
+from .publication import can_review_transition
 from .recruitment_models import Application, ApplicationRoute, ApplicationStatus, RecruitmentCycle
 
 router = APIRouter(prefix="/api/admin/recruitment", tags=["Application review"])
@@ -65,10 +73,24 @@ class ApplicationSummary(BaseModel):
     submitted_at: datetime
 
 
+class DecisionRecord(BaseModel):
+    previous_state: ApplicationStatus
+    new_state: ApplicationStatus
+    reviewer: str
+    occurred_at: datetime
+
+
 class ApplicationDetail(ApplicationSummary):
     university_email: str
     motivation: str | None
     portfolio_url: str | None
+    allowed_statuses: list[ApplicationStatus]
+    history: list[DecisionRecord]
+
+
+class Decision(BaseModel):
+    expected_status: ApplicationStatus
+    status: ApplicationStatus
 
 
 class ApplicationPage(BaseModel):
@@ -107,13 +129,71 @@ def list_applications(
     return {"cycle": cycle, "applications": rows[:PAGE_SIZE], "has_more": len(rows) > PAGE_SIZE}
 
 
-@router.get("/{cycle_id}/applications/{application_id}", response_model=ApplicationDetail)
-def application_detail(application_id: int, cycle: Cycle, db: Database):
-    item = db.scalar(
-        select(Application).where(
-            Application.cycle_id == cycle.id, Application.id == application_id
-        )
+def get_application(db, cycle_id, application_id, *, lock=False):
+    query = select(Application).where(
+        Application.cycle_id == cycle_id, Application.id == application_id
     )
+    # Keep the status and its audit history consistent across the two reads.
+    item = db.scalar(query.with_for_update(read=not lock))
     if item is None:
         raise HTTPException(404, "Application unavailable.")
     return item
+
+
+def detail_with_history(db, item):
+    history = db.execute(
+        select(
+            AuditRecord.previous_state,
+            AuditRecord.new_state,
+            AdminAccount.email.label("reviewer"),
+            AuditRecord.occurred_at,
+        )
+        .join(AdminAccount, AdminAccount.id == AuditRecord.actor_id)
+        .where(
+            AuditRecord.target_type == AuditTarget.APPLICATION,
+            AuditRecord.target_id == item.id,
+            AuditRecord.action == AuditAction.REVIEW,
+        )
+        .order_by(AuditRecord.occurred_at, AuditRecord.id)
+    ).all()
+    return ApplicationDetail(
+        **ApplicationSummary.model_validate(item, from_attributes=True).model_dump(),
+        university_email=item.university_email,
+        motivation=item.motivation,
+        portfolio_url=item.portfolio_url,
+        allowed_statuses=[s for s in ApplicationStatus if can_review_transition(item.status, s)],
+        history=[DecisionRecord.model_validate(row, from_attributes=True) for row in history],
+    )
+
+
+@router.get("/{cycle_id}/applications/{application_id}", response_model=ApplicationDetail)
+def application_detail(application_id: int, cycle: Cycle, db: Database):
+    return detail_with_history(db, get_application(db, cycle.id, application_id))
+
+
+@router.patch("/{cycle_id}/applications/{application_id}", response_model=ApplicationDetail)
+def record_decision(
+    application_id: int, decision: Decision, cycle: Cycle, account: Reviewer, db: Database
+):
+    item = get_application(db, cycle.id, application_id, lock=True)
+    if item.status != decision.expected_status:
+        raise HTTPException(
+            409, "Another reviewer changed this application. Reload it to see the current status."
+        )
+    if not can_review_transition(item.status, decision.status):
+        raise HTTPException(409, "This decision is unavailable for the current status.")
+    db.add(
+        AuditRecord(
+            actor_id=account.id,
+            target_id=item.id,
+            target_type=AuditTarget.APPLICATION,
+            action=AuditAction.REVIEW,
+            previous_state=item.status,
+            new_state=decision.status,
+        )
+    )
+    item.status = decision.status
+    db.flush()
+    result = detail_with_history(db, item)
+    db.commit()
+    return result

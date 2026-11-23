@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Recruitment intake and the staff review dashboard are implemented through step 8.4. Recording review decisions is next. Opening a real local cycle requires club-approved settings, reviewer assignments and mail delivery.
+**Current stage:** Recruitment intake, staff review and audited decisions are implemented through step 8.5. Step 8.6 covers content editors. Opening a real local cycle requires club-approved settings, reviewer assignments and mail delivery.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -56,7 +56,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Verified in development and staging | [Schema, diagram and repeatable seed](DATA_MODEL.md#migrations-and-initial-records) are implemented. |
 | Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
-| Recruitment | Intake and review dashboard verified locally | Local applicants verify their email and receive a reference. Authorized staff can filter and read submissions. Review decisions and exports are pending. [Review API](../backend/app/admin_recruitment.py) |
+| Recruitment | Intake and decisions verified locally | Local applicants verify their email and receive a reference. Authorized staff can filter submissions, record decisions and read their history. Exports are pending. [Review API](../backend/app/admin_recruitment.py) |
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
 | Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
@@ -1228,6 +1228,14 @@ All 17 backend tests passed using local PostgreSQL, including migration round tr
 Staff can open **Review applications**, choose a local cycle and filter by domain or status. Each page shows up to 50 applications, newest first. Opening a name displays the applicant's email and optional answers. Returning restores the URL filters and page. The API checks the active account and cycle assignment on each private read. Administrators can read all local cycles. [Dashboard](../frontend/src/ReviewDashboard.jsx) · [Review API](../backend/app/admin_recruitment.py)
 
 All 18 backend tests passed against PostgreSQL. The permission tests checked anonymous access, editor access, revoked assignments, filtering and cross-cycle detail requests. The production frontend passed lint, formatting and build checks. Headless Chrome at 390px and 1440px signed in as a reviewer, selected a cycle, filtered the list, read a submission and returned to the same filters using the real API and temporary database records. An unassigned cycle gave an access message. Step 8.5 adds decisions. **Viva question.** Why check the cycle when opening an application by ID? Knowing a record ID does not grant permission to read an applicant's details.
+
+### TASK-073 — Save and audit recruitment decisions
+
+24 November 2026 · Phase 8.5 · Verified locally
+
+The application detail screen offers the decisions allowed from the saved status. When a reviewer chooses one, the server locks the application, checks the status the reviewer saw, and commits the new status and audit entry together. The history identifies the reviewer and time for each change. After a conflicting or uncertain save the reviewer can reload to see the recorded decision. [Review API](../backend/app/admin_recruitment.py) · [Staff instructions](DEVELOPMENT.md#review-recruitment-applications)
+
+All 19 backend tests passed against PostgreSQL, including rejection of stale saves, final-state changes and writes outside the assigned cycle. Only successful transitions produced audit rows. The frontend build, lint and formatting checks passed. In Chrome a reviewer shortlisted and then accepted a test application, reloaded its history and found it under the accepted filter. The fixture used temporary records. Exports remain part of step 8.8. **Viva question.** What if two reviewers try to change the same pending application? When the second request acquires the lock, it sees the first reviewer's new status and returns a conflict without adding an audit entry.
 
 ## 11. Template for Every Future Task or Step
 

@@ -78,6 +78,8 @@ Sign-in uses a host-only, Secure, HTTP-only cookie with an eight-hour lifetime. 
 
 For recruitment, choose **Review applications** from the staff dashboard. Select a cycle, then filter by domain or status. Open a name to read the application. **Back to applications** restores the filters and page. Administrators can access all local recruitment cycles, and reviewers see cycles assigned to their active account. Editors manage public content.
 
+Choose **Review decision** and then **Save decision**. A pending application can be shortlisted, accepted or rejected. A shortlisted application can be accepted or rejected. Acceptance and rejection are final. The history shows the previous and new status, staff account and time. If another reviewer saves first, reload the application to see the current status before deciding.
+
 ### Publish an event
 
 1. Open **Manage events** and choose **New draft**, or open an existing event. Enter a title, URL slug and summary. You can save the draft while the date is pending. Enter optional times in India Standard Time.
