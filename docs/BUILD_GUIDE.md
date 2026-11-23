@@ -1297,6 +1297,14 @@ Added an accessible `PasswordField` component with eye/eye-off visibility contro
 
 Biome linter and Vite build executed cleanly with zero warnings or errors. Verified keyboard navigation (Tab focus to toggle button, Enter/Space activation) and layout styling on both desktop and responsive views. **Viva question.** Why must the password visibility toggle button specify `type="button"`? In HTML forms, buttons default to `type="submit"`, so omitting `type="button"` would trigger form submission whenever a user clicks the eye icon to view their password.
 
+### TASK-080 — Exclude experimental prototypes from Git tracking and ignore list
+
+24 November 2026 · Repository hygiene · Verified locally
+
+Untracked experimental prototype files (`Expriments/extra.html`) from Git tracking using `git rm -r --cached` while preserving the files locally on disk, and added `Expriments/` and `experiments/` patterns to [.gitignore](../.gitignore). This prevents internal experiments from being published to the public GitHub repository and corrects repository language statistics (which previously reported 68.6% HTML due to the 347 KB single-file prototype) so that Python (~57%) and JavaScript/JSX (~34%) accurately reflect the project codebase. [.gitignore](../.gitignore)
+
+Verified local existence of `Expriments/extra.html` via `Test-Path`, verified `git status` reporting staged deletion and modified `.gitignore`, and recalculated tracked byte counts confirming HTML reduced from 356,890 bytes to 9,954 bytes (~3%). **Viva question.** What is the difference between `git rm` and `git rm --cached`? Standard `git rm` removes files from both the Git staging index and the local working directory (deleting the file from disk), whereas `git rm --cached` removes the file exclusively from Git tracking/staging while keeping the local file intact on disk.
+
 ## 11. Template for Every Future Task or Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.

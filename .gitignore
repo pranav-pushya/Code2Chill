@@ -11,4 +11,5 @@ node_modules/
 dist/
 *.tsbuildinfo
 GEMINI.md
-
+Expriments/
+experiments/
