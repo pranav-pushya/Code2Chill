@@ -788,6 +788,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Limitations / remaining work:** Step 4.6 connectivity and Step 4.7 CI configuration continue in Phase 4.
 - **Viva Q&A:** **Why structure the root directory so strictly?** High-standard open-source and enterprise repositories keep the root folder clean and predictable so contributors and reviewers immediately know where backend, frontend, and documentation live.
 
+### TASK-038 — Update README with professional presentation standard
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Repository presentation and onboarding enhancement.
+- **Status:** Verified.
+- **Objective:** Modernize `README.md` into an industry-grade project showcase with brand identity, technology badges, system architecture, quick start instructions, living documentation index, and leadership roster.
+- **Changes and files:** Updated [README.md](../README.md).
+- **How it works:** Provides incoming developers, leads, and evaluators with immediate visual context, architecture diagram, dependency versions, local quickstart commands, and direct links to all seven living documentation guides.
+- **Why this approach:** The README is the primary entry point on GitHub; a structured, informative presentation establishes engineering credibility before examiners inspect code.
+- **Validation:** VER-073 and VER-074. Markdown links tested and verified. Markdown syntax and image resolution verified.
+- **Limitations / remaining work:** CI badges will be linked when Phase 4.7 CI workflows are committed.
+- **Viva Q&A:** **What makes a repository README professional?** Clear project mission, badge indicators for maintained stack versions, architecture diagram, reproduction steps for local setup, and navigation to deeper engineering specifications.
+
 ## 11. Template for Every Future Task or Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
