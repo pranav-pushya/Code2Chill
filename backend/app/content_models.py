@@ -1,10 +1,19 @@
 from datetime import date
+from enum import StrEnum
 
 from sqlalchemy import Boolean, ForeignKey, String, Text, false
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .domain import ClubDomain, choices
 from .model_base import Base
+
+
+class RegistrationStatus(StrEnum):
+    PENDING = "pending"
+    OPEN = "open"
+    CLOSED = "closed"
+    FULL = "full"
+    ENDED = "ended"
 
 
 class MediaAsset(Base):
@@ -43,6 +52,10 @@ class Event(Base):
     event_date: Mapped[date | None]
     venue: Mapped[str | None] = mapped_column(String(240))
     official_url: Mapped[str | None] = mapped_column(Text)
+    registration_url: Mapped[str | None] = mapped_column(Text)
+    registration_status: Mapped[RegistrationStatus] = mapped_column(
+        choices(RegistrationStatus), server_default=RegistrationStatus.PENDING
+    )
     poster_id: Mapped[int | None] = mapped_column(ForeignKey("media_asset.id"))
     poster: Mapped[MediaAsset | None] = relationship()
 

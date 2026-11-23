@@ -274,6 +274,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-090 | Phase 5.1 pass 2 | Queried PostgreSQL information_schema and found the six expected foreign keys in the disposable transaction. | Phase 5 verification. |
 | VER-091 | Phase 5.2 pass 1 | Created a pending cycle, enabled a domain, saved a synthetic application and confirmed the database rejected a disabled domain. | Phase 5 verification. |
 | VER-092 | Phase 5.2 pass 2 | A fresh disposable schema confirmed the composite key, permitted route constraint and persisted retry fields. Ruff passed. | Phase 5 verification. |
+| VER-093 | Phase 5.3 pass 1 | Round-tripped separate official and registration links and confirmed the pending default. | Phase 5 verification. |
+| VER-094 | Phase 5.3 pass 2 | Verified there is no local booking table. The first invalid value exceeded the column length. Reran with a shorter invalid value and PostgreSQL rejected it at the state constraint. | Phase 5 verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -889,6 +891,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-091 and VER-092. Created a pending cycle, enabled a domain, saved a synthetic application and confirmed the database rejected a disabled domain. A fresh disposable schema confirmed the composite key, permitted route constraint and persisted retry fields. Ruff passed.
 - **Limitations / remaining work:** Live cycle settings, email verification and review endpoints remain pending.
 - **Viva Q&A:** **Why use two columns for the domain reference?** The same domain can appear in many cycles. The pair identifies the enabled option for this cycle.
+
+### TASK-048 — Model the university event registration handoff
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 5.3.
+- **Status:** Verified.
+- **Objective:** Model the university event registration handoff.
+- **Changes and files:** Added state and destination fields to [Event](../backend/app/content_models.py) and documented [registration ownership](DATA_MODEL.md#event-registration-ownership).
+- **How it works:** Event stores an official information source, an optional signup link, and a controlled registration state. The university handles signups and receipts.
+- **Why this approach:** The launch scope assigns signups to the university, so a local booking table is out of scope.
+- **Validation:** VER-093 and VER-094. Round-tripped separate official and registration links and confirmed the pending default. Verified there is no local booking table. The first invalid value exceeded the column length. Reran with a shorter invalid value and PostgreSQL rejected it at the state constraint.
+- **Limitations / remaining work:** Availability and publication rules follow in Steps 5.6 and 5.7.
+- **Viva Q&A:** **Where are event registrations stored?** The university portal owns the student registration records.
 
 ## 11. Template for Every Future Task or Step
 
