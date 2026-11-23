@@ -199,4 +199,3 @@ def test_change_password_workflow(api_db):
     assert sign_out_res.status_code == 204
     assert sign_in(client, password=PASSWORD).status_code == 401
     assert sign_in(client, password=new_password).status_code == 200
-

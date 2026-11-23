@@ -1305,6 +1305,14 @@ Untracked experimental prototype files (`Expriments/extra.html`) from Git tracki
 
 Verified local existence of `Expriments/extra.html` via `Test-Path`, verified `git status` reporting staged deletion and modified `.gitignore`, and recalculated tracked byte counts confirming HTML reduced from 356,890 bytes to 9,954 bytes (~3%). **Viva question.** What is the difference between `git rm` and `git rm --cached`? Standard `git rm` removes files from both the Git staging index and the local working directory (deleting the file from disk), whereas `git rm --cached` removes the file exclusively from Git tracking/staging while keeping the local file intact on disk.
 
+### TASK-081 — Format admin auth test suite for CI conformance
+
+24 November 2026 · CI/CD hygiene · Verified locally
+
+Reformatted `backend/tests/test_admin_auth.py` with Ruff to remove an unformatted trailing blank line introduced in the staff password change test suite. This resolves the GitHub Actions CI pipeline failure where `uv run --locked ruff format --check app migrations tests` exited with code 1. [Admin Auth Tests](../backend/tests/test_admin_auth.py)
+
+Executed `ruff check app migrations tests` (zero lint violations across 39 files), `ruff format --check app migrations tests` (all 39 files formatted), and local `pytest` (23 passed in 36.92s). Also verified frontend formatting, linting, and Vite production bundle build. **Viva question.** Why does CI run both `ruff check` and `ruff format --check`? `ruff check` enforces AST-level lint rules, imports sorting, and semantic code constraints, whereas `ruff format --check` enforces black-compatible structural formatting and whitespace styling; running both guarantees both stylistic uniformity and code correctness before merging.
+
 ## 11. Template for Every Future Task or Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
