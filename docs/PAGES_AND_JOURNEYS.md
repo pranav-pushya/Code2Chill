@@ -56,13 +56,13 @@ On `/events`, put Upcoming before Past. Offer section links to `/events#upcoming
 
 | Detail case | Student experience |
 | --- | --- |
-| Open with an organizer-verified destination | **Register on the university portal** opens the official event page in the same tab. The portal owns account prompts, ticket selection, and confirmation. |
+| Open with an organizer-verified destination | **Register on the university portal** opens the official event page in a new tab. The portal owns account prompts, ticket selection, and confirmation. |
 | Closed, full, or ended | Show the corresponding status with the event details. **Back to events** returns to Past for ended events and Upcoming for events yet to take place. |
 | Open without a verified link, or availability is unknown | Show **Registration details pending**. Provide the event information and the link back to the relevant list section. |
 | Event missing or unpublished | Show **Event not found** and offer **Browse events** to `/events`. |
 | Request failure | Show an error with **Try again** for the same view and keep public navigation available. |
 
-The [launch registration rules](LAUNCH_SCOPE.md#event-registration) apply across list and detail. Code2Chill displays the organizer-verified state. A student who sees a different outcome on the university site can return with the browser Back action.
+Code2Chill displays the organizer-verified state. A student can return to the Code2Chill tab after visiting the university site. [Launch registration rules](LAUNCH_SCOPE.md#event-registration)
 
 ## Recruitment journey
 

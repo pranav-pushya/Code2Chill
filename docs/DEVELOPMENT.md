@@ -54,6 +54,27 @@ uv run --locked python -m app.seed
 
 The first command creates the tables. Run it after pulling a schema change. The seed is optional for developers who want an empty schema. Repeat it to insert missing initial content without overwriting edits. To add the labeled practice draft to a development database, add `--include-demo` to the seed command.
 
+### Create a staff account
+
+After applying migrations, run the command below from `backend/` in an interactive terminal. Substitute the staff member's email and choose the role they need. The command prompts twice for a hidden password of 15–256 characters. An existing email keeps its current password and role.
+
+```sh
+uv run --locked python -m app.create_admin --email editor@example.org --role editor
+```
+
+Start FastAPI and Vite, then open the [admin sign-in page](http://localhost:5173/admin/sign-in). Admins and editors can open **Manage events** and publish events. A reviewer can sign in and see their dashboard. To provision staff in local staging, run the same Python module inside the migrated API container.
+
+Sign-in uses a host-only, Secure, HTTP-only cookie with an eight-hour lifetime. Use `localhost` for local browser development and HTTPS on a deployed hostname. The frontend and API share an origin through the Vite or Caddy proxy. Admin API clients must include `X-Code2Chill-Admin: 1` on POST requests, including sign-in and sign-out. Five consecutive failed password checks pause sign-in for that account for five minutes.
+
+### Publish an event
+
+1. Open **Manage events** and choose **New draft**, or open an existing event. Enter a title, URL slug and summary. You can save the draft while the date is pending. Enter optional times in India Standard Time.
+2. Confirm the event date before publishing. To open registration, choose **Open** and supply the organizer-verified event-specific university URL. The opening and closing times control when the public registration link appears.
+3. Choose **Save draft**, then **Preview draft**. Check the event date, registration status and destination. The last published revision stays public while you work.
+4. Choose **Publish event**, confirm, and follow **View published page**. If another editor has saved changes since your preview, reload the draft and review their changes before publishing.
+
+The optional seeded practice event stays visible only to staff. Updates to ordinary events appear at `/events` and `/events/<slug>`.
+
 ### Verification Endpoints
 * **Interactive API Documentation (Swagger)**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
 * **Health Check & Database Connectivity**: [http://localhost:8000/api/health](http://localhost:8000/api/health)
@@ -77,6 +98,12 @@ npm run dev
 
 * **Local Web Interface**: [http://localhost:5173](http://localhost:5173)
 * **Service Status Route**: [http://localhost:5173/status](http://localhost:5173/status)
+
+### Verify the Vite API proxy
+
+If the admin dashboard says “Couldn’t load this page,” open [the health endpoint through Vite](http://localhost:5173/api/health). It should return HTTP 200 with `{"status":"ok"}`. A 404 there and at `http://127.0.0.1:8000/api/health` indicates that Vite's default port is serving an app without the current health route.
+
+If port 8000 is already in use, start this repository's API from `backend/` with `uv run --locked uvicorn app.main:app --reload --port 8001`. Set `API_PROXY_TARGET=http://127.0.0.1:8001` in `frontend/.env.local` and restart Vite if it hasn't reloaded. Verify the health endpoint through Vite again, then open `/admin` in a signed-out browser to check that it sends you to sign-in.
 
 ---
 

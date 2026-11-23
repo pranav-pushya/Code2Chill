@@ -171,7 +171,12 @@ export function AdminArea({ events = false }) {
       )}
       {result.data &&
         (events ? (
-          <EventList events={result.data} />
+          <>
+            <Link className="action" to={`${eventsPath}/new`}>
+              New draft
+            </Link>
+            <EventList events={result.data} />
+          </>
         ) : (
           <>
             <p>Signed in as {result.data.email}</p>
@@ -205,7 +210,11 @@ function EventList({ events }) {
     <ul className="admin-events">
       {events.map((event) => (
         <li key={event.id}>
-          <strong>{event.title}</strong>
+          <strong>
+            <Link className="text-link" to={`${eventsPath}/${event.id}`}>
+              {event.title}
+            </Link>
+          </strong>
           {event.event_date && (
             <time dateTime={event.event_date}>{event.event_date}</time>
           )}

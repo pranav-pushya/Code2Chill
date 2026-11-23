@@ -2,7 +2,7 @@
 
 **Last updated:** 23 November 2026
 
-**Current stage:** Data modeling complete. Development and local staging use the initial schema.
+**Current stage:** Phase 6 is complete locally. Staff can publish a saved event revision to the public schedule and direct students to the university portal for registration.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -51,11 +51,12 @@ Club records will be stored in a database and returned through the backend. Admi
 | Representative page designs | Verified static HTML | [Home](design/index.html) and [event detail](design/domination.html) work at phone and desktop widths |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
-| React/Vite scaffold | Built and browser-verified | [React routes](../frontend/src/main.tsx) and shared visual assets |
+| React/Vite scaffold | Built with JavaScript and JSX | [React routes](../frontend/src/main.jsx) and shared visual assets. The JavaScript migration passed the Vite build. |
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Verified in development and staging | [Schema, diagram and repeatable seed](DATA_MODEL.md#migrations-and-initial-records) are implemented. |
-| Registration and recruitment | Planned | Prototype buttons do not save submissions |
-| Authentication and dashboard | Planned | Not implemented |
+| Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
+| Recruitment | Planned | Recruitment intake and application review remain Phase 8 work. |
+| Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
 | Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
 
@@ -146,7 +147,7 @@ Schema revisions -> Alembic migrations
 
 | Component | Planned responsibility | Rationale |
 | --- | --- | --- |
-| React + TypeScript | Browser interface and state | Reusable components and explicit types |
+| React + JavaScript | Browser interface and state | Reusable components with JSX |
 | Vite | Development and build tooling | Dedicated frontend build workflow |
 | Tailwind CSS | Shared styling rules | Consistent visual implementation |
 | FastAPI | Python API and backend coordination | Validation integration and generated API documentation |
@@ -156,7 +157,7 @@ Schema revisions -> Alembic migrations
 | Alembic | Schema revisions | Repeatable, reviewable database changes |
 | Object storage | Persistent media | Media remains available across app deployments |
 
-These choices are proposals, not installed dependencies. Record actual versions and commands when scaffolding happens.
+See the [current implementation status](#3-current-implementation-status) for what is in use today.
 
 ### Planned launch registration
 
@@ -180,7 +181,7 @@ If a future release takes ownership of registration, the proposed local flow is:
 | DEC-003 | Python backend with dynamic records | Confirmed requirement | Assignment requirement |
 | DEC-004 | React + FastAPI + PostgreSQL | Proposed | Confirm assessment interpretation before scaffolding |
 | DEC-005 | Local versus university registration | Superseded by DEC-011 | The launch uses an external handoff |
-| DEC-006 | Administrator session strategy | Open | Specify storage, expiry, logout, and relevant request protections |
+| DEC-006 | Administrator session strategy | Implemented in 6.1 | Use eight-hour server-side sessions, Argon2id password hashes and a Secure HTTP-only cookie. Recheck the account and permissions on each protected request. See [administration](DATA_MODEL.md#administration). |
 | DEC-007 | Production ink transition | Open | Requires performance/accessibility evaluation |
 | DEC-008 | Update documentation after every task/step | Confirmed | Accurate viva preparation and handover |
 | DEC-009 | Avoid copying DGIT's visual identity while using its content structure as evidence | Design recommendation | Current DGIT site is substantial; earlier “basic static template” characterization was unsupported |
@@ -188,6 +189,7 @@ If a future release takes ownership of registration, the proposed local flow is:
 | DEC-011 | Use the university portal for launch event sign-ups | Selected for launch | One system holds registration records. The organizer confirms each event link and state. |
 | DEC-012 | Show an announcement while no recruitment cycle is approved | Selected for launch | Keeps the Join page usable while the club confirms actual dates, domains, eligibility, application route, and reviewers. |
 | DEC-013 | Use the first-release scope as the baseline for route and workflow planning | Selected for launch | The site can demonstrate dynamic content publication with verified records and official links. Deferred features and open decisions have owners or follow-up phases. |
+| DEC-014 | Use JavaScript and JSX for React | Confirmed | The project owner requested JavaScript. Vite builds the React frontend directly. |
 
 When replacing a decision, record the reason and affected implementation. Retain the old entry as superseded.
 
@@ -303,6 +305,16 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-104 | Phase 5.8 pass 2 | Applied the migration to development and local staging. Both first seeds inserted ten members, two events and two projects. Both reruns inserted zero rows. Staging readiness passed. | Phase 5 verification. |
 | VER-105 | Link security and profile pass 1 | Updated Instagram profile handle and sharing URL across HTML prototypes, React frontend, README, and content register; added `target="_blank" rel="noopener noreferrer"` to external university and Instagram links; Biome lint and Vite build passed in 5.3s. | Link security and profile verification. |
 | VER-106 | Link security and profile pass 2 | Tested Chrome emulation at 390px and 1440px with `.local/browser.py preview`; verified external anchor attributes and URL resolution. | Browser emulation verification. |
+| VER-107 | JavaScript migration build and style checks | `npm run build`, `npm run format:check`, and `npm run lint` passed after pruning unused dependencies. | Frontend build, formatting, and lint. |
+| VER-108 | JavaScript migration source and dependency review | Confirmed that the manifest matches the lockfile, the compiler is absent from the lockfile and local install, and the HTML and Dockerfile use the renamed files. `git diff --check` passed. | Source and dependency checks. |
+| VER-109 | Phase 6.1 database and API | All eight pytest cases passed against PostgreSQL. The suite covered role changes, deactivation, expiry, revocation, cookie flags, rejected credentials, cooldown recovery and migration round trips. Ruff lint and formatting passed. The development database reported revision 0002 at head. | Local database. Test writes used rollback-only schemas. |
+| VER-110 | Phase 6.1 browser workflow | Chrome at 390px and 1440px opened the protected list, redirected to sign-in, rejected a wrong password, returned the editor to three saved events and preserved the session on refresh. Sign-out blocked re-entry. Both widths fit the viewport. Biome lint, formatting and the Vite production build passed. | Local React, FastAPI and PostgreSQL with a temporary editor. |
+| VER-111 | Dashboard proxy recovery | Both the Vite proxy and port 8000 returned 404 for the health and session routes. After Vite switched to port 8001, proxied health returned 200 and signed-out session and event-list requests returned 401. The live sign-in route rejected synthetic credentials. | Running development frontend and API. PostgreSQL was healthy at revision 0002. |
+| VER-112 | Dashboard browser and backend recheck | Chrome showed the sign-in form from `/admin` and reported invalid credentials. All eight PostgreSQL-backed tests passed, including successful sign-in with a disposable staff account, event permissions, expiration and revocation. | The first headless page dump timed out. The Chrome debugging checks passed before their shutdown wait timed out. |
+| VER-113 | Phase 6 event API integration | All 14 tests passed against PostgreSQL, including draft creation, validation, role checks, preview, duplicate slugs, stale saves and publication, audit records, and preservation of the previous public revision. Ruff, Biome and the production build passed. | Disposable test schemas. The existing Starlette test-client deprecation warning remains. |
+| VER-114 | Phase 6 browser workflow | Headless Chrome at 390px and 1440px saved a new draft, previewed it, exercised cancel and confirm, followed the public link, verified the registration destination, edited the event and republished with registration closed. Both widths showed the revised event through the schedule. The running Vite proxy also advertised the new editor routes. | Built React app and FastAPI with an isolated PostgreSQL transaction. University registration was checked through its link destination. |
+| VER-115 | Phase 6 delivery recheck | All 14 PostgreSQL-backed tests passed both in the development tree and in a standalone Phase 6 snapshot. The standalone snapshot also passed lint, formatting and the production build. | Local verification with disposable schemas. |
+| VER-116 | Phase 6 browser recheck | At 390px and 1440px, Chrome preserved an edited field when the editor canceled the leave prompt. It also verified draft publication, public snapshot isolation after an edit, the university link and the closed registration state after republication. | Built Phase 6 snapshot with temporary editor credentials and events. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -782,7 +794,7 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Roadmap step:** Phase 4.4.
 - **Status:** Verified.
 - **Objective:** Initialize the React frontend.
-- **Changes and files:** Added the [React entry point](../frontend/src/main.tsx), [styles](../frontend/src/styles.css), TypeScript configuration, HTML shell and [Vite configuration](../frontend/vite.config.ts).
+- **Changes and files:** Added the React entry point (`main.tsx` at the time), [styles](../frontend/src/styles.css), TypeScript configuration, HTML shell and Vite configuration (`vite.config.ts` at the time).
 - **How it works:** React Router serves Home, a status route and an unknown-page fallback. Vite bundles the Phase 3 fonts, mark and CSS. Tailwind utilities are available to components.
 - **Why this approach:** Using the original assets keeps the scaffold consistent with the verified design.
 - **Validation:** VER-065 and VER-066. TypeScript, Vite production build and Biome lint passed. Chrome loaded the built Home and status pages at 390 and 1440 px, verified images and layout width, refreshed the status route and returned home.
@@ -808,7 +820,7 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Roadmap step:** Repository maintenance and Phase 4.6 connectivity foundation.
 - **Status:** Verified.
 - **Objective:** Clean root clutter before sharing the repository and rename `BUILD_AND_VIVA_GUIDE.md` to `BUILD_GUIDE.md`.
-- **Changes and files:** Renamed [BUILD_GUIDE.md](BUILD_GUIDE.md); untracked `GEMINI.md` and added it to [.gitignore](../.gitignore); removed root duplicate `extra.html` (preserved in [Expriments/extra.html](../Expriments/extra.html)) and loose `download.svg`/`download2.svg`; updated documentation links in [AGENTS.md](AGENTS.md) and [README.md](../README.md); tracked backend healthcheck in [backend/app/main.py](../backend/app/main.py), tests in [backend/tests/test_health.py](../backend/tests/test_health.py), and frontend status view in [frontend/src/Status.tsx](../frontend/src/Status.tsx).
+- **Changes and files:** Renamed [BUILD_GUIDE.md](BUILD_GUIDE.md); untracked `GEMINI.md` and added it to [.gitignore](../.gitignore); removed root duplicate `extra.html` (preserved in [Expriments/extra.html](../Expriments/extra.html)) and loose `download.svg`/`download2.svg`; updated documentation links in [AGENTS.md](AGENTS.md) and [README.md](../README.md); tracked backend healthcheck in [backend/app/main.py](../backend/app/main.py), tests in [backend/tests/test_health.py](../backend/tests/test_health.py), and frontend status view (`frontend/src/Status.tsx` at the time).
 - **How it works:** Sensitive assistant prompts and experimental prototypes are removed from the root Git tree. All internal references resolve to `docs/BUILD_GUIDE.md`. The backend and frontend verify service availability via `/api/health`.
 - **Why this approach:** Evaluators inspecting the repository see an uncluttered, production-oriented structure without duplicate HTML prototypes, loose SVG downloads, or exposed assistant instruction files.
 - **Validation:** VER-069 and VER-070. Biome lint and Vite production build passed cleanly. Git index confirmed clean deletion of root artifacts, untracking of assistant prompts, and exact renaming of the build guide.
@@ -891,7 +903,7 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Roadmap step:** Phase 4.6.
 - **Status:** Verified.
 - **Objective:** Verify the full database readiness path.
-- **Changes and files:** Reviewed the existing [health endpoint](../backend/app/main.py), [health tests](../backend/tests/test_health.py) and [React status page](../frontend/src/Status.tsx). Updated the roadmap and this guide after verification.
+- **Changes and files:** Reviewed the existing [health endpoint](../backend/app/main.py), [health tests](../backend/tests/test_health.py) and [React status page](../frontend/src/Status.jsx). Updated the roadmap and this guide after verification.
 - **How it works:** The React route requests /api/health through Vite. FastAPI borrows a database connection and runs SELECT 1. The browser offers a retry after an unavailable response.
 - **Why this approach:** This checks a real round trip from the browser to PostgreSQL. The reorganized checkout already contained the implementation.
 - **Validation:** VER-081 and VER-082. Both backend tests passed, covering a real query and HTTP 503 for an unreachable database. Verified direct and proxied HTTP responses, navigation and refresh in Chrome at 390 and 1440 px. Blocking the request produced the failure message and retry recovered.
@@ -1049,13 +1061,81 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Objective:** Configure Instagram, LinkedIn, and official university club links to open in a new tab (`target="_blank" rel="noopener noreferrer"`), and update the official Instagram profile URL and LinkedIn posts feed URL.
 - **Changes and files:**
   - Updated [docs/design/index.html](design/index.html) and [docs/design/domination.html](design/domination.html): set `target="_blank" rel="noopener noreferrer"` on Instagram, LinkedIn, university club page, and university event links; updated Instagram link to `https://www.instagram.com/code2chill.osl?utm_source=ig_web_button_share_sheet&lqvp=ZDNlZDc0MzIxNw%3D%3D`; added LinkedIn feed link `https://www.linkedin.com/company/code2chill/posts/?feedView=all` to footers.
-  - Updated [frontend/src/main.tsx](../frontend/src/main.tsx): added `target="_blank" rel="noopener noreferrer"` and both updated Instagram and LinkedIn links in header navigation, while retaining clean status link in footer.
+  - Updated the [React entry point](../frontend/src/main.jsx): added `target="_blank" rel="noopener noreferrer"` and both updated Instagram and LinkedIn links in header navigation, while retaining clean status link in footer.
   - Updated [README.md](../README.md) and [docs/CONTENT_REGISTER.md](CONTENT_REGISTER.md) (rows `CLUB-06` and `CLUB-07`) to record the verified profile and feed URLs.
 - **How it works:** External links open in a new browser tab without retaining window opener references (`noopener`) or referrer headers (`noreferrer`), protecting user privacy and preventing tab-nabbing security risks while keeping the Code2Chill website open in the user's main tab.
 - **Why this approach:** Visitors browsing university portals or social media profiles should not lose their place on the club website. Using `noopener noreferrer` is standard security hygiene for cross-origin link targets.
 - **Validation:** VER-105 and VER-106. Biome lint and Vite production build passed cleanly. Automated Chrome browser verification verified layout, image rendering, and link integrity at 390px and 1440px.
 - **Limitations / remaining work:** None for this link configuration.
 - **Viva Q&A:** **Why must `target="_blank"` always pair with `rel="noopener noreferrer"`?** Without `noopener`, the target page can access `window.opener` and redirect the referring page to a malicious URL (tab-nabbing). `noreferrer` also prevents leaking sensitive query parameters in the HTTP Referer header.
+
+### TASK-055 — Switch the React frontend to JavaScript
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 4.4 follow-up.
+- **Status:** Verified for the frontend build and tooling.
+- **Objective:** Use plain JavaScript and JSX for React as requested by the project owner.
+- **Changes and files:** Converted [main.jsx](../frontend/src/main.jsx), [Status.jsx](../frontend/src/Status.jsx), and [vite.config.js](../frontend/vite.config.js). Updated the [HTML entry point](../frontend/index.html) and [Dockerfile](../Dockerfile). Removed `tsconfig.json`, the compiler, and the direct type dependencies. Updated the [package manifest](../frontend/package.json), [lockfile](../frontend/package-lock.json), README, and roadmap.
+- **How it works:** The HTML shell loads `main.jsx`. Vite transforms the JSX and bundles the app. The status page still uses React state to render the result of its health request.
+- **Why this approach:** JavaScript matches the owner's preference and removes the separate compiler step. The build no longer checks frontend types.
+- **Validation:** VER-107 and VER-108 cover the production bundle, formatting, lint, and removal of the compiler.
+- **Limitations / remaining work:** Browser and Docker builds were outside this verification pass.
+- **Viva Q&A:** **What does the `.jsx` extension mean?** The file contains JavaScript with JSX markup, which Vite transforms into JavaScript the browser can run.
+
+### TASK-056 — Authenticate staff and protect the event list
+
+23 November 2026 · Phase 6.1 · Verified locally
+
+| Topic | Implementation |
+| --- | --- |
+| Objective | Let staff sign in and give authorized editors access to saved events. |
+| Changes | Added account provisioning, sign-in, session lookup, sign-out, a protected event list and React routes for sign-in, dashboard and events. Migration 0002 adds sign-in failure tracking to existing accounts. [Provisioning](../backend/app/create_admin.py) · [Session handling](../backend/app/admin_auth.py) · [Event API](../backend/app/admin_events.py) · [React views](../frontend/src/Admin.jsx) · [Migration](../backend/migrations/versions/0002_sign_in_attempts.py) |
+| How it works | Staff enter their email and password. FastAPI verifies Argon2id, issues a random cookie and stores its digest in PostgreSQL. The server checks expiry, revocation, account activity and role. Admins and editors can read the event list. Reviewers receive HTTP 403 on that route. |
+| Rationale and tradeoffs | A database lookup per protected request lets sign-out and permission changes take effect on the next request. The same-origin frontend sends a custom header on writes to prevent cross-site form submissions. The account row serializes simultaneous login checks and records the five-minute cooldown after five failures. |
+| Verification | VER-109 and VER-110. The initial sandboxed health test could not reach loopback PostgreSQL. The full suite passed with local database access. The first browser probe tried to serialize a form element. A boolean readiness check fixed the probe and both viewport runs passed. [API tests](../backend/tests/test_admin_auth.py) |
+| Scope and remaining work | The event list is read-only. Step 6.2 adds draft editing, preview and publishing. Revision 0002 was applied to local development. Staging rollout and production verification remain pending. [Account setup](DEVELOPMENT.md#create-a-staff-account) |
+| Viva | **What happens if an editor becomes a reviewer while signed in?** Their session still identifies them, but the next event-list request reads their current role and returns HTTP 403. |
+
+### TASK-057 — Restore the local administrator dashboard
+
+23 November 2026 · Phase 6.1 follow-up · Verified locally
+
+| Topic | Result |
+| --- | --- |
+| Objective | Reproduce and resolve the dashboard error on the running Vite site. |
+| Cause | Vite forwarded `/api` to an older Code2Chill service on port 8000. That service exposed its schema at `/openapi.json` and returned 404 for the current health and session routes. |
+| Changes and rationale | Started the current FastAPI application on port 8001 and wrote the Vite proxy target to the ignored `frontend/.env.local`. Vite reloaded the new target, and the existing API on port 8000 kept running. Documented how to diagnose the same symptom. [Development setup](DEVELOPMENT.md#verify-the-vite-api-proxy) |
+| Validation and scope | VER-111 and VER-112 cover the live proxy, signed-out browser, invalid password feedback and PostgreSQL-backed integration tests. The checks used synthetic credentials and disposable staff accounts. The port override is local to this workspace. |
+| Viva | **Why did the dashboard render when the API failed?** Vite served the React page successfully. Its proxy forwarded the session request to a separate FastAPI process that lacked the route. |
+
+### TASK-058 — Publish an event from a saved draft
+
+23 November 2026 · Phase 6.2 · Verified locally, VER-113 and VER-114
+
+The protected editor saves a title, slug, summary, campus date and times, venue, source and registration details. A separate preview displays the saved revision and explains any missing publication requirements. Publishing asks for confirmation. The API locks the event, checks the revision seen by the editor and commits the snapshot and audit entry together. A second editor with an outdated form gets a conflict and can reload. Published slugs stay stable. Existing practice records remain staff-only. [Editor](../frontend/src/EventWorkspace.jsx) · [API](../backend/app/admin_events.py) · [Integration tests](../backend/tests/test_event_workflow.py)
+
+**Viva question.** Why does the preview carry a revision? It lets the server check that the editor reviewed the same content they are publishing.
+
+### TASK-059 — Verify published event discovery and university registration
+
+23 November 2026 · Phases 6.3–6.5 and 6.7 · Verified locally, VER-113 and VER-114
+
+| Step | Behavior and verification |
+| --- | --- |
+| 6.3 | Reused the public snapshot endpoints. Integration tests fetched the previous title after a draft save and the new title after republication. |
+| 6.4 | Reused the event detail component in the protected preview. Chrome followed a published event from the schedule and rendered the revised summary. |
+| 6.5 | The server validates the event-specific university URL and applies registration windows. Browser checks asserted the open link destination using an isolated fixture. |
+| 6.7 | The public page displays registration status and the open destination. Closing registration removed the booking action after publication. |
+
+**Viva question.** Where does a student receive confirmation? The university portal owns registration and seat allocation. Staff confirm the destination and status with the organizer before publishing. Local steps 6.6 and 6.8 are inapplicable for launch. [Event pages](../frontend/src/Events.jsx) · [Public API](../backend/app/public_content.py) · [Launch decision](LAUNCH_SCOPE.md#event-registration)
+
+### TASK-060 — Recheck Phase 6 and protect unsaved edits
+
+23 November 2026 · Phase 6 follow-up · Verified locally, VER-115 and VER-116
+
+The editor asks for confirmation before returning to the list with unsaved changes or reloading over local edits after a revision conflict. The delivery groups the JavaScript setup, staff access and event workflow in dependency order. Tests ran against a standalone Phase 6 snapshot as well as the working tree. [Event editor](../frontend/src/EventWorkspace.jsx)
+
+**Viva question.** What happens if a staff member cancels the leave prompt? The editor keeps the unsaved form values so they can continue or save.
 
 ## 11. Template for Every Future Task or Step
 

@@ -1,10 +1,12 @@
-import { AdminArea, SignIn } from "./Admin.jsx";
-import Status from "./Status.jsx";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter, Link, Route, Routes } from "react-router";
-import icon from "../../docs/design/brand/club-icon-64.png";
 import mark from "../../docs/design/brand/club-mark-480.webp";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router";
 import favicon from "../../docs/design/brand/favicon.ico";
+import { AdminArea, SignIn } from "./Admin.jsx";
+import { EventWorkspace } from "./EventWorkspace.jsx";
+import { EventDetail, Events } from "./Events.jsx";
+import { Missing, SiteLayout } from "./SiteLayout.jsx";
+import Status from "./Status.jsx";
 import "./styles.css";
 
 function Home() {
@@ -40,65 +42,30 @@ function Home() {
 function App() {
   return (
     <BrowserRouter>
-      <a href="#main" className="action skip">
-        Skip to content
-      </a>
-      <header className="site-head">
-        <div className="wrap head-inner">
-          <Link className="brand" to="/">
-            <img src={icon} width="32" height="32" alt="" />
-            Code2Chill
-          </Link>
-          <div className="nav-links">
-            <a
-              className="text-link"
-              href="https://www.instagram.com/code2chill.osl?utm_source=ig_web_button_share_sheet&lqvp=ZDNlZDc0MzIxNw%3D%3D"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Instagram
-            </a>
-            <a
-              className="text-link"
-              href="https://www.linkedin.com/company/code2chill/posts/?feedView=all"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
-          </div>
-        </div>
-      </header>
-      <main id="main">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/status" element={<Status />} />
-          <Route path="/admin/sign-in" element={<SignIn />} />
-          <Route path="/admin" element={<AdminArea key="dashboard" />} />
+      <Routes>
+        <Route element={<SiteLayout />}>
+          <Route index element={<Home />} />
+          <Route path="events" element={<Events />} />
+          <Route path="events/:slug" element={<EventDetail />} />
+          <Route path="status" element={<Status />} />
+          <Route path="admin/sign-in" element={<SignIn />} />
           <Route
-            path="/admin/content/events"
+            path="admin/content/events/new"
+            element={<EventWorkspace create />}
+          />
+          <Route path="admin/content/events/:id" element={<EventWorkspace />} />
+          <Route
+            path="admin/content/events/:id/preview"
+            element={<EventWorkspace preview />}
+          />
+          <Route path="admin" element={<AdminArea key="dashboard" />} />
+          <Route
+            path="admin/content/events"
             element={<AdminArea key="events" events />}
           />
-          <Route
-            path="*"
-            element={
-              <section className="wrap service-page">
-                <h1>Page unavailable</h1>
-                <Link className="text-link" to="/">
-                  Back to home
-                </Link>
-              </section>
-            }
-          />
-        </Routes>
-      </main>
-      <footer className="site-foot">
-        <div className="wrap foot-inner">
-          <span>Code2Chill · Chitkara University</span>
-          <Link to="/status">Service status</Link>
-          <Link to="/admin">Admin sign-in</Link>
-        </div>
-      </footer>
+          <Route path="*" element={<Missing />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

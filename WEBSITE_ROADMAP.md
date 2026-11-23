@@ -130,7 +130,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **4.1 Create the directory structure.** Establish `frontend/`, `backend/`, and `docs/`.
 - [x] **4.2 Configure repository tooling.** Add environment templates, ignore rules, formatting, linting, and dependency lock files.
 - [x] **4.3 Initialize the backend.** Configure the Python environment and FastAPI application.
-- [x] **4.4 Initialize the frontend.** Configure React, JavaScript, routing, and the styling system.
+- [x] **4.4 Initialize the frontend.** Configure React with JavaScript, routing, and the styling system.
 - [x] **4.5 Connect PostgreSQL.** Establish development database configuration and connection management.
 - [x] **4.6 Verify connectivity.** Add a health endpoint and call it from the frontend.
 - [x] **4.7 Add CI and setup documentation.** Check builds, formatting, and relevant tests; document startup commands.
@@ -171,13 +171,13 @@ Select compatible, maintained dependency versions during setup rather than copyi
 ### Steps
 
 - [x] **6.1 Implement administrator authentication.** Staff can sign in and sign out. The server restricts the event-management API to active admins and editors. [Account setup](docs/DEVELOPMENT.md#create-a-staff-account)
-- [ ] **6.2 Build a minimal event editor.** Support creating, editing, previewing, and publishing an event.
-- [ ] **6.3 Implement public event endpoints.** Expose published event lists and event details.
-- [ ] **6.4 Connect event pages.** Render database records on the frontend.
-- [ ] **6.5 Implement registration ownership.** Build local registration or the approved external handoff.
-- [ ] **6.6 Enforce local registration rules.** Validate submissions, prevent duplicates, check deadlines, and allocate seats transactionally where applicable.
-- [ ] **6.7 Complete feedback and review.** Show the event's registration status and its official destination. Surface confirmation and saved records when the website owns registration.
-- [ ] **6.8 Test capacity contention.** Verify simultaneous requests for the last available place if local capacity management is used.
+- [x] **6.2 Build a minimal event editor.** Admins and editors can save, preview and explicitly publish a revision. [Publishing instructions](docs/DEVELOPMENT.md#publish-an-event)
+- [x] **6.3 Implement public event endpoints.** The list and detail routes serve the published snapshots of ordinary events.
+- [x] **6.4 Connect event pages.** The schedule and detail pages render published records. Staff preview the saved revision in the same event layout.
+- [x] **6.5 Implement registration ownership.** Open registration links to the organizer-verified event page on the university portal.
+- **6.6 Enforce local registration rules.** Not applicable for launch. The university portal handles submissions, duplicates, deadlines, and seats.
+- [x] **6.7 Complete feedback and review.** Show the effective registration state and display the university destination alongside the open registration action.
+- **6.8 Test capacity contention.** Not applicable for launch. The university portal allocates the last seat. [Registration ownership](docs/LAUNCH_SCOPE.md#event-registration)
 
 ### Deliverables
 

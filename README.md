@@ -31,7 +31,7 @@ This repository houses the **dynamic Python full-stack club portal**, featuring 
 
 ---
 
-The current scaffold serves Home and Service Status. The status page checks PostgreSQL through FastAPI.
+Browse the public event schedule or sign in to save, preview and publish events. [Publish an event](docs/DEVELOPMENT.md#publish-an-event)
 
 ## ✨ Planned club features
 
