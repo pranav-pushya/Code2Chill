@@ -1,6 +1,7 @@
 # Code2Chill — Living Build Documentation and Viva Guide
 
-**Last updated:** 16 November 2026  
+**Last updated:** 23 November 2026
+
 **Current stage:** Research and planning, with an existing standalone prototype.  
 **Policy:** Update this guide after every task or independently completed step.
 
@@ -29,7 +30,7 @@ Code2Chill needs a public club website and an interface for authorized leads to 
 
 The assignment requires a Python full-stack website with dynamic data. The proposed interpretation is a Python backend with a React browser interface. Confirm any assessment rule requiring Python-rendered templates before scaffolding.
 
-The owner confirmed Lakshay Kalra as president and Jiya Arora as vice-president. Other roster entries, event details, and publication statistics still need appropriate confirmation.
+The owner confirmed Lakshay Kalra as president and Jiya Arora as vice-president. The university roster and two archived events are documented in the [content register](CONTENT_REGISTER.md). Exact event times, results, and publication-ready community media still need confirmation.
 
 ### What dynamic data means
 
@@ -43,6 +44,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Content register | Created and verified | [Register](CONTENT_REGISTER.md) records evidence, checks, asset availability, and open content gaps |
 | Phase 1 launch scope | Defined and verified | [Launch scope](LAUNCH_SCOPE.md) describes the essential release, university registration, recruitment defaults, and open decisions |
 | Phase 2 pages and journeys | Defined and verified | [Page plan](PAGES_AND_JOURNEYS.md) and [wireframes](WIREFRAMES.md) specify actions, states, and recovery paths |
+| Design reference analysis | Reviewed at two widths | Three rendered homepages, including the Noddal scene after loading. See [reference analysis](DESIGN_REFERENCE_ANALYSIS.md) |
 | Brand assets | Existing, inspected | Two 745 × 740 PNG logo variants |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
@@ -75,6 +77,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | [LAUNCH_SCOPE.md](LAUNCH_SCOPE.md) | Launch workflow decisions and the boundaries of local data handling |
 | [PAGES_AND_JOURNEYS.md](PAGES_AND_JOURNEYS.md) | Planned routes, navigation, and user journeys |
 | [WIREFRAMES.md](WIREFRAMES.md) | Desktop and mobile layout sketches using verified club copy |
+| [DESIGN_REFERENCE_ANALYSIS.md](DESIGN_REFERENCE_ANALYSIS.md) | Evidence-based critique of the three tech-lead references and Code2Chill design brief |
 | This guide | Current build explanation, decisions, verification, and task history |
 
 ## 5. Existing Prototype — How It Works
@@ -179,6 +182,8 @@ If a future release takes ownership of registration, the proposed local flow is:
 | DEC-006 | Administrator session strategy | Open | Specify storage, expiry, logout, and relevant request protections |
 | DEC-007 | Production ink transition | Open | Requires performance/accessibility evaluation |
 | DEC-008 | Update documentation after every task/step | Confirmed | Accurate viva preparation and handover |
+| DEC-009 | Avoid copying DGIT's visual identity while using its content structure as evidence | Design recommendation | Current DGIT site is substantial; earlier “basic static template” characterization was unsupported |
+| DEC-010 | Render essential content before nonessential visual effects | Design recommendation | Noddal remained on its loader in the observed browser session |
 | DEC-011 | Use the university portal for launch event sign-ups | Selected for launch | One system holds registration records. The organizer confirms each event link and state. |
 | DEC-012 | Show an announcement while no recruitment cycle is approved | Selected for launch | Keeps the Join page usable while the club confirms actual dates, domains, eligibility, application route, and reviewers. |
 | DEC-013 | Use the first-release scope as the baseline for route and workflow planning | Selected for launch | The site can demonstrate dynamic content publication with verified records and official links. Deferred features and open decisions have owners or follow-up phases. |
@@ -195,6 +200,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-004 | Prototype source and anchors | Missing targets and unimplemented workflows identified | No live-browser test |
 | VER-005 | Roadmap phase/criterion checks | Eleven phases and criteria present | Markdown structure check |
 | VER-006 | Python checks of documentation readability, relative links, section/task counts, and maintenance references | Passed: four files readable, local links resolve, twelve guide sections and four historical task entries present | Documentation-only checks; no application tests run |
+| VER-007 | Opened DGIT and Ksen in Chrome; inspected desktop screenshots and accessibility structure | Both homepages visually reviewed, including DGIT content sections and Ksen's theme and project presentation | Desktop observations only; no full mobile or interaction audit |
+| VER-008 | Opened Noddal in Chrome, reloaded once, and inspected public HTML/CSS/JS | Browser remained on branded loader; source exposed typography, colors, breakpoints, reduced-motion rules, and page structure | Rendered page and live motion not verified |
 | VER-009 | Phase 1.1 pass 1, Python checks and `git diff --check` | All 23 rows had unique IDs, complete fields, valid statuses and dates, and resolvable local links. Both PNG dimensions, the transparent logo's alpha channel, and the Phase 1 checkbox state matched the register. | Repository and document structure |
 | VER-010 | Phase 1.1 pass 2, source and publication review | Cross-checked the two leadership titles against the owner-confirmed roadmap, the club and event claims against indexed LinkedIn evidence, and portal capability against the university's indexed portal page. | Direct retrieval of the LinkedIn pages, Instagram profile, and club-specific portal page did not succeed. Unsupported claims remain open. |
 | VER-011 | Phase 1.2 preliminary source and reachability check | Checked the club's indexed profile, public role evidence, and the supplied portal and social URLs. Direct requests returned generic HTML for Instagram and the university route, and HTTP 403 for LinkedIn. | The browser connection timed out. Chrome reported active user input during the fallback. The approved roster, domain list, and official contact route still require confirmation. |
@@ -229,6 +236,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-040 | Phase 2.7 pass 2, final Phase 2 repository review | Verified staged links, all seven Phase 2 completion markers, verification records, and changed files. `git diff --cached --check` passed. | Document validation. |
 | VER-041 | Phase 1 and 2 audit, correction pass 1 | Checked the 14 completed roadmap items, 29 content records, both logos, the live GitHub branch, and the corrected event and recruitment scenarios. The university pages, project repositories, NEXUS demo, and Instagram endpoint returned HTTP 200. | The LinkedIn profile returned HTTP 403 to the direct request. Public indexing still showed the club profile. The audit used no live applications or bookings. |
 | VER-042 | Phase 1 and 2 audit, correction pass 2 | Chrome rendered all three diagrams to SVG with Mermaid 11.12.0. Checked staged links, 14 wireframe pairs, 36 control labels, the 22 interface states, and `git diff --cached --check`. | Planning and diagram validation. The website implementation still needs runtime tests. |
+| VER-043 | Phase 3.1 pass 1 | Rendered all three homepages at 1440 × 860 and compared the first-screen captures with computed headings, insets, and navigation. | Homepage samples with normal motion. |
+| VER-044 | Phase 3.1 pass 2 | Loaded all three at 390 × 860 with reduced motion. Compared captures and computed layout, then repeated Noddal in fresh sessions until its scene was visible at both widths. | Phone emulation and two Noddal samples. Timing varies with the network and device. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -322,6 +331,20 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-006 passed. A Python check verified file readability, local link targets, twelve guide sections, four task entries, and references in the instruction/navigation files.
 - **Limitation:** Instructions govern future work; they are not a background service detecting arbitrary manual edits. Manual contributors must follow the update policy too.
 - **Viva takeaway:** Explain what changed, how it works, why it was chosen, and what was checked.
+
+### TASK-005 — Tech lead design reference analysis
+
+- **Date:** 19 November 2026.
+- **Roadmap step:** Phase 3.1, partial research.
+- **Status:** Research documented; visual inspection of Noddal and full mobile review remain open.
+- **Objective:** Analyze the three supplied reference websites and derive an original visual direction for Code2Chill.
+- **Changes and files:** Added [DESIGN_REFERENCE_ANALYSIS.md](DESIGN_REFERENCE_ANALYSIS.md); corrected the research status in [WEBSITE_ROADMAP.md](../WEBSITE_ROADMAP.md); updated this guide.
+- **How it works:** The analysis records what was visually observed, what came from public source, site-specific strengths and weaknesses, a comparison table, and a Code2Chill design brief.
+- **Why this approach:** A reference should guide design principles. It does not justify copying another site's layout or repeating an inaccurate critique.
+- **Validation:** VER-007 and VER-008. The new Markdown links and task record were checked after writing.
+- **Limitations / remaining work:** Noddal remained on a loader in Chrome. Mobile rendering, full interaction flows, accessibility outcomes, and performance were not exhaustively tested. Phase 3.1 remains unchecked.
+- **Viva Q&A:** **Why did you examine competitors and references?** To identify usable patterns for content hierarchy and presentation, then create an original club identity. **What did the negative reference teach you?** Its rich event proof is useful, while its gaming-specific look and long repeated card sections are a poor match for Code2Chill. **How did you handle incomplete evidence?** I labeled Noddal's CSS and component findings as source-reviewed and avoided claims about its rendered interactions.
+
 
 ### TASK-006 — Create the content register
 
@@ -544,6 +567,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-041 checked the pushed baseline, public source responses, and workflow scenarios. VER-042 rendered the diagrams and checked the staged planning documents and wireframes.
 - **Limitations / remaining work:** The direct LinkedIn request was blocked. The portal and social checks covered public page reachability. The application flow remains a design until the frontend and API are implemented.
 - **Viva Q&A:** **What happens if the network drops after a local application is saved?** A retry of the same attempt can return the original reference once the university email is verified. A new or unsaved attempt must still meet the cycle rules.
+
+### TASK-023 — Review the three references on desktop and phone
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 3.1.
+- **Status:** Reference review complete at two viewport widths.
+- **Objective:** Close the mobile and rendered Noddal gaps from TASK-005.
+- **Changes and files:** Extended the [reference analysis](DESIGN_REFERENCE_ANALYSIS.md) and updated the [roadmap](../WEBSITE_ROADMAP.md).
+- **How it works:** Fresh headless Chrome profiles rendered the public pages. Compared viewport captures with computed heading dimensions, header controls, and the element at the center of the screen.
+- **Why this approach:** A heading can already exist underneath a loader. Checking what the visitor actually sees avoids mistaking the initial DOM for a usable page.
+- **Validation:** VER-043 and VER-044. Both viewport reviews found the expected identities and layouts. A staged whitespace check also caught two trailing spaces in the guide date, which were removed. The repeated Noddal load exposed the logo, music control, and full hero.
+- **Limitations / remaining work:** These samples do not measure general load performance, real-device touch behavior, or accessibility across the full reference sites.
+- **Viva Q&A:** **Why examine the visible surface as well as the HTML?** Text may be present below a full-screen overlay. Only the rendered view established when the Noddal hero could be seen.
 
 ## 11. Template for Every Future Task or Step
 

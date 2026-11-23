@@ -33,7 +33,7 @@ The launch demonstration follows an administrator publishing an event, the updat
 
 **Club content:** The university listing and event records support the club details and the dates and venue for Byte The Vibe and DOMination. The [content register](docs/CONTENT_REGISTER.md) records checked facts and outstanding publication details.
 
-**Design research:** The design references could not be retrieved during the initial research session.
+**Design research:** The [design reference analysis](docs/DESIGN_REFERENCE_ANALYSIS.md) records desktop and phone observations for DGIT Squad, Noddal, and Ksen Panchenko, including the rendered Noddal hero after loading.
 
 ## Proposed Technical Foundation
 
@@ -98,7 +98,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 ### Steps
 
-- [ ] **3.1 Inspect the references.** Once accessible, record specific observations about typography, spacing, navigation, motion, and mobile behavior.
+- [x] **3.1 Inspect the references.** Once accessible, record specific observations about typography, spacing, navigation, motion, and mobile behavior.
 - [ ] **3.2 Establish an original direction.** Connect the blue logo and the club's engineering/community identity with a distinctive composition.
 - [ ] **3.3 Define design tokens.** Specify colors, typography, spacing, borders, button styles, and visible focus indicators.
 - [ ] **3.4 Plan logo usage.** Choose the transparent or background version based on contrast and placement.
