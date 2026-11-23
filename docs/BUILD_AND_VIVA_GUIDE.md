@@ -42,6 +42,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Roadmap | Written | Eleven phases with steps and completion criteria |
 | Content register | Created and verified | [Register](CONTENT_REGISTER.md) records evidence, checks, asset availability, and open content gaps |
 | Phase 1 launch scope | Defined and verified | [Launch scope](LAUNCH_SCOPE.md) describes the essential release, university registration, recruitment defaults, and open decisions |
+| Phase 2 pages and journeys | Defined and verified | [Page plan](PAGES_AND_JOURNEYS.md) and [wireframes](WIREFRAMES.md) specify actions, states, and recovery paths |
 | Brand assets | Existing, inspected | Two 745 × 740 PNG logo variants |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
@@ -53,7 +54,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Automated tests and CI | Planned | No application test suite or CI setup |
 | Deployment | Planned | No deployment created during this work |
 
-**Accurate current viva statement:** “I verified the available club content and defined the first release, including event registration through the university and an announcement state before recruitment opens. The prototype and brand assets are available. The production frontend, Python API, and database are planned.”
+**Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile wireframes show the planned content and actions. The production frontend, Python API, and database are planned.”
 
 ## 4. Repository Map
 
@@ -224,6 +225,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-036 | Phase 2.5 pass 2, repository review | Verified staged links, checklist order, task log, and exact change scope. `git diff --cached --check` passed. | Document validation. |
 | VER-037 | Phase 2.6 pass 1, layout and content review | Inspected the rendered text layout and checked 28 desktop and mobile panels for consistent widths, planned routes, readable wrapping, and source-backed examples. | Low-fidelity diagrams. Browser breakpoints and accessibility still need implementation checks. |
 | VER-038 | Phase 2.6 pass 2, repository review | Verified staged links, the wireframe file, task log, and checklist order. `git diff --cached --check` passed. | Document validation. |
+| VER-039 | Phase 2.7 pass 1, action and journey audit | Checked public and private page actions against the sitemap, wireframe controls, interface states, and Phase 1 ownership boundaries. | Planned actions. Runtime routing and submission tests are later phases. |
+| VER-040 | Phase 2.7 pass 2, final Phase 2 repository review | Verified staged links, all seven Phase 2 completion markers, verification records, and changed files. `git diff --cached --check` passed. | Document validation. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -513,6 +516,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-037 checked 28 panels and their source content. VER-038 verified the staged links, scope, and roadmap sequence.
 - **Limitations / remaining work:** The sketches specify layout and reading order. Phase 3 will add visual styling, and the frontend phases will validate actual browser behavior.
 - **Viva Q&A:** **Why use a long event name in mobile wireframes?** Real labels reveal where wrapping needs room. A short placeholder can hide a problem until published content arrives.
+
+### TASK-021 — Assign page actions and close Phase 2
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 2.7 and Phase 2 completion review.
+- **Status:** Phase 2 planning complete and verified.
+- **Objective:** Give every intended control a destination or observable result and reconcile the complete Phase 2 plan.
+- **Changes and files:** Added the [page action matrix](PAGES_AND_JOURNEYS.md#page-actions) and linked the [Phase 2 deliverables](../WEBSITE_ROADMAP.md#phase-2--define-pages-and-user-journeys). Updated the guide's implementation status.
+- **How it works:** Each public page has a primary action for its active state. Each administrator action names its destination or write result. Shared navigation and recovery actions use the route and state definitions.
+- **Why this approach:** Explicit destinations support consistent desktop and mobile controls. State-specific actions keep an unavailable registration or recruitment path from looking actionable.
+- **Validation:** VER-039 checked routes, labels, wireframe controls, and workflow boundaries. VER-040 checked all Phase 2 deliverables in the staged repository.
+- **Limitations / remaining work:** Phase 3 will establish visual identity. Later development must implement the actions, permission checks, feedback, and routes before they can be exercised in a browser.
+- **Viva Q&A:** **When should an action use a link?** Use links to navigate to a destination. Use buttons for state changes such as opening a menu or saving a draft, with progress and outcome feedback where needed.
 
 ## 11. Template for Every Future Task or Step
 

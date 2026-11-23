@@ -152,3 +152,34 @@ Use visible status text alongside color. Announce progress and confirmed results
 ## Wireframes
 
 The [desktop and mobile sketches](WIREFRAMES.md) show all nine public pages, the conditional local application form, and the administrator entry, publishing, settings, media, and review screens. The event archive, NEXUS, and team examples use source-backed copy. The sketches establish content order before Phase 3 sets visual styles.
+
+## Page actions
+
+| Public page | Primary action and destination | Other actions |
+| --- | --- | --- |
+| Home | **Explore events** → `/events`. | Featured event and project titles open their detail routes. The team and recruitment previews open `/team` and `/join`. |
+| About | **Meet the team** → `/team`. | **Contact** → `/contact`. |
+| Events | Select a published event title → `/events/:slug`. | **Upcoming events** and **Past events** jump to their sections. **Browse past events** and **Back to upcoming events** use the same anchors. |
+| Event Detail | **Register on the university portal** → the approved event-specific page, when open. For pending, full, closed, or ended events, **Back to events** returns to the appropriate list section. | **Browse events** returns to `/events` if the detail is unavailable. |
+| Projects | **View project** → `/projects/:slug`. Include the project name in the accessible label. | **Explore events** → `/events` when the project list is empty. |
+| Project Detail | **Open project demo** → the checked demo when available. Otherwise use **View source repository** → the checked repository, or **Browse projects** → `/projects` if neither resource is available. | When both resources are available, the source repository is the secondary action. |
+| Team | **Explore joining** → `/join`. | **Explore events** → `/events` when team information is unavailable after a successful load. |
+| Join | **View the club on the university portal** → the [official listing](https://chitkarau.life/clubs/code2chill) for announcement, scheduled, or closed states. When recruitment is open, **Apply through the official form** opens the approved external route or **Start application** opens `/join/apply`. | Use the action defined by the confirmed cycle state. |
+| Contact | **View the club on the university portal** → the [official listing](https://chitkarau.life/clubs/code2chill). | Open the verified [Instagram](https://www.instagram.com/code2chill/) or [LinkedIn](https://www.linkedin.com/company/code2chill) profile. |
+| Local application, when enabled | **Submit application** submits for the active cycle. Show a reference after a confirmed save. | Edit **Full name**, **University email**, **Select an enabled domain**, and the **Optional cycle prompt** when configured. **Back to Join** → `/join`. |
+
+The shared logo returns to `/`. Header links open their routes, and footer Contact opens `/contact`. The mobile **Menu** button toggles navigation and exposes its expanded state. Escape closes it and returns focus to Menu when focus was inside. For unavailable routes, **Go home**, **Browse events**, and **Browse projects** lead to the corresponding public page. **Try again** reloads the current request, following the [interface state rules](#interface-states).
+
+| Administrator area | Primary action and outcome | Other actions |
+| --- | --- | --- |
+| Sign in | **Sign in** authenticates with the configured provider and opens the permitted destination. | The example **Email** and **Password** fields in the wireframe illustrate the sign-in form. The final sign-in method is an architecture decision. |
+| Dashboard | **Manage content** opens the events list at `/admin/content/events` when permitted. Use the first permitted content list when events are unavailable to that user. | **Settings**, **Media**, and **Local applications** open the permitted routes from the [admin plan](#administrator-journey). **Sign out** ends the session and opens `/admin/sign-in`. |
+| Content list | **New draft** → `/admin/content/:type/new`. | Open a row → `/admin/content/:type/:id`. **Clear filters** restores the unfiltered list. |
+| Draft editor | **Save draft** validates and saves the draft while keeping the published version available. | **Preview draft** → `/admin/content/:type/:id/preview` for the saved version. **Reload draft** loads the current saved version after a conflict. |
+| Protected preview | **Publish** asks for confirmation and publishes the current saved version when validation succeeds. | **Back to editor** returns to the draft. **View published page** opens the appropriate public detail or `/team` for a team record. |
+| Settings | **Save settings** validates and saves the permitted site settings. | **Back to dashboard** → `/admin`. |
+| Media | **Add media** opens the asset form and saves approved file and credit details after validation. | **Back to dashboard** → `/admin`. |
+| Local application list | **Open application** opens the selected record for an assigned cycle. | **Domain filter** and **Status filter** narrow the list. **Clear filters** resets them. |
+| Local application detail | **Save decision** records a permitted review status with the reviewer and time. | **Back to applications** returns to the same cycle and retains its filters. |
+
+Controls that navigate use links. Controls that toggle, save, publish, submit, or retry perform the corresponding action and give visible feedback. Protected actions use the server authorization described in the [administrator journey](#administrator-journey).

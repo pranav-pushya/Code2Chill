@@ -84,13 +84,13 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **2.4 Map administration.** Define [sign-in, content publishing, and authorized application review](docs/PAGES_AND_JOURNEYS.md#administrator-journey).
 - [x] **2.5 Specify interface states.** Record [loading, empty, closed, full, error, and success behavior](docs/PAGES_AND_JOURNEYS.md#interface-states).
 - [x] **2.6 Create wireframes.** Sketch the planned pages at [desktop and mobile widths](docs/WIREFRAMES.md) with realistic content lengths.
-- [ ] **2.7 Assign page actions.** Give each page a clear primary action and each button a destination or outcome.
+- [x] **2.7 Assign page actions.** Map [primary actions, controls, and recovery destinations](docs/PAGES_AND_JOURNEYS.md#page-actions).
 
 ### Deliverables
 
-- Sitemap and user-flow diagrams.
-- Desktop and mobile wireframes.
-- List of required interface states.
+- [Sitemap and user-flow diagrams](docs/PAGES_AND_JOURNEYS.md#public-sitemap).
+- [Desktop and mobile wireframes](docs/WIREFRAMES.md).
+- [Interface states](docs/PAGES_AND_JOURNEYS.md#interface-states) and [page actions](docs/PAGES_AND_JOURNEYS.md#page-actions).
 
 **Completion criterion:** Every important interaction has defined behavior, including failure and empty states.
 
