@@ -1237,6 +1237,14 @@ The application detail screen offers the decisions allowed from the saved status
 
 All 19 backend tests passed against PostgreSQL, including rejection of stale saves, final-state changes and writes outside the assigned cycle. Only successful transitions produced audit rows. The frontend build, lint and formatting checks passed. In Chrome a reviewer shortlisted and then accepted a test application, reloaded its history and found it under the accepted filter. The fixture used temporary records. Exports remain part of step 8.8. **Viva question.** What if two reviewers try to change the same pending application? When the second request acquires the lock, it sees the first reviewer's new status and returns a conflict without adding an audit entry.
 
+### TASK-074 — Record password management follow-up
+
+24 November 2026 · Planning · Documentation-only
+
+The owner scheduled password changing and show/hide password controls after step 8.8. The [roadmap](../WEBSITE_ROADMAP.md#phase-8--complete-recruitment-and-administration) lists these as steps 8.9 and 8.10. Staff provisioning uses the terminal command. An email invitation flow remains a separate proposal.
+
+The change was checked against the owner's request and existing roadmap sequence. No runtime behavior changed. **Viva question.** Who chooses the initial password in an invitation workflow? The invited mailbox owner chooses it through the invitation link.
+
 ## 11. Template for Every Future Task or Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
