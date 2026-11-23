@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router";
 import icon from "../../docs/design/brand/club-icon-64.png";
+import { PageMetadata } from "./PageMetadata.jsx";
 
 export const university = "https://chitkarau.life/clubs/code2chill";
 export const profiles = {
@@ -79,9 +80,10 @@ function Header() {
           aria-label="Main"
           className={open ? "nav-links is-open" : "nav-links"}
         >
-          {["Events"].map((label) => (
+          {["About", "Events", "Projects", "Team", "Join"].map((label) => (
             <NavLink
               key={label}
+              className={label === "Join" ? "join-link" : undefined}
               to={`/${label.toLowerCase()}`}
               onClick={() => setOpen(false)}
             >
@@ -107,6 +109,7 @@ export function SiteLayout() {
   }, [pathname, hash]);
   return (
     <>
+      <PageMetadata />
       <a href="#main" className="action skip">
         Skip to content
       </a>
@@ -118,6 +121,7 @@ export function SiteLayout() {
         <div className="wrap foot-inner">
           <span className="footer-name">Code2Chill · Chitkara University</span>
           <nav aria-label="Footer">
+            <Link to="/contact">Contact</Link>
             {Object.entries(profiles).map(([label, href]) => (
               <ExternalLink key={label} href={href}>
                 {label}

@@ -190,14 +190,14 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 ### Steps
 
-- [ ] **7.1 Build shared layout.** Implement responsive navigation, mobile menu, footer, and reusable page components.
-- [ ] **7.2 Build the homepage.** Populate featured events, projects, and team previews from the API.
-- [ ] **7.3 Build the team page.** Include domain grouping, correct roles, and controlled display order.
-- [ ] **7.4 Build project pages.** Include listing, detail views, contributor credits, and verified repository/demo links.
-- [ ] **7.5 Build About and Contact.** Use confirmed descriptions and contact information.
-- [ ] **7.6 Add archives and galleries.** Present past events and available approved media.
-- [ ] **7.7 Complete resilience states.** Provide loading feedback, useful empty states, errors, and retry actions.
-- [ ] **7.8 Add discovery metadata.** Configure page titles, descriptions, social previews, and meaningful URLs.
+- [x] **7.1 Build shared layout.** Desktop navigation, a keyboard-accessible mobile menu, footer and shared page components connect the public routes.
+- [x] **7.2 Build the homepage.** The homepage loads a featured event, student project and team preview from the API.
+- [x] **7.3 Build the team page.** The published roster shows leadership, domain roles and core members in their configured order within each group.
+- [x] **7.4 Build project pages.** Each published project has a detail route, contributor credits and available verified demo or repository links.
+- [x] **7.5 Build About and Contact.** Both routes use the confirmed club description and official contact links.
+- [x] **7.6 Add archives and galleries.** The archive has a linked, responsive event gallery. Event photography and project screenshots use the owner-requested labeled placeholders until approved files and credits arrive. [Asset inventory](docs/CONTENT_REGISTER.md#asset-inventory)
+- [x] **7.7 Complete resilience states.** Public lists, details and homepage previews handle loading, empty results, missing records and retryable errors.
+- [x] **7.8 Add discovery metadata.** Public URLs return page-specific titles and descriptions, canonical links and a branded social preview in the initial HTML. Detail pages use published snapshots. [Verification](docs/BUILD_GUIDE.md#task-065--serve-discovery-metadata-and-a-branded-share-card)
 
 ### Deliverables
 

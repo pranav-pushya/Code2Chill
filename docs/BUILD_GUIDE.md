@@ -2,7 +2,7 @@
 
 **Last updated:** 23 November 2026
 
-**Current stage:** Phase 6 is complete locally. Staff can publish a saved event revision to the public schedule and direct students to the university portal for registration.
+**Current stage:** All eight Phase 7 steps are complete with the owner's requested media placeholders. The public pages and sharing metadata passed checks in development and an isolated production build. The real club photos and project screenshots are still pending.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -52,6 +52,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
 | React/Vite scaffold | Built with JavaScript and JSX | [React routes](../frontend/src/main.jsx) and shared visual assets. The JavaScript migration passed the Vite build. |
+| Public website | Verified in development | Home, Team and Projects read published records. Events includes the archive and registration handoff. About, Contact and Join use approved club information. [Public routes](../frontend/src/main.jsx) · [Read API](../backend/app/public_content.py) |
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Verified in development and staging | [Schema, diagram and repeatable seed](DATA_MODEL.md#migrations-and-initial-records) are implemented. |
 | Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
@@ -74,6 +75,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | [Code2Chill.png](design/brand/originals/Code2Chill.png) | Background logo |
 | [Code2Chill_transparent.png](design/brand/originals/Code2Chill_transparent.png) | Transparent logo |
 | [AGENTS.md](AGENTS.md) | Contributor/agent instructions and documentation policy |
+| [PEER_REPOSITORY_COMPARISON.md](PEER_REPOSITORY_COMPARISON.md) | Source-based comparison with six member repositories and resulting priorities |
 | [DEVELOPMENT.md](DEVELOPMENT.md) | Local developer environment prerequisites, database, and setup instructions |
 | [CONTENT_REGISTER.md](CONTENT_REGISTER.md) | Phase 1 evidence, ownership, publication readiness, and asset inventory |
 | [LAUNCH_SCOPE.md](LAUNCH_SCOPE.md) | Launch workflow decisions and the boundaries of local data handling |
@@ -315,6 +317,12 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-114 | Phase 6 browser workflow | Headless Chrome at 390px and 1440px saved a new draft, previewed it, exercised cancel and confirm, followed the public link, verified the registration destination, edited the event and republished with registration closed. Both widths showed the revised event through the schedule. The running Vite proxy also advertised the new editor routes. | Built React app and FastAPI with an isolated PostgreSQL transaction. University registration was checked through its link destination. |
 | VER-115 | Phase 6 delivery recheck | All 14 PostgreSQL-backed tests passed both in the development tree and in a standalone Phase 6 snapshot. The standalone snapshot also passed lint, formatting and the production build. | Local verification with disposable schemas. |
 | VER-116 | Phase 6 browser recheck | At 390px and 1440px, Chrome preserved an edited field when the editor canceled the leave prompt. It also verified draft publication, public snapshot isolation after an edit, the university link and the closed registration state after republication. | Built Phase 6 snapshot with temporary editor credentials and events. |
+| VER-117 | Phase 7 combined build and API | All 14 PostgreSQL-backed tests passed, including the expanded public snapshot checks. Ruff and Biome passed lint and formatting. Vite built the production bundle with the event editor and public routes. | Local working tree, disposable test schemas. The existing Starlette test-client deprecation warning remains. |
+| VER-118 | Phase 7 public browser journeys | Chrome at 390px and 1440px verified the homepage previews, archive, project credits, team roles, official links, missing routes and viewport fit. The phone menu handled Escape and restored focus. A blocked project request recovered on retry. Delayed empty responses showed loading and recovery links. | Local Vite and FastAPI, seeded PostgreSQL for content checks, browser-only simulations for failure and empty states. |
+| VER-119 | Gallery and navigation | Chrome at 390px and 1440px checked the gallery anchor, two labeled archive figures, their detail links, the NEXUS screenshot placeholder and a single updated share title after client navigation. | Local development and an isolated Docker production build using the seed records. |
+| VER-120 | Discovery metadata and delivery | Raw GET responses for nine public URLs contained route-specific metadata and canonical URLs. Missing records returned 404. Private and utility routes included noindex. The share image decoded as a 1200 × 630 PNG and a HEAD request returned no body. All 15 backend tests, Ruff, Biome, Vite, Docker builds and Caddy validation passed. | Vite and the built Caddy/FastAPI stack. PostgreSQL integration tests used rollback-only schemas. External platform caches were outside the check. |
+| VER-121 | Phase 7 recheck in development | All 15 backend tests and the lint, formatting and build checks passed. Chrome verified all public journeys at 390px and 1440px. The corrected mixed-case section URLs returned 200 with lowercase canonical URLs. An uppercase project slug still returned 404. | Vite, FastAPI and local PostgreSQL. |
+| VER-122 | Independent production verification | The rebuilt Docker stack passed the mixed-case URL checks, raw HTML and share image checks for all nine public routes, and Chrome checks at both widths. Loading, empty-state and retry simulations passed. | Isolated Caddy, FastAPI and seeded PostgreSQL. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -1136,6 +1144,58 @@ The protected editor saves a title, slug, summary, campus date and times, venue,
 The editor asks for confirmation before returning to the list with unsaved changes or reloading over local edits after a revision conflict. The delivery groups the JavaScript setup, staff access and event workflow in dependency order. Tests ran against a standalone Phase 6 snapshot as well as the working tree. [Event editor](../frontend/src/EventWorkspace.jsx)
 
 **Viva question.** What happens if a staff member cancels the leave prompt? The editor keeps the unsaved form values so they can continue or save.
+
+### TASK-061 — Connect the shared navigation and club information pages
+
+23 November 2026 · Steps 7.1 and 7.5 · Verified locally
+
+The shared layout connects all five main navigation destinations and footer Contact. On phones, Menu exposes its expanded state. Escape closes it and restores focus. About introduces the club and its four domains, Contact links to the owner-confirmed profiles, and Join points visitors to the university listing while recruitment dates are pending. Keeping these destinations available during an API outage preserves access to membership information. [Layout](../frontend/src/SiteLayout.jsx) · [Club pages](../frontend/src/ClubPages.jsx) · [Styles](../frontend/src/styles.css)
+
+Chrome checks at 390px and 1440px followed navigation, confirmed the contact destinations and checked for horizontal overflow. The phone check exercised Escape from a focused menu link. **Viva question.** How does a keyboard user close the menu? Escape collapses the open navigation and moves focus back to Menu when focus was in the header.
+
+### TASK-062 — Show published work and people on the public website
+
+23 November 2026 · Steps 7.2–7.4 · Verified locally
+
+The homepage features the next upcoming event or, when none is scheduled, the most recent archive entry. It also shows the first published project in insertion order and two members in published display order. Team groups members by leadership, domain and core membership. Project details preserve contributor credit order and show the available verified resources. ChronoAtlas offers a return to Projects. These views use existing publication snapshots and schema revision 0002. The homepage requests its three sections independently, so a failed request can be retried on its own. [Home](../frontend/src/Home.jsx) · [Team](../frontend/src/Team.jsx) · [Projects](../frontend/src/Projects.jsx) · [API](../backend/app/public_content.py)
+
+The local seed returned ten members, two projects and two archived events. Browser checks opened both project details, verified credits and resource actions, and followed the archive return link. API integration checks covered empty lists, unpublished projects, isolated draft edits and roster order. **Viva question.** Why can a staff member change a draft role without changing Team? The read endpoint selects the snapshot and sorts by the display order stored in that same snapshot. [Integration tests](../backend/tests/test_public_content.py)
+
+### TASK-063 — Verify public recovery states and archive availability
+
+23 November 2026 · Step 7.7 verified locally · Step 7.6 partially complete
+
+An unknown detail route offers a link back to its list. A failed API request offers a retry on the current page. An empty response offers a relevant destination after loading finishes. Navigating to another detail cancels the old request. The event archive lists the two published records with dates, venues and ended status. Community photos and project screenshots still need approved files, credits and a gallery delivery path. Page-specific metadata and share previews remain in step 7.8. [Request states](../frontend/src/PublicData.jsx) · [Archive](../frontend/src/Events.jsx) · [Asset inventory](CONTENT_REGISTER.md#asset-inventory)
+
+Chrome opened missing event and project URLs, retried a blocked project request successfully, and showed loading followed by empty results for delayed, synthetic schedule, project and roster responses. The first sandboxed database health check returned 503. It passed with loopback database access. The existing local preview initially proxied to an API that returned 404 on the new routes. The workspace-specific Vite target was updated to the current API on loopback port 8002. **Viva question.** What distinguishes a failed request from an empty list? Only a successful response containing zero records produces the empty state. An unavailable API keeps the retry action visible.
+
+### TASK-064 — Add the event gallery and reserve space for project screenshots
+
+23 November 2026 · Phase 7.6 · Verified locally
+
+The owner requested placeholders until they can supply images from the club’s Instagram highlights. The Events page builds its gallery from the published archive. Each figure names the event, links to its detail page and includes the venue when available. Project details reserve a screenshot slot with the published project name. The shared figure uses the approved design pattern and makes zero photo requests. An empty archive omits the gallery. [Figures](../frontend/src/Gallery.jsx) · [Archive](../frontend/src/Events.jsx) · [Projects](../frontend/src/Projects.jsx)
+
+Chrome at 390px and 1440px followed the gallery anchor, found two labeled event figures with working detail destinations, checked viewport fit and verified the screenshot placeholder on NEXUS. The implementation is complete with placeholders. The original files, reuse permission and photographer or contributor credits remain outstanding under content step 3.7. **Viva question.** What happens when another past event is published? Its published title and venue appear automatically in the archive and gallery.
+
+### TASK-066 — Serve discovery metadata and a branded share card
+
+23 November 2026 · Phase 7.8 · Verified locally, VER-119 and VER-120
+
+FastAPI generates the title, description, canonical link, Open Graph tags and X/Twitter card tags for each public URL. Event and project details read the same published snapshots as their content endpoints. The HTML renderer escapes the text. Missing or unpublished records return HTTP 404. Staff and status pages use noindex. The share image uses the existing club mark, homepage headline, university name and bundled typography. [Discovery routes](../backend/app/discovery.py) · [Share image](../frontend/public/share/code2chill.png) · [Tests](../backend/tests/test_discovery.py)
+
+Caddy serves static files and forwards document requests to FastAPI, which inserts metadata into the built React shell. Vite supplies equivalent documents during local development and preview. Client-side navigation replaces the previous head tags and cancels obsolete requests. Docker copies the built shell to the API image and the share card to the web image. A configured public origin supports a deployment behind HTTPS. [Vite middleware](../frontend/pageDocuments.js) · [Client navigation](../frontend/src/PageMetadata.jsx) · [Caddy](../backend/Caddyfile) · [Deployment instructions](DEVELOPMENT.md#local-staging)
+
+The first development check exposed the internal API port in canonical URLs. Preserving the incoming Host header fixed both direct documents and client navigation. The share-card capture wrote its image before the browser shutdown wait timed out. Separate checks decoded the delivered PNG and verified its dimensions. Both Docker images built, and the production checks used their own seeded PostgreSQL volume. The regression test also checked HTML escaping and that draft edits stay private.
+
+**Viva question.** How does a messaging app find the title when it shares a project? Its first HTTP request receives the published title, summary and absolute image URL in the HTML head. The crawler can read them before React runs.
+
+### TASK-067 — Reverify Phase 7 and align public URL matching
+
+23 November 2026 · Phase 7 verification and fix · Verified, VER-121 and VER-122
+
+The browser displayed NEXUS at `/PROJECTS/nexus` while its initial document returned HTTP 404. The document renderer now matches section names the same way React Router does and emits the lowercase section in canonical links. Published slugs still require an exact match. The regression assertions cover mixed-case document and metadata requests, missing items and the staff noindex rule. [Document renderer](../backend/app/discovery.py) · [Integration tests](../backend/tests/test_discovery.py)
+
+The same HTTP and Chrome checks passed against the reloaded development app and an independent Docker build. The owner-requested placeholders remain ready for supplied media. **Viva question.** Why use a lowercase canonical URL when a mixed-case URL loads? Search engines and link previews can associate both URLs with one published page.
 
 ## 11. Template for Every Future Task or Step
 

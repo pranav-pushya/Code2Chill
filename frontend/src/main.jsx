@@ -1,43 +1,16 @@
-import mark from "../../docs/design/brand/club-mark-480.webp";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import favicon from "../../docs/design/brand/favicon.ico";
 import { AdminArea, SignIn } from "./Admin.jsx";
 import { EventWorkspace } from "./EventWorkspace.jsx";
+import { About, Contact, Join } from "./ClubPages.jsx";
 import { EventDetail, Events } from "./Events.jsx";
+import Home from "./Home.jsx";
+import { ProjectDetail, Projects } from "./Projects.jsx";
 import { Missing, SiteLayout } from "./SiteLayout.jsx";
 import Status from "./Status.jsx";
+import { Team } from "./Team.jsx";
 import "./styles.css";
-
-function Home() {
-  return (
-    <section className="wrap hero">
-      <div className="hero-copy">
-        <p className="kicker">Chitkara University</p>
-        <h1>
-          Learn by <span>building.</span>
-        </h1>
-        <p>
-          Code2Chill is a student-led technical club. We bring students together
-          for workshops, hackathons and coding events.
-        </p>
-        <a
-          className="action"
-          href="https://chitkarau.life/clubs/code2chill"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Explore the club
-        </a>
-      </div>
-      <div className="brand-art" aria-hidden="true">
-        <div className="print">
-          <img src={mark} width="480" height="419" alt="" />
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function App() {
   return (
@@ -45,8 +18,14 @@ function App() {
       <Routes>
         <Route element={<SiteLayout />}>
           <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
           <Route path="events" element={<Events />} />
           <Route path="events/:slug" element={<EventDetail />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="projects/:slug" element={<ProjectDetail />} />
+          <Route path="team" element={<Team />} />
+          <Route path="join" element={<Join />} />
           <Route path="status" element={<Status />} />
           <Route path="admin/sign-in" element={<SignIn />} />
           <Route

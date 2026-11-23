@@ -2,8 +2,9 @@ FROM node:24-bookworm-slim AS frontend-build
 WORKDIR /source/frontend
 COPY frontend/package*.json ./
 RUN npm ci --no-audit --no-fund
-COPY frontend/index.html frontend/vite.config.js ./
+COPY frontend/index.html frontend/vite.config.js frontend/pageDocuments.js ./
 COPY frontend/src/ ./src/
+COPY frontend/public/ ./public/
 COPY docs/design/ /source/docs/design/
 RUN npm run build
 
@@ -21,5 +22,6 @@ RUN uv sync --locked --no-dev --no-cache
 COPY backend/app ./app
 COPY backend/alembic.ini ./
 COPY backend/migrations ./migrations
+COPY --from=frontend-build /source/frontend/dist/index.html /srv/frontend/dist/index.html
 USER 65534:65534
 CMD [".venv/bin/uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

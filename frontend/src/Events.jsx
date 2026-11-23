@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router";
+import { EventGallery } from "./Gallery.jsx";
 import { PublicData } from "./PublicData.jsx";
 import { ExternalLink, Missing, Page } from "./SiteLayout.jsx";
 
@@ -53,8 +54,8 @@ function Schedule({ upcoming, past }) {
     return (
       <>
         <p>No events are listed.</p>
-        <Link className="text-link" to="/">
-          Back to home
+        <Link className="text-link" to="/about">
+          Learn about the club
         </Link>
       </>
     );
@@ -69,6 +70,11 @@ function Schedule({ upcoming, past }) {
         {past.length > 0 && (
           <a className="text-link" href="#past-events">
             Past events
+          </a>
+        )}
+        {past.length > 0 && (
+          <a className="text-link" href="#event-gallery">
+            Event gallery
           </a>
         )}
       </nav>
@@ -98,6 +104,7 @@ function Schedule({ upcoming, past }) {
           </>
         )}
       </section>
+      {past.length > 0 && <EventGallery events={past} />}
     </>
   );
 }

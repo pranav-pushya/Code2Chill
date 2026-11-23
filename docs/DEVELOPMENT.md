@@ -139,7 +139,9 @@ uv run --locked python -m pytest -q
 
 ## Local staging
 
-Staging builds the React production bundle and FastAPI runtime into separate images. Caddy serves the frontend and forwards API requests to FastAPI. The staging database has its own volume and is reachable only on the staging network. Use Docker Compose 2.24.4 or newer for the port override.
+Staging builds the React production bundle and FastAPI runtime into separate images. Caddy serves JavaScript, styles, fonts and the branded share image. It forwards page requests to FastAPI, which inserts route-specific metadata into the built HTML. API requests still use the same origin. The staging database has its own volume and is reachable only on the staging network. Use Docker Compose 2.24.4 or newer for the port override.
+
+The default canonical URL uses the request origin. When running the site behind a public HTTPS proxy, set `PUBLIC_SITE_URL` in the Compose environment file to the site's actual public origin, including its scheme. Link previews use the published event or project summary and the club's 1200 × 630 share image. To check a preview, view the page source of a published detail URL and open the URL in its `og:image` tag.
 
 From the repository root, copy the backend environment template to a new file named `backend/.env.staging` on first setup. Give staging its own `POSTGRES_PASSWORD`. Run these commands from the repository root.
 

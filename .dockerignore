@@ -10,9 +10,10 @@
 !backend/migrations/versions/*.py
 !frontend/package*.json
 !frontend/index.html
-!frontend/tsconfig.json
-!frontend/vite.config.ts
-!frontend/src/*.tsx
+!frontend/vite.config.js
+!frontend/pageDocuments.js
+!frontend/src/*.jsx
+!frontend/public/share/*.png
 !frontend/src/*.css
 !docs/design/*.css
 !docs/design/brand/*.png

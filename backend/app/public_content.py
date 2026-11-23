@@ -6,8 +6,9 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from .content_models import Event, RegistrationStatus
+from .content_models import Event, Member, Project, RegistrationStatus
 from .database import request_session
+from .domain import ClubDomain
 from .publication import event_registration
 
 router = APIRouter(prefix="/api", tags=["Public content"])
@@ -30,6 +31,23 @@ class PublicEvent(BaseModel):
 class Schedule(BaseModel):
     upcoming: list[PublicEvent]
     past: list[PublicEvent]
+
+
+class PublicProject(BaseModel):
+    slug: str
+    title: str
+    summary: str
+    credits: list[str]
+    repository_url: str | None
+    demo_url: str | None
+
+
+class PublicMember(BaseModel):
+    slug: str
+    name: str
+    role_title: str
+    domain: ClubDomain | None
+    bio: str | None
 
 
 def published(model):
@@ -74,3 +92,19 @@ def list_events(db: Database) -> Schedule:
 @router.get("/events/{slug}")
 def event_detail(slug: str, db: Database) -> PublicEvent:
     return public_event(detail(db, Event, slug), datetime.now(UTC))
+
+
+@router.get("/projects", response_model=list[PublicProject])
+def list_projects(db: Database):
+    return db.scalars(published(Project).order_by(Project.id)).all()
+
+
+@router.get("/projects/{slug}", response_model=PublicProject)
+def project_detail(slug: str, db: Database):
+    return detail(db, Project, slug)
+
+
+@router.get("/team", response_model=list[PublicMember])
+def list_members(db: Database):
+    order = Member.public_snapshot["display_order"].as_integer()
+    return db.scalars(published(Member).order_by(order, Member.id)).all()

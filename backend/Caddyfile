@@ -1,15 +1,20 @@
 :8080 {
     root * /srv
+    redir /index.html / 308
     @api path /api /api/*
     handle @api {
         reverse_proxy api:8000
     }
-    @files path /assets/* /licenses/*
+    @files path /assets/* /licenses/* /share/*
     handle @files {
         file_server
     }
     handle {
-        try_files {path} /index.html
+        rewrite * /web{uri}
+        reverse_proxy api:8000
+    }
+    handle_errors 502 503 504 {
+        rewrite * /index.html
         file_server
     }
 }

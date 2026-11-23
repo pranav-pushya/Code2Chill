@@ -31,7 +31,7 @@ This repository houses the **dynamic Python full-stack club portal**, featuring 
 
 ---
 
-Browse the public event schedule or sign in to save, preview and publish events. [Publish an event](docs/DEVELOPMENT.md#publish-an-event)
+Home previews the next event or latest archive entry, a student project, and two members from the published roster. Browse Events, Projects, and Team in the main navigation. About, Join, and Contact provide club information and official links. Admins and editors can save, preview and publish events from the dashboard. The status page checks PostgreSQL through FastAPI. [Staff account setup](docs/DEVELOPMENT.md#create-a-staff-account) · [Publish an event](docs/DEVELOPMENT.md#publish-an-event)
 
 ## ✨ Planned club features
 
