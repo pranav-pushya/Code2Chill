@@ -2,7 +2,7 @@
 
 **Last updated:** 23 November 2026
 
-**Current stage:** Application scaffolding and local integration.
+**Current stage:** Database modeling and validation.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -53,7 +53,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
 | React/Vite scaffold | Built and browser-verified | [React routes](../frontend/src/main.tsx) and shared visual assets |
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
-| Database and migrations | Local PostgreSQL verified | [Connection management](../backend/app/database.py) is implemented. Models and migrations are planned. |
+| Database and migrations | Modeling underway | [Public models](../backend/app/content_models.py) passed PostgreSQL checks. Migrations follow in Step 5.8. |
 | Registration and recruitment | Planned | Prototype buttons do not save submissions |
 | Authentication and dashboard | Planned | Not implemented |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
@@ -270,6 +270,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-084 | Phase 4.7 pass 2 | Parsed the workflow, verified triggers, PostgreSQL settings and npm script names, and resolved the README and setup links. | Scaffold verification. |
 | VER-085 | Phase 4.8 pass 1 | Built and started all three services. Checked HTTP readiness, font licenses, direct status routing and 404s. Recreating containers retained the PostgreSQL cluster identity. The hosted CI run for step 4.7 passed. | Scaffold verification. |
 | VER-086 | Phase 4.8 pass 2 | Tightened an initially oversized Docker context. A BuildKit check measured 408 KiB and confirmed private settings, package directories and Git metadata were excluded. Rebuilt and verified Chrome navigation, live readiness, failure and retry at 390 and 1440 px. | Scaffold verification. |
+| VER-089 | Phase 5.1 pass 1 | Ruff passed. Created five tables in PostgreSQL and round-tripped linked records, optional dates and ordered credits through the ORM. | Phase 5 verification. |
+| VER-090 | Phase 5.1 pass 2 | Queried PostgreSQL information_schema and found the six expected foreign keys in the disposable transaction. | Phase 5 verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -859,6 +861,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-085 and VER-086. Built and started all three services. Checked HTTP readiness, font licenses, direct status routing and 404s. Recreating containers retained the PostgreSQL cluster identity. The hosted CI run for step 4.7 passed. Tightened an initially oversized Docker context. A BuildKit check measured 408 KiB and confirmed private settings, package directories and Git metadata were excluded. Rebuilt and verified Chrome navigation, live readiness, failure and retry at 390 and 1440 px.
 - **Limitations / remaining work:** Local staging uses the current working copy, including the owner’s pending icon and hover changes. An isolated Chrome rerun timed out during navigation and passed on retry. Base image tags can receive upstream updates.
 - **Viva Q&A:** **Why does a direct refresh of /status work?** Caddy returns the application entry for browser routes. API and asset requests use separate handlers that preserve their own HTTP status codes.
+
+### TASK-046 — Model public club content
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 5.1.
+- **Status:** Verified.
+- **Objective:** Model public club content.
+- **Changes and files:** Added the shared [model base](../backend/app/model_base.py), [public models](../backend/app/content_models.py), and [data model guide](DATA_MODEL.md).
+- **How it works:** Members, events and projects link to optional media. Projects can link to the originating event. An ordered credit links to a roster member when applicable.
+- **Why this approach:** The model represents real participant credits and missing media independently of roster membership and publication approval.
+- **Validation:** VER-089 and VER-090. Ruff passed. Created five tables in PostgreSQL and round-tripped linked records, optional dates and ordered credits through the ORM. Queried PostgreSQL information_schema and found the six expected foreign keys in the disposable transaction.
+- **Limitations / remaining work:** Migrations and seed records follow in Step 5.8. Live pages still use the Phase 4 scaffold.
+- **Viva Q&A:** **Why keep project credits as rows?** A project can credit several people in order, including participants outside the club roster.
 
 ## 11. Template for Every Future Task or Step
 

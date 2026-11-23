@@ -149,7 +149,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 ### Steps
 
-- [ ] **5.1 Model public content.** Define `Member`, `Event`, `Project`, and `MediaAsset` records.
+- [x] **5.1 Model public content.** Define `Member`, `Event`, `Project`, and `MediaAsset` records.
 - [ ] **5.2 Model recruitment.** Define `RecruitmentCycle` and `Application` records.
 - [ ] **5.3 Model registrations where applicable.** Add `EventRegistration` if registration is managed locally.
 - [ ] **5.4 Model administrator access.** Define accounts, sessions, and audit records appropriate to the selected authentication strategy.
