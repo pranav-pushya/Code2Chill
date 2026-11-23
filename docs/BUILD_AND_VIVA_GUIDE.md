@@ -51,7 +51,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Representative page designs | Verified static HTML | [Home](design/index.html) and [event detail](design/domination.html) work at phone and desktop widths |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
-| React/Vite scaffold | Planned | No application scaffold created |
+| React/Vite scaffold | Built and browser-verified | [React routes](../frontend/src/main.tsx) and shared visual assets |
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Planned | No models or migrations created |
 | Registration and recruitment | Planned | Prototype buttons do not save submissions |
@@ -262,6 +262,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-062 | Phase 4.2 pass 2 | Ran npm ci, Biome lint and format checks. Verified ignore rules and public registry hosts in both locks. | Scaffold verification. |
 | VER-063 | Phase 4.3 pass 1 | Imported the entry point in the locked environment, checked schema metadata and ran Ruff. | Scaffold verification. |
 | VER-064 | Phase 4.3 pass 2 | The sandbox request test stalled. The same test outside it verified the documentation, schema and unknown route. | Scaffold verification. |
+| VER-065 | Phase 4.4 pass 1 | TypeScript, Vite production build and Biome lint passed. | Scaffold verification. |
+| VER-066 | Phase 4.4 pass 2 | Chrome loaded the built Home and status pages at 390 and 1440 px, verified images and layout width, refreshed the status route and returned home. | Scaffold verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -734,6 +736,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-063 and VER-064. Imported the entry point in the locked environment, checked schema metadata and ran Ruff. The sandbox request test stalled. The same test outside it verified the documentation, schema and unknown route.
 - **Limitations / remaining work:** Database readiness follows in steps 4.5 and 4.6.
 - **Viva Q&A:** **What is ASGI?** The interface Uvicorn uses to send requests to Python applications.
+
+### TASK-034 — Initialize the React frontend
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 4.4.
+- **Status:** Verified.
+- **Objective:** Initialize the React frontend.
+- **Changes and files:** Added the [React entry point](../frontend/src/main.tsx), [styles](../frontend/src/styles.css), TypeScript configuration, HTML shell and [Vite configuration](../frontend/vite.config.ts).
+- **How it works:** React Router serves Home, a status route and an unknown-page fallback. Vite bundles the Phase 3 fonts, mark and CSS. Tailwind utilities are available to components.
+- **Why this approach:** Using the original assets keeps the scaffold consistent with the verified design.
+- **Validation:** VER-065 and VER-066. TypeScript, Vite production build and Biome lint passed. Chrome loaded the built Home and status pages at 390 and 1440 px, verified images and layout width, refreshed the status route and returned home.
+- **Limitations / remaining work:** The full public routes and event content are scheduled for later phases.
+- **Viva Q&A:** **How do two routes share one build?** The host serves the entry document and React Router chooses the view from the URL.
 
 ## 11. Template for Every Future Task or Step
 

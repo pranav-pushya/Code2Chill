@@ -1,0 +1,22 @@
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "../../docs/design/tokens.css";
+@import "../../docs/design/pages.css";
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+#main {
+  flex: 1;
+}
+.service-page {
+  padding-block: var(--section-gap);
+}
+.service-page h1 {
+  font-size: var(--section-size);
+  margin-bottom: var(--space-6);
+}
+.service-page p {
+  margin-block: var(--space-4);
+}
