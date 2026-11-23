@@ -45,3 +45,13 @@ Database constraints act even when records are written outside the HTTP API. [Pu
 Store confirmed campus dates as dates. Leave the time fields empty when the source gives only a date. When the organizer supplies an exact start, store the instant and its corresponding campus date. PostgreSQL checks that the two agree in Asia/Kolkata and that an optional end is after the start.
 
 Application timestamps, session timestamps, registration windows and event instants use PostgreSQL timestamp with time zone. The ORM requires a timezone offset and returns UTC. Use the shared campus conversion for dates and labels in India Standard Time. Windows include their opening instant and exclude their closing instant. A completed recruitment cycle needs both bounds. An external event can carry either confirmed bound. [Time helpers](../backend/app/time_rules.py)
+
+## Publication and state transitions
+
+A member, event, project or recruitment cycle starts in draft. The public copy is a separate snapshot of approved fields created by an explicit publish operation. Its route slug stays stable while published. Saving changes to a draft leaves the last published fields available. A publisher supplies the revision seen in the preview. PostgreSQL locks the record during publication and SQLAlchemy checks its revision. A newer saved revision requires reloading. The helper writes a publication audit entry in the same transaction. Unpublishing removes the snapshot and returns the record to draft.
+
+The publication helper validates the record, checks media approval, and copies fields intended for public use. Future editors must lock the parent and advance its draft revision when saving child collections such as project credits or enabled recruitment domains. Authorization and the API that calls the helper are scheduled for later phases.
+
+Events show ended after their confirmed end or, when only a calendar date is usable, after that campus day. Saved full or closed states take precedence over an open window. Open registration requires the confirmed event-specific Chitkara University destination. A published recruitment cycle requires dates, active reviewer assignment, available domains, eligibility and an approved route. Its public state is scheduled, open or closed according to its window. Without a published cycle the state is announcement. A pending application can be shortlisted, accepted or rejected. A shortlisted application can be accepted or rejected. The accepted and rejected review states are final.
+
+[Publication operations](../backend/app/publication.py) · [Launch rules](LAUNCH_SCOPE.md) · [Administrator journey](PAGES_AND_JOURNEYS.md#administrator-journey)

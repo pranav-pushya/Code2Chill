@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .domain import ClubDomain, choices
 from .model_base import Base, required_text, route_slug
+from .publication_fields import PublicationFields, publication_integrity
 from .time_rules import UTCDateTime
 
 
@@ -37,9 +38,10 @@ class MediaAsset(Base):
     approved_for_publication: Mapped[bool] = mapped_column(Boolean, server_default=false())
 
 
-class Member(Base):
+class Member(PublicationFields, Base):
     __tablename__ = "member"
     __table_args__ = (
+        publication_integrity(),
         route_slug(),
         required_text("name"),
         required_text("role_title"),
@@ -58,9 +60,10 @@ class Member(Base):
     portrait: Mapped[MediaAsset | None] = relationship()
 
 
-class Event(Base):
+class Event(PublicationFields, Base):
     __tablename__ = "event"
     __table_args__ = (
+        publication_integrity(),
         route_slug(),
         required_text("title"),
         required_text("summary"),
@@ -90,6 +93,7 @@ class Event(Base):
     registration_opens_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
     registration_closes_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
     venue: Mapped[str | None] = mapped_column(String(240))
+    is_demo: Mapped[bool] = mapped_column(Boolean, server_default=false())
     official_url: Mapped[str | None] = mapped_column(Text)
     registration_url: Mapped[str | None] = mapped_column(Text)
     registration_status: Mapped[RegistrationStatus] = mapped_column(
@@ -99,9 +103,10 @@ class Event(Base):
     poster: Mapped[MediaAsset | None] = relationship()
 
 
-class Project(Base):
+class Project(PublicationFields, Base):
     __tablename__ = "project"
     __table_args__ = (
+        publication_integrity(),
         route_slug(),
         required_text("title"),
         required_text("summary"),

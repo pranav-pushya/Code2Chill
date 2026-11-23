@@ -155,7 +155,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **5.4 Model administrator access.** Define accounts, sessions, and audit records appropriate to the selected authentication strategy.
 - [x] **5.5 Define data integrity.** Specify relationships, required fields, unique slugs, indexes, and duplicate-prevention constraints.
 - [x] **5.6 Define time handling.** Store event times consistently and display them in the appropriate timezone.
-- [ ] **5.7 Define publication rules.** Include draft/published status, registration windows, and allowed status transitions.
+- [x] **5.7 Define publication rules.** Include draft/published status, registration windows, and allowed status transitions.
 - [ ] **5.8 Create migrations and seed data.** Seed confirmed content and isolate clearly labeled demonstration records.
 
 ### Deliverables

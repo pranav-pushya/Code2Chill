@@ -282,6 +282,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-098 | Phase 5.5 pass 2 | A separate transaction rejected duplicate applications, attempts and uppercase email, accepted a second cycle and confirmed the reviewer list indexes. Ruff passed. | Phase 5 verification. |
 | VER-099 | Phase 5.6 pass 1 | Verified the UTC-to-IST day boundary, date-only event behavior and UTC ORM round-trip with a different PostgreSQL session timezone. | Phase 5 verification. |
 | VER-100 | Phase 5.6 pass 2 | A separate transaction rejected equal recruitment bounds and a naive datetime. Checked inclusive opening and exclusive closing. Ruff passed. | Phase 5 verification. |
+| VER-101 | Phase 5.7 pass 1 | Verified draft isolation, stale publish rejection, republish, unpublish and audit writes against PostgreSQL. Checked event registration boundaries. | Phase 5 verification. |
+| VER-102 | Phase 5.7 pass 2 | In a separate schema, verified reviewer requirements, recruitment boundaries, allowed review transitions and unapproved media rejection. Ruff lint and format passed. | Phase 5 verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -949,6 +951,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-099 and VER-100. Verified the UTC-to-IST day boundary, date-only event behavior and UTC ORM round-trip with a different PostgreSQL session timezone. A separate transaction rejected equal recruitment bounds and a naive datetime. Checked inclusive opening and exclusive closing. Ruff passed.
 - **Limitations / remaining work:** Verified event times and recruitment cycle settings still depend on the club.
 - **Viva Q&A:** **Why keep a date and an optional instant?** A confirmed calendar day can be displayed even when an exact start time is unknown.
+
+### TASK-052 — Define publication and workflow transitions
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 5.7.
+- **Status:** Verified.
+- **Objective:** Define publication and workflow transitions.
+- **Changes and files:** Added [publication fields](../backend/app/publication_fields.py), [publication operations](../backend/app/publication.py) and documented the [state rules](DATA_MODEL.md#publication-and-state-transitions).
+- **How it works:** Rows have a checked revision and a separate public snapshot. A publish or unpublish operation updates the snapshot and appends an audit row inside the same transaction. Event and recruitment availability follow their configured boundaries.
+- **Why this approach:** A saved draft can evolve while visitors still see the previously published content. Revision checks keep an outdated preview from publishing silently.
+- **Validation:** VER-101 and VER-102. Verified draft isolation, stale publish rejection, republish, unpublish and audit writes against PostgreSQL. Checked event registration boundaries. In a separate schema, verified reviewer requirements, recruitment boundaries, allowed review transitions and unapproved media rejection. Ruff lint and format passed.
+- **Limitations / remaining work:** Later endpoints must enforce authorization and bump the parent draft revision for edits to child collections.
+- **Viva Q&A:** **Why store a public snapshot?** The last published title and details stay visible while an editor updates the saved draft.
 
 ## 11. Template for Every Future Task or Step
 

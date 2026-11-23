@@ -16,6 +16,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .domain import ClubDomain, choices
 from .model_base import Base, normalized_email, required_text, route_slug
+from .publication_fields import PublicationFields, publication_integrity
 from .time_rules import UTCDateTime
 
 
@@ -32,9 +33,10 @@ class ApplicationStatus(StrEnum):
     REJECTED = "rejected"
 
 
-class RecruitmentCycle(Base):
+class RecruitmentCycle(PublicationFields, Base):
     __tablename__ = "recruitment_cycle"
     __table_args__ = (
+        publication_integrity(),
         route_slug(),
         required_text("title"),
         CheckConstraint(
