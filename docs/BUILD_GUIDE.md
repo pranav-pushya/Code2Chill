@@ -1289,6 +1289,14 @@ Authenticated staff can update their password via `POST /api/admin/change-passwo
 
 Backend test `test_change_password_workflow` in `test_admin_auth.py` verified 401 unauthenticated denial, 403 CSRF header enforcement, 400 invalid current password rejection, 422 length and match validation, password hash update, audit record creation, and subsequent sign-in with the new credentials. Biome linter and Vite build passed with zero errors. **Viva question.** What happens to existing login sessions when a staff member changes their password? All other active sessions for that staff account are immediately revoked in the database, while the current session remains authenticated.
 
+### TASK-079 — Add accessible password visibility toggle
+
+24 November 2026 · Phase 8.10 · Verified locally
+
+Added an accessible `PasswordField` component with eye/eye-off visibility controls to both the Sign-In and Change-Password forms in the administration interface. The button uses `type="button"`, `aria-label`, `aria-pressed`, `title`, and inline SVGs with `aria-hidden="true"`, ensuring full screen-reader and keyboard accessibility without unintended form submissions. When toggled, the input smoothly alternates between masked `password` and plaintext `text`. [Admin UI](../frontend/src/Admin.jsx) · [Styles](../frontend/src/styles.css)
+
+Biome linter and Vite build executed cleanly with zero warnings or errors. Verified keyboard navigation (Tab focus to toggle button, Enter/Space activation) and layout styling on both desktop and responsive views. **Viva question.** Why must the password visibility toggle button specify `type="button"`? In HTML forms, buttons default to `type="submit"`, so omitting `type="button"` would trigger form submission whenever a user clicks the eye icon to view their password.
+
 ## 11. Template for Every Future Task or Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.

@@ -220,7 +220,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **8.7 Complete publishing controls.** Support draft previews and explicit publication actions.
 - [x] **8.8 Protect private data.** Restrict applicant information and exports with server-side permissions. [Verification](docs/BUILD_GUIDE.md#task-077--restrict-applicant-exports-and-audit-downloads)
 - [x] **8.9 Change staff passwords.** Let signed-in staff verify their current password and set a new one. [Verification](docs/BUILD_GUIDE.md#task-078--add-staff-password-change-endpoint-and-view)
-- [ ] **8.10 Show or hide passwords.** Add accessible eye controls to the sign-in and change-password forms.
+- [x] **8.10 Show or hide passwords.** Add accessible eye controls to the sign-in and change-password forms. [Verification](docs/BUILD_GUIDE.md#task-079--add-accessible-password-visibility-toggle)
 
 ### Deliverables
 

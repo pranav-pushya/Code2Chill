@@ -1,7 +1,87 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 
 export const eventsPath = "/admin/content/events";
+
+function EyeIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function EyeOffIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m2 2 20 20" />
+      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+      <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+    </svg>
+  );
+}
+
+export function PasswordField({
+  label,
+  name,
+  autoComplete,
+  minLength,
+  maxLength = 256,
+  required = true,
+}) {
+  const [visible, setVisible] = useState(false);
+  const id = useId();
+  const toggleLabel = `${visible ? "Hide" : "Show"} ${label.toLowerCase()}`;
+
+  return (
+    <label htmlFor={id}>
+      {label}
+      <div className="password-control">
+        <input
+          id={id}
+          name={name}
+          type={visible ? "text" : "password"}
+          autoComplete={autoComplete}
+          minLength={minLength}
+          maxLength={maxLength}
+          required={required}
+        />
+        <button
+          type="button"
+          className="password-toggle"
+          aria-label={toggleLabel}
+          aria-pressed={visible}
+          title={toggleLabel}
+          onClick={() => setVisible((prev) => !prev)}
+        >
+          {visible ? <EyeOffIcon /> : <EyeIcon />}
+        </button>
+      </div>
+    </label>
+  );
+}
 
 export function adminRequest(path, options = {}) {
   const signal = AbortSignal.timeout(15000);
@@ -79,16 +159,13 @@ export function SignIn() {
             required
           />
         </label>
-        <label>
-          Password
-          <input
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            maxLength={256}
-            required
-          />
-        </label>
+        <PasswordField
+          label="Password"
+          name="password"
+          autoComplete="current-password"
+          maxLength={256}
+          required
+        />
         {error && <p role="alert">{error}</p>}
         <button type="submit" className="action" disabled={busy}>
           {busy ? "Signing in…" : "Sign in"}
@@ -305,38 +382,29 @@ export function ChangePassword() {
     <section className="change-password-section">
       <h2>Change password</h2>
       <form className="sign-in-form" method="post" onSubmit={submit}>
-        <label>
-          Current password
-          <input
-            name="current_password"
-            type="password"
-            autoComplete="current-password"
-            maxLength={256}
-            required
-          />
-        </label>
-        <label>
-          New password (15 to 256 characters)
-          <input
-            name="new_password"
-            type="password"
-            autoComplete="new-password"
-            minLength={15}
-            maxLength={256}
-            required
-          />
-        </label>
-        <label>
-          Confirm new password
-          <input
-            name="confirm_password"
-            type="password"
-            autoComplete="new-password"
-            minLength={15}
-            maxLength={256}
-            required
-          />
-        </label>
+        <PasswordField
+          label="Current password"
+          name="current_password"
+          autoComplete="current-password"
+          maxLength={256}
+          required
+        />
+        <PasswordField
+          label="New password (15 to 256 characters)"
+          name="new_password"
+          autoComplete="new-password"
+          minLength={15}
+          maxLength={256}
+          required
+        />
+        <PasswordField
+          label="Confirm new password"
+          name="confirm_password"
+          autoComplete="new-password"
+          minLength={15}
+          maxLength={256}
+          required
+        />
         {error && <p role="alert">{error}</p>}
         {success && <p role="status">{success}</p>}
         <button type="submit" className="action" disabled={busy}>

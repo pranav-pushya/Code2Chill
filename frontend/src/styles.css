@@ -43,6 +43,38 @@
 .sign-in-form button {
   justify-self: start;
 }
+.password-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.password-control input {
+  padding-inline-end: 2.75rem;
+}
+.password-toggle {
+  position: absolute;
+  inset-inline-end: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: unset;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: var(--space-1);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius);
+  color: var(--muted);
+  cursor: pointer;
+}
+.password-toggle:hover {
+  color: var(--ink);
+}
+.password-toggle:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
 .change-password-section {
   margin-block-start: var(--space-8);
   border-top: 1px solid var(--rule);
