@@ -1,0 +1,15 @@
+:8080 {
+    root * /srv
+    @api path /api /api/*
+    handle @api {
+        reverse_proxy api:8000
+    }
+    @files path /assets/* /licenses/*
+    handle @files {
+        file_server
+    }
+    handle {
+        try_files {path} /index.html
+        file_server
+    }
+}

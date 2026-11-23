@@ -1,0 +1,17 @@
+**
+!Dockerfile
+!backend/Caddyfile
+!backend/pyproject.toml
+!backend/uv.lock
+!backend/app/*.py
+!frontend/package*.json
+!frontend/index.html
+!frontend/tsconfig.json
+!frontend/vite.config.ts
+!frontend/src/*.tsx
+!frontend/src/*.css
+!docs/design/*.css
+!docs/design/brand/*.png
+!docs/design/brand/*.ico
+!docs/design/brand/*.webp
+!docs/design/fonts/*

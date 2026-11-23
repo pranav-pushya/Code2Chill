@@ -97,3 +97,22 @@ uv run --locked python -m pytest -q
 ```
 
 [GitHub Actions](../.github/workflows/ci.yml) runs these checks on pushes and pull requests with a fresh PostgreSQL service. The positive health test requires a reachable database. The failure test directs its own request to an unavailable port.
+
+## Local staging
+
+Staging builds the React production bundle and FastAPI runtime into separate images. Caddy serves the frontend and forwards API requests to FastAPI. The staging database has its own volume and is reachable only on the staging network. Use Docker Compose 2.24.4 or newer for the port override.
+
+From the repository root, copy the backend environment template to a new file named `backend/.env.staging` on first setup. Give staging its own `POSTGRES_PASSWORD`. Run these commands from the repository root.
+
+~~~sh
+docker compose -p code2chill-staging --env-file backend/.env.staging -f backend/compose.yaml -f backend/compose.staging.yaml up --build -d --wait
+docker compose -p code2chill-staging --env-file backend/.env.staging -f backend/compose.yaml -f backend/compose.staging.yaml ps
+~~~
+
+Open the [staging homepage](http://127.0.0.1:8084/) and follow **Service status**. Refreshing [the status page](http://127.0.0.1:8084/status) loads the application directly. The [readiness endpoint](http://127.0.0.1:8084/api/health) returns HTTP 200 after a successful database query. Set `STAGING_PORT` in the staging environment file if another service owns 8084.
+
+Repeat the build command after changing code. To stop staging while keeping its database volume, run the following.
+
+~~~sh
+docker compose -p code2chill-staging --env-file backend/.env.staging -f backend/compose.yaml -f backend/compose.staging.yaml down
+~~~

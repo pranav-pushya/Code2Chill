@@ -57,9 +57,9 @@ Club records will be stored in a database and returned through the backend. Admi
 | Registration and recruitment | Planned | Prototype buttons do not save submissions |
 | Authentication and dashboard | Planned | Not implemented |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
-| Deployment | Planned | No deployment created during this work |
+| Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
 
-**Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile design previews demonstrate the event discovery and return path. The FastAPI scaffold serves its schema.”
+**Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile design previews demonstrate the event discovery and return path. The local staging status page calls FastAPI and verifies a PostgreSQL query.”
 
 ## 4. Repository Map
 
@@ -268,6 +268,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-082 | Phase 4.6 pass 2 | Verified direct and proxied HTTP responses, navigation and refresh in Chrome at 390 and 1440 px. Blocking the request produced the failure message and retry recovered. | Scaffold verification. |
 | VER-083 | Phase 4.7 pass 1 | Validated Compose settings and ran locked Python install, Ruff lint and format, and both database tests. Ran npm ci, format check, lint and the TypeScript/Vite production build. | Scaffold verification. |
 | VER-084 | Phase 4.7 pass 2 | Parsed the workflow, verified triggers, PostgreSQL settings and npm script names, and resolved the README and setup links. | Scaffold verification. |
+| VER-085 | Phase 4.8 pass 1 | Built and started all three services. Checked HTTP readiness, font licenses, direct status routing and 404s. Recreating containers retained the PostgreSQL cluster identity. The hosted CI run for step 4.7 passed. | Scaffold verification. |
+| VER-086 | Phase 4.8 pass 2 | Tightened an initially oversized Docker context. A BuildKit check measured 408 KiB and confirmed private settings, package directories and Git metadata were excluded. Rebuilt and verified Chrome navigation, live readiness, failure and retry at 390 and 1440 px. | Scaffold verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -844,6 +846,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-083 and VER-084. Validated Compose settings and ran locked Python install, Ruff lint and format, and both database tests. Ran npm ci, format check, lint and the TypeScript/Vite production build. Parsed the workflow, verified triggers, PostgreSQL settings and npm script names, and resolved the README and setup links.
 - **Limitations / remaining work:** Hosted CI results are available after the workflow is pushed. The API test client emits a dependency deprecation warning.
 - **Viva Q&A:** **Why give CI its own database?** Each job can test a real query independently of developer machines and data.
+
+### TASK-044 — Deploy and rebuild local staging
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 4.8.
+- **Status:** Verified.
+- **Objective:** Deploy and rebuild local staging.
+- **Changes and files:** Added the [image build](../Dockerfile), [Docker context rules](../.dockerignore), [Caddy configuration](../backend/Caddyfile), [Compose overlay](../backend/compose.staging.yaml) and [local staging instructions](DEVELOPMENT.md#local-staging).
+- **How it works:** Caddy serves the compiled frontend and proxies /api to FastAPI. Staging PostgreSQL has its own volume and private network. Only the web port is published on loopback. Images build from locked application dependencies.
+- **Why this approach:** The owner selected local staging. Separate service checks ensure the database and API are ready before Compose reports the web service healthy.
+- **Validation:** VER-085 and VER-086. Built and started all three services. Checked HTTP readiness, font licenses, direct status routing and 404s. Recreating containers retained the PostgreSQL cluster identity. The hosted CI run for step 4.7 passed. Tightened an initially oversized Docker context. A BuildKit check measured 408 KiB and confirmed private settings, package directories and Git metadata were excluded. Rebuilt and verified Chrome navigation, live readiness, failure and retry at 390 and 1440 px.
+- **Limitations / remaining work:** Local staging uses the current working copy, including the owner’s pending icon and hover changes. An isolated Chrome rerun timed out during navigation and passed on retry. Base image tags can receive upstream updates.
+- **Viva Q&A:** **Why does a direct refresh of /status work?** Caddy returns the application entry for browser routes. API and asset requests use separate handlers that preserve their own HTTP status codes.
 
 ## 11. Template for Every Future Task or Step
 
