@@ -40,3 +40,15 @@ The [design stylesheet](design/tokens.css) is the shared source for both mockups
 | Menu and status | A labeled disclosure exposes navigation on small screens. Ended events show “Event ended” and a return route to the archive. A pending recruitment cycle shows membership interest. |
 
 The pale rule is a decorative separator. Use a text label or a contrasting border for any control that needs a visible boundary. Mark default focus on a dark panel using the `.on-ink` class. The examples use immediate state changes and require no motion library.
+
+## Logo placement
+
+| Placement | Artwork and use |
+| --- | --- |
+| Homepage brand panel | Use the trimmed transparent full mark on a uniform night surface. Allow at least one eighth of the mark width as clear space on each side. At 180 CSS px or wider the person, the letterforms and the lettering can be seen together. Keep decorative rules outside the mark. |
+| Standalone square | Use the background version for a self-contained square image. Keep the original dark field and its internal margins. Fit the full canvas proportionally into a square. |
+| Navigation and footer | Set the club name in real text. The header can pair it with the compact icon. Keep a single accessible name on the Home link and give a redundant adjacent icon empty alt text. |
+| Browser tab | Use the central numeral as a light silhouette on a dark tile. The numeral is a small-size derivative for icons. Use the full supplied artwork in the brand panel. |
+| Photography or a pale surface | Keep a solid dark tile behind the artwork. The transparent source has uneven antialiased edges that become visible on paper. Use the text wordmark where a dark tile would crowd the layout. |
+
+Keep the original proportions and gradient in both full-logo exports. In an image-only placement use the alt text “Code2Chill club logo”. Where the surrounding text already names the club and the art adds no information, use empty alt text. Both [source files](CONTENT_REGISTER.md#asset-inventory) stay at the repository root. Retain them at their original resolution for future exports.

@@ -243,6 +243,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-046 | Phase 3.2 pass 2 | Cross-checked the featured content and primary action against the Phase 2 wireframes, page actions and Phase 1 register. | Content and interaction review. |
 | VER-047 | Phase 3.3 pass 1 | Calculated sRGB contrast for six text, action and focus pairs. Results ranged from 6.50 to 15.61. | Declared color pairs. |
 | VER-048 | Phase 3.3 pass 2 | Rendered an offline 390 px Chrome sample, tabbed to both controls, checked the 44 px action and 3 px ring, verified distinct light and dark focus colors and confirmed both fonts loaded. | One browser and a representative sample. |
+| VER-049 | Phase 3.4 pass 1 | Composited the actual trimmed mark at widths of 240, 120 and 64 px on dark and pale surfaces and inspected the lettering and edges. | Visual comparison in the selected palette. |
+| VER-050 | Phase 3.4 pass 2 | Compared both original PNGs byte for byte with Git, measured the 481 × 420 alpha bounds and checked all five placement rules, clear space and accessible naming. | Usage specification. Export checks follow in Step 3.5. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -611,6 +613,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-047 and VER-048. The first focus probe used JavaScript focus and did not reproduce keyboard modality. Repeating with actual Tab events verified both rings.
 - **Limitations / remaining work:** Production components and full-page accessibility checks belong to later phases.
 - **Viva Q&A:** **Why change the focus color on dark surfaces?** The light blue ring remains visible against navy. A separated outline also preserves the button’s own label and fill.
+
+### TASK-026 — Set logo placement and small-size rules
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 3.4.
+- **Status:** Placement rules verified against the supplied artwork.
+- **Objective:** Keep the club mark recognizable on a poster, in navigation, and in a browser tab.
+- **Changes and files:** Added the [logo placement matrix](VISUAL_IDENTITY.md#logo-placement) and updated the roadmap.
+- **How it works:** The full transparent mark sits on navy, the background version keeps its own field, and compact contexts use a numeral or text. The placement governs clear space, alternative text and redundant images.
+- **Why this approach:** At small sizes the original caption loses definition. On paper, edge artifacts from the transparent background cutout become visible.
+- **Validation:** VER-049 and VER-050. The review supports a dark field for the full artwork and a simpler icon plus real text for small uses.
+- **Limitations / remaining work:** The 180 px full-mark minimum is a design choice for these layouts. New placements should also be checked at their actual display size.
+- **Viva Q&A:** **Why keep a real-text club name in the header?** Students can read it at phone size, it remains available when images fail, and it gives the Home link a reliable accessible name.
 
 ## 11. Template for Every Future Task or Step
 
