@@ -237,7 +237,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **9.1 Add purposeful transitions.** Implement restrained hover, focus, page-entry, and action-feedback effects.
 - [x] **9.2 Implement theme behavior if included.** Preserved signature warm ink-on-paper campus event programme identity; documented decision to omit theme toggle and refined high-contrast readability across poster sections.
 - [x] **9.3 Respect reduced motion.** Provide appropriate alternatives to nonessential movement. Collapsed transition durations to 0.01ms, disabled vestibular spatial transforms and page-enter translations, and provided clear color, outline, and shadow alternatives for interactive controls.
-- [ ] **9.4 Evaluate the ink transition separately.** Check responsiveness, memory use, changing content, and fallback behavior before adopting it.
+- [x] **9.4 Evaluate the ink transition separately.** Evaluated responsiveness, memory footprint, dynamic data interleaving, and accessibility; resolved DEC-007 by adopting zero-overhead CSS compositor transitions in production.
 - [ ] **9.5 Keep actions usable.** Essential interactions must work while visual effects load or fail.
 - [ ] **9.6 Optimize visual assets.** Improve image sizing, font loading, and expensive rendering effects.
 - [ ] **9.7 Remove experiment controls.** Keep developer-facing animation settings out of the public interface.
