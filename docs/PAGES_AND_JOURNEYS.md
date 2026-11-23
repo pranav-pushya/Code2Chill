@@ -87,3 +87,34 @@ flowchart TD
 | Window closes, including while the local form is open | Show **Applications are closed** and return students to Join. The server checks the time again before accepting a submission. |
 
 For a local application, only show duplicate-record details after verifying that the requester controls the university email. The implementation phase will choose how to verify ownership. The [recruitment rules](LAUNCH_SCOPE.md#recruitment) define cycle configuration and time boundaries. A direct visit to `/join/apply` when the local route is unavailable returns the student to the current Join state.
+
+## Administrator journey
+
+```mermaid
+flowchart TD
+    S[Sign in] --> A{Authorized for the requested area}
+    A -->|Content permissions| C[Manage content]
+    A -->|Assigned to a local cycle| Q[Review local applications]
+    A -->|Permission missing| N[Show access denied]
+    C --> D[Create or edit a draft]
+    D --> P[Preview the saved draft]
+    P -->|Needs edits| D
+    P -->|Publish confirmed| U[View published page]
+    Q --> R[Open an application and record a decision]
+```
+
+| Admin area | Planned path | Purpose |
+| --- | --- | --- |
+| Sign in | `/admin/sign-in` | Authenticate and continue to the permitted area, defaulting to the dashboard. |
+| Dashboard | `/admin` | Find content and the administrative areas the user can access. |
+| Content list | `/admin/content/:type` | Find current records and start a draft for events, projects, or team members. |
+| Draft creation and editing | `/admin/content/:type/new`, `/admin/content/:type/:id` | Enter content, validate it, save a draft, and make it ready for preview. |
+| Protected preview | `/admin/content/:type/:id/preview` | Read the most recently saved draft in public layout before publishing. |
+| Site settings and media | `/admin/settings`, `/admin/media` | Manage official links and approved media as those editors are implemented. |
+| Local recruitment review | `/admin/recruitment/:cycleId/applications`, `/admin/recruitment/:cycleId/applications/:applicationId` | Let authorized reviewers filter by domain or status and record a permitted decision for the assigned cycle. |
+
+The server verifies authorization for each protected read and change. After authentication, honor a requested return path only if it is an internal admin path the user may access. On session expiry, return to sign in and restore the last saved draft when the user returns. Warn about unsaved changes when the interface can detect them. A signed-in user who lacks the required permission sees **Access denied** with a return to the dashboard.
+
+Saving a draft, previewing it, and publishing it are distinct operations. Public routes keep serving the last published version while someone edits a draft. Opening the preview displays its saved draft and keeps it behind authentication. A publish request validates the required fields and uses the current saved version. If another edit changes that version or the request fails, retain the saved draft and let the editor reload or retry before announcing success. After publishing, offer **View published page**. Event editors can set a verified university sign-up destination and its currently confirmed status.
+
+Use the local review paths only when recruitment uses a local cycle. Signed-in reviewers need an assignment for the requested cycle. Filter lists and open individual submissions only within that authorization. Review actions record the user and time. University event registrations and approved external recruitment follow their own provider workflows.

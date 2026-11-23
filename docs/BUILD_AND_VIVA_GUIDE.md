@@ -217,6 +217,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-030 | Phase 2.2 pass 2, repository review | Checked the staged diagram references, repository links, checklist sequence, and task record. `git diff --cached --check` passed. | No booking was attempted. |
 | VER-031 | Phase 2.3 pass 1, recruitment walkthrough | Checked inactive, scheduled, external, local, invalid, retry, saved, and closed paths against the cycle rules and graph. | No active cycle or application service is available in the project. |
 | VER-032 | Phase 2.3 pass 2, repository review | Verified staged links, roadmap sequence, task log, and the launch versus conditional route distinction. `git diff --cached --check` passed. | Document validation. |
+| VER-033 | Phase 2.4 pass 1, administrator walkthrough | Checked the content and reviewer branches, protected preview, session recovery, stale drafts, publish feedback, and ownership of submissions. | Planned permission checks and editor behavior. |
+| VER-034 | Phase 2.4 pass 2, repository review | Verified staged links, the admin route plan, task log, and roadmap sequence. `git diff --cached --check` passed. | No sign-in service or dashboard was exercised. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -467,6 +469,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-031 walked the state outcomes and checked the diagram against Phase 1. VER-032 checked the staged plan and current roadmap status.
 - **Limitations / remaining work:** The club must supply a real cycle. The local form, email ownership check, and reviewer workflow still need implementation.
 - **Viva Q&A:** **Can an open tab submit after the closing instant?** The backend verifies the deadline when it receives the request. The planned form shows the closed state if the window has ended.
+
+### TASK-018 — Map administration and publishing
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 2.4.
+- **Status:** Administrator workflow planned and verified.
+- **Objective:** Define how staff manage drafts and publish content, and where authorized local reviewers handle applications.
+- **Changes and files:** Added the [administrator journey](PAGES_AND_JOURNEYS.md#administrator-journey) and checked off Step 2.4 in the [roadmap](../WEBSITE_ROADMAP.md#phase-2--define-pages-and-user-journeys).
+- **How it works:** Staff sign in, open a permitted area, save a draft, preview it behind authentication, and publish it explicitly. Reviewer permissions are scoped to assigned local cycles. Failed publication and expired sessions have recovery paths.
+- **Why this approach:** Drafts can be edited without changing public content. Checking permission and the saved version on the server protects both drafts and the published result.
+- **Validation:** VER-033 walked through administrator and reviewer cases. VER-034 checked documentation and step sequence in the staged files.
+- **Limitations / remaining work:** Authentication, permission checks, draft versions, editor screens, and application review remain implementation work.
+- **Viva Q&A:** **Why protect the preview path?** A draft can contain unfinished material. Access to it follows the same authorization check as the editor.
 
 ## 11. Template for Every Future Task or Step
 

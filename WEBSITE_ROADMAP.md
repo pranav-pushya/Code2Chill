@@ -81,7 +81,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **2.1 Define public routes.** Plan nine public pages and their entry points in the [public sitemap](docs/PAGES_AND_JOURNEYS.md#public-sitemap).
 - [x] **2.2 Map event discovery.** Trace discovery, event details, official registration, and fallback paths in the [event journey](docs/PAGES_AND_JOURNEYS.md#event-discovery-and-registration).
 - [x] **2.3 Map recruitment.** Define the [announcement, interest, application, and confirmation paths](docs/PAGES_AND_JOURNEYS.md#recruitment-journey).
-- [ ] **2.4 Map administration.** Define sign in → create content → preview → publish → manage submissions.
+- [x] **2.4 Map administration.** Define [sign-in, content publishing, and authorized application review](docs/PAGES_AND_JOURNEYS.md#administrator-journey).
 - [ ] **2.5 Specify interface states.** Include loading, empty, closed, full, error, and success states.
 - [ ] **2.6 Create wireframes.** Sketch desktop and mobile layouts using realistic content lengths.
 - [ ] **2.7 Assign page actions.** Give each page a clear primary action and each button a destination or outcome.
