@@ -1,12 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Page } from "./SiteLayout.jsx";
+
+const cache = new Map();
+
+export function prefetchPublicData(
+  paths = ["events", "projects", "team", "recruitment"],
+) {
+  for (const path of paths) {
+    if (cache.has(path)) continue;
+    fetch(`/api/${path}`, { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) cache.set(path, data);
+      })
+      .catch(() => {});
+  }
+}
+
+export function clearPublicDataCache() {
+  cache.clear();
+}
+
+prefetchPublicData();
 
 export function PublicData(props) {
   return <Request key={props.path} {...props} />;
 }
 
 function Request({ path, name, missing, fallbackTitle, children }) {
-  const [result, setResult] = useState({ loading: true });
+  const initialData = cache.get(path);
+  const [result, setResult] = useState(
+    initialData !== undefined ? { data: initialData } : { loading: true },
+  );
+  const isAsync = useRef(initialData === undefined);
   const [attempt, setAttempt] = useState(0);
   const hasMissingPage = Boolean(missing);
   // biome-ignore lint/correctness/useExhaustiveDependencies: retry repeats the same request
@@ -27,6 +53,7 @@ function Request({ path, name, missing, fallbackTitle, children }) {
         }
         if (!response.ok) throw new Error();
         const data = await response.json();
+        cache.set(path, data);
         if (!controller.signal.aborted) setResult({ data });
       } catch {
         if (!controller.signal.aborted) setResult({ error: true });
@@ -36,7 +63,14 @@ function Request({ path, name, missing, fallbackTitle, children }) {
     return () => controller.abort();
   }, [path, attempt, hasMissingPage]);
   if (result.missing) return missing;
-  if ("data" in result) return children(result.data);
+  if ("data" in result) {
+    const content = children(result.data);
+    return isAsync.current ? (
+      <div className="data-enter">{content}</div>
+    ) : (
+      content
+    );
+  }
   const feedback = result.loading ? (
     <p className="data-feedback" role="status">
       Loading {name}…
