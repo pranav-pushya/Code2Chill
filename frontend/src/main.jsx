@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import favicon from "../../docs/design/brand/favicon.ico";
 import { AdminArea, SignIn } from "./Admin.jsx";
 import { EventWorkspace } from "./EventWorkspace.jsx";
-import { About, Contact, Join } from "./ClubPages.jsx";
+import { About, Contact } from "./ClubPages.jsx";
+import { Join } from "./Recruitment.jsx";
 import { EventDetail, Events } from "./Events.jsx";
 import Home from "./Home.jsx";
 import { ProjectDetail, Projects } from "./Projects.jsx";
@@ -25,7 +26,8 @@ function App() {
           <Route path="projects" element={<Projects />} />
           <Route path="projects/:slug" element={<ProjectDetail />} />
           <Route path="team" element={<Team />} />
-          <Route path="join" element={<Join />} />
+          <Route path="join" element={<Join key="join" />} />
+          <Route path="join/apply" element={<Join key="apply" apply />} />
           <Route path="status" element={<Status />} />
           <Route path="admin/sign-in" element={<SignIn />} />
           <Route

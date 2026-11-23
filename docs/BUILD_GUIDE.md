@@ -1,8 +1,8 @@
 # Code2Chill — Living Build Guide
 
-**Last updated:** 23 November 2026
+**Last updated:** 24 November 2026
 
-**Current stage:** All eight Phase 7 steps are complete with the owner's requested media placeholders. The public pages and sharing metadata passed checks in development and an isolated production build. The real club photos and project screenshots are still pending.
+**Current stage:** Phase 8.1 is implemented. Local submission opens once persistence and receipt handling are connected.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -56,7 +56,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Verified in development and staging | [Schema, diagram and repeatable seed](DATA_MODEL.md#migrations-and-initial-records) are implemented. |
 | Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
-| Recruitment | Planned | Recruitment intake and application review remain Phase 8 work. |
+| Recruitment | Phase 8.1 | Published cycle information and the application form are in place. Local intake is under construction. |
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
 | Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
@@ -1196,6 +1196,14 @@ The first development check exposed the internal API port in canonical URLs. Pre
 The browser displayed NEXUS at `/PROJECTS/nexus` while its initial document returned HTTP 404. The document renderer now matches section names the same way React Router does and emits the lowercase section in canonical links. Published slugs still require an exact match. The regression assertions cover mixed-case document and metadata requests, missing items and the staff noindex rule. [Document renderer](../backend/app/discovery.py) · [Integration tests](../backend/tests/test_discovery.py)
 
 The same HTTP and Chrome checks passed against the reloaded development app and an independent Docker build. The owner-requested placeholders remain ready for supplied media. **Viva question.** Why use a lowercase canonical URL when a mixed-case URL loads? Search engines and link previews can associate both URLs with one published page.
+
+### TASK-069 — Connect Join to the recruitment application form
+
+24 November 2026 · Phase 8.1 · Verified locally
+
+Join reads the published title, eligibility, dates and domains. An open local cycle links to the labeled application form. An open external cycle links to its approved destination. Without a published cycle, the university interest link stays available. When cycles overlap, Join prefers the open cycle closing first, then the next scheduled cycle, then the most recently closed cycle. Form values stay in page memory. [Join and application form](../frontend/src/Recruitment.jsx) · [Page metadata](../backend/app/discovery.py)
+
+The production frontend passed lint, formatting and build checks. A headless Chrome check against simulated API responses passed at 390px and 1440px. It covered direct access without a cycle, required fields and labels, the email step, an interrupted response, unchanged retry data and the receipt. **Viva question.** Why load the cycle again on the form page? A direct visit or stale link must still resolve to the currently offered local cycle.
 
 ## 11. Template for Every Future Task or Step
 

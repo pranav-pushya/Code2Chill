@@ -52,20 +52,3 @@ export function Contact() {
     </Page>
   );
 }
-
-export function Join() {
-  return (
-    <Page title="Join Code2Chill">
-      <section className="content-block">
-        <h2>Recruitment dates to be announced</h2>
-        <p>
-          Interested in becoming a member? Visit the university club page to
-          express your interest.
-        </p>
-      </section>
-      <ExternalLink href={university} className="action">
-        View the club on the university portal
-      </ExternalLink>
-    </Page>
-  );
-}

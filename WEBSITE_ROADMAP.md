@@ -211,7 +211,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 ### Steps
 
-- [ ] **8.1 Build the application form.** Use accessible labels, useful validation, and clearly explained required fields.
+- [x] **8.1 Build the application form.** Join shows the configured cycle and takes eligible applicants to the accessible local form or approved external destination.
 - [ ] **8.2 Enforce recruitment rules.** Validate opening and closing windows and duplicate submissions on the backend.
 - [ ] **8.3 Save applications.** Persist submissions and return confirmation references.
 - [ ] **8.4 Build the review dashboard.** Filter applications by domain, recruitment cycle, and status.

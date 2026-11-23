@@ -43,6 +43,7 @@ PAGES = {
         "Contact",
         "Find Code2Chill on the Chitkara University club portal, Instagram and LinkedIn.",
     ),
+    "/join/apply": ("Recruitment application", "Apply to an open Code2Chill recruitment cycle."),
     "/status": ("Service status", "Check connectivity to the Code2Chill services."),
 }
 
@@ -72,6 +73,8 @@ def page_head(request, path, db):
     # published record exactly, as they do in the content API.
     section, separator, slug = path[1:].partition("/")
     canonical_path = "/" + section.lower() + separator + slug
+    if canonical_path.lower() == "/join/apply":
+        canonical_path = "/join/apply"
     title, description, status = describe(canonical_path, db)
     if canonical_path != "/":
         title += " | Code2Chill"
@@ -84,7 +87,7 @@ def page_head(request, path, db):
         f'<title data-page-path="{escape(path)}">{title}</title>',
         f'<meta name="description" content="{description}">',
     ]
-    if status != 200 or canonical_path == "/status" or section.lower() == "admin":
+    if status != 200 or canonical_path in {"/status", "/join/apply"} or section.lower() == "admin":
         tags.append('<meta name="robots" content="noindex, nofollow">')
     else:
         tags.extend(

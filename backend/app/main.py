@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
-from . import admin_auth, admin_events, discovery, public_content
+from . import admin_auth, admin_events, discovery, public_content, recruitment
 from .database import database_engine
 
 
@@ -32,11 +32,16 @@ app = FastAPI(
 app.include_router(admin_auth.router)
 app.include_router(admin_events.router)
 app.include_router(public_content.router)
+app.include_router(recruitment.router)
 app.include_router(discovery.router)
 
 
 @app.middleware("http")
 async def protect_admin_requests(request: Request, call_next):
+    if request.url.path.startswith("/api/recruitment"):
+        response = await call_next(request)
+        response.headers["Cache-Control"] = "no-store"
+        return response
     if not request.url.path.startswith("/api/admin/"):
         return await call_next(request)
     # This API only serves its same-origin UI. Cross-origin scripts need CORS
@@ -56,6 +61,19 @@ async def protect_admin_requests(request: Request, call_next):
 
 @app.exception_handler(RequestValidationError)
 async def validation_error(request: Request, exc: RequestValidationError):
+    if request.url.path.startswith("/api/recruitment/"):
+        field = exc.errors()[0]["loc"][-1]
+        messages = {
+            "university_email": "Enter a valid university email.",
+            "full_name": "Enter your full name (up to 160 characters).",
+            "domain": "Choose an enabled domain.",
+            "portfolio_url": "Enter a valid HTTPS portfolio link.",
+            "motivation": "Keep your motivation within 2,000 characters.",
+            "code": "Enter the code from your email.",
+        }
+        return JSONResponse(
+            {"detail": messages.get(field, "Check your application details.")}, status_code=422
+        )
     if request.url.path == "/api/admin/sign-in":
         # Pydantic validation details can echo parts of the submitted credentials.
         return JSONResponse({"detail": "Enter an email address and password."}, status_code=422)
