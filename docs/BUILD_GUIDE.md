@@ -276,6 +276,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-092 | Phase 5.2 pass 2 | A fresh disposable schema confirmed the composite key, permitted route constraint and persisted retry fields. Ruff passed. | Phase 5 verification. |
 | VER-093 | Phase 5.3 pass 1 | Round-tripped separate official and registration links and confirmed the pending default. | Phase 5 verification. |
 | VER-094 | Phase 5.3 pass 2 | Verified there is no local booking table. The first invalid value exceeded the column length. Reran with a shorter invalid value and PostgreSQL rejected it at the state constraint. | Phase 5 verification. |
+| VER-095 | Phase 5.4 pass 1 | Round-tripped synthetic accounts, a session digest, a cycle assignment and an audit state change in PostgreSQL. | Phase 5 verification. |
+| VER-096 | Phase 5.4 pass 2 | Inspected the composite reviewer key and verified that PostgreSQL rejected an audit row for an unknown actor. Ruff passed. | Phase 5 verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -904,6 +906,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-093 and VER-094. Round-tripped separate official and registration links and confirmed the pending default. Verified there is no local booking table. The first invalid value exceeded the column length. Reran with a shorter invalid value and PostgreSQL rejected it at the state constraint.
 - **Limitations / remaining work:** Availability and publication rules follow in Steps 5.6 and 5.7.
 - **Viva Q&A:** **Where are event registrations stored?** The university portal owns the student registration records.
+
+### TASK-049 — Model administrator access and audit records
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 5.4.
+- **Status:** Verified.
+- **Objective:** Model administrator access and audit records.
+- **Changes and files:** Added [administrator models](../backend/app/admin_models.py) and documented the [session strategy](DATA_MODEL.md#administration).
+- **How it works:** Accounts hold a password hash and role. Server-side sessions store a token digest, expiry and revocation. A cycle-to-account join scopes reviewer assignments. Audit records retain the actor and state change.
+- **Why this approach:** Opaque sessions support server-enforced revocation. Stable audit actor references preserve who performed a change.
+- **Validation:** VER-095 and VER-096. Round-tripped synthetic accounts, a session digest, a cycle assignment and an audit state change in PostgreSQL. Inspected the composite reviewer key and verified that PostgreSQL rejected an audit row for an unknown actor. Ruff passed.
+- **Limitations / remaining work:** Sign-in, Argon2id hashing, token issuance and authorization are scheduled for Phases 6 and 8.
+- **Viva Q&A:** **Why store a token digest?** A database reader cannot use the stored digest as the bearer token.
 
 ## 11. Template for Every Future Task or Step
 

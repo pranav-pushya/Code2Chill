@@ -1,0 +1,79 @@
+from datetime import datetime
+from enum import StrEnum
+
+from sqlalchemy import Boolean, DateTime, ForeignKey, String, func, true
+from sqlalchemy.orm import Mapped, mapped_column
+
+from .domain import choices
+from .model_base import Base
+
+
+class AdminRole(StrEnum):
+    ADMIN = "admin"
+    EDITOR = "editor"
+    REVIEWER = "reviewer"
+
+
+class AuditAction(StrEnum):
+    CREATE = "create"
+    UPDATE = "update"
+    PUBLISH = "publish"
+    UNPUBLISH = "unpublish"
+    REVIEW = "review"
+
+
+class AuditTarget(StrEnum):
+    MEMBER = "member"
+    EVENT = "event"
+    PROJECT = "project"
+    MEDIA_ASSET = "media_asset"
+    RECRUITMENT_CYCLE = "recruitment_cycle"
+    APPLICATION = "application"
+    ADMIN_ACCOUNT = "admin_account"
+
+
+class AdminAccount(Base):
+    __tablename__ = "admin_account"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(String(254))
+    password_hash: Mapped[str] = mapped_column(String(512))
+    role: Mapped[AdminRole] = mapped_column(choices(AdminRole))
+    active: Mapped[bool] = mapped_column(Boolean, server_default=true())
+
+
+class AdminSession(Base):
+    __tablename__ = "admin_session"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    account_id: Mapped[int] = mapped_column(ForeignKey("admin_account.id", ondelete="CASCADE"))
+    token_digest: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class RecruitmentReviewer(Base):
+    __tablename__ = "recruitment_reviewer"
+
+    cycle_id: Mapped[int] = mapped_column(
+        ForeignKey("recruitment_cycle.id", ondelete="CASCADE"), primary_key=True
+    )
+    account_id: Mapped[int] = mapped_column(
+        ForeignKey("admin_account.id", ondelete="CASCADE"), primary_key=True
+    )
+
+
+class AuditRecord(Base):
+    __tablename__ = "audit_record"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    actor_id: Mapped[int] = mapped_column(ForeignKey("admin_account.id"))
+    action: Mapped[AuditAction] = mapped_column(choices(AuditAction))
+    target_type: Mapped[AuditTarget] = mapped_column(choices(AuditTarget))
+    target_id: Mapped[int]
+    previous_state: Mapped[str | None] = mapped_column(String(32))
+    new_state: Mapped[str | None] = mapped_column(String(32))
+    occurred_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )

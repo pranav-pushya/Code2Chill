@@ -23,3 +23,9 @@ Applications carry the submitted name and university email, optional motivation 
 An event can have an official source page and a confirmed signup destination. The two links serve different purposes. The stored registration state is pending, open, closed, full or ended. A new event defaults to pending.
 
 The university portal owns event submissions and confirmations for launch. Step 5.3 therefore needs fields on Event. A future change in registration ownership would require a separate design for seats, duplicates and confirmation. [Launch registration decision](LAUNCH_SCOPE.md#event-registration)
+
+## Administration
+
+Phase 6 will use local administrator accounts and opaque server-side sessions. An account stores its normalized email, password hash, role and active flag. Phase 6 will hash passwords with Argon2id, place a cryptographically random session token in a secure HTTP-only cookie, and look up a SHA-256 digest of the token in the session table. Sessions carry creation, expiry and revocation instants. Request authorization and cookie handling belong to Phase 6.
+
+The reviewer assignment joins an account to a particular recruitment cycle. The audit table stores the actor, action, typed record identifier, time and optional state changes. A typed identifier keeps an audit entry meaningful after the target record is removed. Deactivate accounts with audit history to retain attribution. Audit writes should store state names and record IDs, with applicant details and secrets kept out of the log. [Administrator models](../backend/app/admin_models.py) · [Administrator journey](PAGES_AND_JOURNEYS.md#administrator-journey)
