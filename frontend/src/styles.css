@@ -328,6 +328,7 @@
   color: var(--muted);
   overflow-wrap: anywhere;
 }
+
 @media (max-width: 47.99rem) {
   .menu-toggle {
     display: inline-flex;
@@ -453,6 +454,19 @@ p[role="alert"] {
   background: #2b1113;
   border-color: #c62828;
   color: #ffcdd2;
+}
+
+.work {
+  border-block: 1px solid var(--rule);
+}
+
+.work h2,
+.work .project-name a {
+  color: #ffffff;
+}
+
+.work p {
+  color: #dbe4ee;
 }
 
 span[role="status"] {

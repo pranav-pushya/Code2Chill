@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 9.1 purposeful transitions and visual polish are implemented and verified. Theme behavior and reduced motion are next.
+**Current stage:** Phase 9.1 and 9.2 are implemented and verified. Reduced motion (9.3) and ink transition evaluation (9.4) are next.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1329,6 +1329,20 @@ Implemented restrained, purposeful UI transitions and tactile micro-interactions
 - **Reduced Motion Support:** Configured `@media (prefers-reduced-motion: reduce)` tokens to set duration variables to `0.01ms` and disable motion transforms, ensuring accessibility compliance. [Design Tokens](design/tokens.css) · [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Site Layout](../frontend/src/SiteLayout.jsx)
 
 Validated frontend with `biome lint .` (0 errors, 0 warnings), built production client bundle via `vite build` (passed in 379ms), and executed end-to-end browser verification via headless Chrome CDP (`phase8-ui-check.mjs`) passing all flows. **Viva question.** Why use CSS custom properties for animation durations and easing instead of hardcoding values or importing a JavaScript animation library? CSS variables enable centralized control, allow the browser's compositor thread to optimize hardware acceleration directly, and make accessibility overrides (`prefers-reduced-motion`) zero-cost and instant by switching duration variables to `0.01ms` in a single `:root` media query.
+
+### TASK-083 — Documented decision and implementation for theme behavior (Step 9.2) and contrast optimization
+
+24 November 2026 · Phase 9.2 · Verified locally
+
+Evaluated theme behavior under Step 9.2 (*"Implement theme behavior if included"*) and Phase 9 deliverables (*"Documented decision on the ink effect and any additional animation libraries / theme behavior"*):
+- **Core Identity Decision:** The Code2Chill design specification ([VISUAL_IDENTITY.md](VISUAL_IDENTITY.md), [LAUNCH_SCOPE.md](LAUNCH_SCOPE.md)) defines the brand identity as a physical campus event programme printed with dark ink (`#101d32`) on warm, tactile paper (`#f8f6ef`), accented with deep poster panels (`#071628` night ink, `#214fc5` blue ticket). Following visual inspection of dark mode contrast regressions on dark poster elements, the project owner selected **Option 1**: preserve the signature, authentic "Ink on Paper" campus event identity and intentionally omit a dark mode toggle.
+- **Contrast & Legibility Polish:** Refined high-contrast styling across all inverted/poster surfaces to guarantee readability without theme inversion bugs:
+  - `.work` (Student Work poster on Home): Set headings and project link titles to crisp `#ffffff`, and descriptive body text to `#dbe4ee` / `#e1ebf5` on dark `#071628` background.
+  - `.ticket` (Event hero ticket): Set ticket body and date text to `#ffffff`, and dividing rule to translucent white `rgba(255, 255, 255, 0.4)` on `#214fc5` blue.
+  - `.media-frame span` & `.screen-slot .media-frame span`: Labeled media badges styled with solid background surfaces (`var(--sheet)` and `#112239`), distinct border outlines, and high-contrast text (`var(--ink)` and `#f0f4f8`).
+- **Hygiene & Reset:** Removed theme toggle button and layout clutter from [SiteLayout.jsx](../frontend/src/SiteLayout.jsx), removed unused theme variables and CSS overrides, and ensured [main.jsx](../frontend/src/main.jsx) safely wipes legacy `c2c-theme` localStorage keys and `data-theme` attributes on application initialization. [Design Tokens](design/tokens.css) · [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Main App](../frontend/src/main.jsx)
+
+Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files), production client build `vite build` (passed in 1.59s), all 23 backend pytest tests (passed in 50.94s), and end-to-end browser UI check (`phase8-ui-check.mjs`). **Viva question.** Why is dark mode considered conditional in the roadmap ("if included") rather than mandatory for this project? Editorial and physical-metaphor websites (such as print programmes, newspapers, and physical zines) derive their core character from their material paper palette (`#f8f6ef`); inverting paper to obsidian frequently destroys the visual metaphor and damages contrast hierarchy across intentionally dark poster modules, so omitting a dark toggle preserves brand cohesion while guaranteeing WCAG AA contrast on every screen.
 
 ## 11. Template for Every Future Task or Step
 

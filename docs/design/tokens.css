@@ -23,6 +23,7 @@
   --night: #071628;
   --sky: #a9c6ff;
   --rule: #bcc4c7;
+  --membership-bg: #e3ebfb;
   --focus: var(--blue);
   --display: "Barlow Condensed", "Arial Narrow", sans-serif;
   --body: "DM Sans", "Segoe UI", sans-serif;
@@ -63,7 +64,7 @@
 .on-ink {
   --focus: var(--sky);
   background: var(--night);
-  color: var(--paper);
+  color: #f0f4f8;
 }
 
 :focus-visible {
@@ -82,7 +83,7 @@
   padding: var(--space-2) var(--space-6);
   border: var(--stroke) solid transparent;
   border-radius: var(--radius);
-  color: var(--sheet);
+  color: #ffffff;
   background: var(--blue);
   font: 700 var(--body-size)/1.3 var(--body);
   text-decoration: none;

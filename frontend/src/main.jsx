@@ -91,5 +91,9 @@ const tabIcon = document.createElement("link");
 tabIcon.rel = "icon";
 tabIcon.href = favicon;
 document.head.append(tabIcon);
+try {
+  localStorage.removeItem("c2c-theme");
+  document.documentElement.removeAttribute("data-theme");
+} catch {}
 const root = document.getElementById("root");
 if (root) createRoot(root).render(<App />);
