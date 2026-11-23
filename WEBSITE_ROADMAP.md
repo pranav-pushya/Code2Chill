@@ -234,7 +234,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 
 ### Steps
 
-- [ ] **9.1 Add purposeful transitions.** Implement restrained hover, focus, page-entry, and action-feedback effects.
+- [x] **9.1 Add purposeful transitions.** Implement restrained hover, focus, page-entry, and action-feedback effects.
 - [ ] **9.2 Implement theme behavior if included.** Save preferences and respect the system theme.
 - [ ] **9.3 Respect reduced motion.** Provide appropriate alternatives to nonessential movement.
 - [ ] **9.4 Evaluate the ink transition separately.** Check responsiveness, memory use, changing content, and fallback behavior before adopting it.

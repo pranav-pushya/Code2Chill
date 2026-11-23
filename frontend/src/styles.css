@@ -39,6 +39,17 @@
   background: var(--sheet);
   color: var(--ink);
   font: inherit;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out);
+}
+.sign-in-form input:hover {
+  border-color: var(--ink);
+}
+.sign-in-form input:focus {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(33, 79, 197, 0.16);
 }
 .sign-in-form button {
   justify-self: start;
@@ -67,9 +78,15 @@
   border-radius: var(--radius);
   color: var(--muted);
   cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
 }
 .password-toggle:hover {
   color: var(--ink);
+  transform: scale(1.08);
+}
+.password-toggle:active {
+  transform: scale(0.95);
 }
 .password-toggle:focus-visible {
   outline: 2px solid var(--focus);
@@ -95,6 +112,10 @@
   border-top: 1px solid var(--rule);
   margin: 0;
   padding: var(--space-4) 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.draft-form fieldset:disabled {
+  opacity: 0.65;
 }
 .draft-form legend,
 .editor-page h2 {
@@ -110,6 +131,19 @@
   color: var(--ink);
   background: var(--sheet);
   font: inherit;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out);
+}
+.draft-form textarea:hover,
+.draft-form select:hover {
+  border-color: var(--ink);
+}
+.draft-form textarea:focus,
+.draft-form select:focus {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(33, 79, 197, 0.16);
 }
 .draft-form textarea {
   resize: vertical;
@@ -152,7 +186,13 @@
   flex-wrap: wrap;
   gap: var(--space-3);
   padding-block: var(--space-4);
+  padding-inline: var(--space-2);
   border-bottom: 1px solid var(--rule);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.admin-events li:hover {
+  background-color: rgba(33, 79, 197, 0.035);
+  border-radius: var(--radius);
 }
 .admin-events strong {
   flex: 1 1 16rem;
@@ -271,6 +311,11 @@
 }
 .gallery-grid figure {
   margin: 0;
+  transition: transform var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
+}
+.gallery-grid figure:hover {
+  transform: translateY(-2px);
 }
 .public-page .screen-slot {
   max-width: 48rem;
@@ -295,6 +340,11 @@
     border: 0;
     cursor: pointer;
     font: 600 1rem var(--body);
+    transition: opacity var(--duration-fast) var(--ease-out),
+                transform var(--duration-fast) var(--ease-out);
+  }
+  .menu-toggle:active {
+    transform: scale(0.96);
   }
   .menu-toggle::before {
     content: "";
@@ -318,5 +368,97 @@
   }
   .team-groups {
     grid-template-columns: 1fr;
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  animation: page-enter var(--duration-normal) var(--ease-out) both;
+}
+
+@keyframes feedback-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+p[role="status"]:not(.data-feedback),
+p[role="alert"] {
+  animation: feedback-enter var(--duration-normal) var(--ease-out) both;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  margin-block: var(--space-3);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+p[role="status"]:not(.data-feedback) {
+  background: #eaf4fc;
+  border: 1px solid #9fc1e8;
+  color: #103264;
+}
+
+p[role="alert"] {
+  background: #fdf2f2;
+  border: 1px solid #f09a9d;
+  color: #8c1d1d;
+}
+
+.on-ink p[role="status"]:not(.data-feedback) {
+  background: #0d2238;
+  border-color: #3b648f;
+  color: #c0d8f5;
+}
+
+.on-ink p[role="alert"] {
+  background: #2b1113;
+  border-color: #c62828;
+  color: #ffcdd2;
+}
+
+span[role="status"] {
+  display: block;
+  min-height: 1.25rem;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+span[role="status"]:empty {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .page-enter,
+  p[role="status"],
+  p[role="alert"] {
+    animation: none;
+    transform: none;
+  }
+  .gallery-grid figure:hover,
+  .password-toggle:hover,
+  .menu-toggle:active {
+    transform: none;
+    box-shadow: none;
   }
 }

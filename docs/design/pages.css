@@ -14,9 +14,30 @@ h1, h2, h3 { text-wrap: balance; }
 .brand { gap: .6rem; min-height: var(--target); text-decoration: none; font-weight: 700; font-size: 1.3rem; letter-spacing: -.06em; }
 .brand img { width: 2rem; height: 2rem; border-radius: .25rem; }
 .nav-links { gap: clamp(1rem, 2.3vw, 2.5rem); }
-.nav-links a, .site-foot a, .mobile-nav summary { display: inline-flex; min-height: var(--target); align-items: center; font-weight: 600; text-decoration: none; }
+.nav-links a, .site-foot a, .mobile-nav summary, .brand {
+  display: inline-flex;
+  min-height: var(--target);
+  align-items: center;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out),
+              text-decoration-color var(--duration-fast) var(--ease-out),
+              opacity var(--duration-fast) var(--ease-out);
+}
 .nav-links a:hover, .site-foot a:hover, .brand:hover { text-decoration: underline; text-underline-offset: .2em; }
-.nav-links .join-link { padding-inline: 1rem; border: 1px solid var(--ink); border-radius: var(--radius); }
+.nav-links .join-link {
+  padding-inline: 1rem;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+.nav-links .join-link:hover {
+  background-color: var(--ink);
+  color: var(--sheet);
+  text-decoration: none;
+}
 .mobile-nav { display: none; }
 .hero { display: grid; grid-template-columns: 1.08fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; padding-block: clamp(2.5rem, 5vw, 5rem); }
 .kicker, .meta, .date-line { color: var(--muted); font: 600 .875rem/1.45 var(--mono); }
@@ -38,11 +59,29 @@ h1 span { display: block; color: var(--blue); }
   .print, .print img { transition: none; }
   .brand-art:hover .print { transform: rotate(-5deg); }
   .brand-art:hover .print img { transform: none; }
+  .event-row { transition: none; }
+  .event-row:hover { padding-inline: 0; }
 }
 .ledger { border-top: 2px solid var(--ink); padding-block: var(--space-8) var(--section-gap); }
 h2 { font-size: var(--section-size); letter-spacing: -.025em; line-height: 1; }
 .ledger h2, .work h2 { margin-bottom: var(--space-8); }
-.event-row { color: inherit; text-decoration: none; display: grid; grid-template-columns: minmax(6rem, .3fr) 1.5fr 1fr; align-items: center; gap: var(--space-6); border-block: 1px solid var(--rule); padding-block: var(--space-6); }
+.event-row {
+  color: inherit;
+  text-decoration: none;
+  display: grid;
+  grid-template-columns: minmax(6rem, .3fr) 1.5fr 1fr;
+  align-items: center;
+  gap: var(--space-6);
+  border-block: 1px solid var(--rule);
+  padding-block: var(--space-6);
+  transition: background-color var(--duration-fast) var(--ease-out),
+              padding-inline var(--duration-fast) var(--ease-out);
+}
+.event-row:hover {
+  background-color: rgba(33, 79, 197, 0.04);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius);
+}
 .date-stamp { color: var(--blue); font-family: var(--mono); font-size: var(--small-size); }
 .date-stamp strong { display: block; font: 700 4rem/.9 var(--display); }
 .event-name, .project-name { font-size: clamp(2rem, 3.2vw, 3.65rem); line-height: 1.04; letter-spacing: -.02em; }

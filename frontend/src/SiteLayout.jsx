@@ -112,7 +112,9 @@ export function SiteLayout() {
       </a>
       <Header key={pathname} />
       <main id="main" ref={main} tabIndex={-1}>
-        <Outlet />
+        <div key={pathname} className="page-enter">
+          <Outlet />
+        </div>
       </main>
       <footer className="site-foot">
         <div className="wrap foot-inner">

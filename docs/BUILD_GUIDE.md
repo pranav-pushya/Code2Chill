@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 8.7 publishing controls are implemented. Private exports are next.
+**Current stage:** Phase 9.1 purposeful transitions and visual polish are implemented and verified. Theme behavior and reduced motion are next.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -58,6 +58,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
 | Recruitment | Intake and decisions verified locally | Local applicants verify their email and receive a reference. Authorized staff can filter submissions, record decisions and read their history. Exports are pending. [Review API](../backend/app/admin_recruitment.py) |
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
+| Interaction and visual polish | Step 9.1 verified | Restrained CSS transitions on actions, links, inputs, lists, page-entry fade/rise, and action feedback with reduced-motion support. |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
 | Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
 
@@ -1312,6 +1313,21 @@ Verified local existence of `Expriments/extra.html` via `Test-Path`, verified `g
 Reformatted `backend/tests/test_admin_auth.py` with Ruff to remove an unformatted trailing blank line introduced in the staff password change test suite. This resolves the GitHub Actions CI pipeline failure where `uv run --locked ruff format --check app migrations tests` exited with code 1. [Admin Auth Tests](../backend/tests/test_admin_auth.py)
 
 Executed `ruff check app migrations tests` (zero lint violations across 39 files), `ruff format --check app migrations tests` (all 39 files formatted), and local `pytest` (23 passed in 36.92s). Also verified frontend formatting, linting, and Vite production bundle build. **Viva question.** Why does CI run both `ruff check` and `ruff format --check`? `ruff check` enforces AST-level lint rules, imports sorting, and semantic code constraints, whereas `ruff format --check` enforces black-compatible structural formatting and whitespace styling; running both guarantees both stylistic uniformity and code correctness before merging.
+
+### TASK-082 — Add purposeful transitions and interaction polish
+
+24 November 2026 · Phase 9.1 · Verified locally
+
+Implemented restrained, purposeful UI transitions and tactile micro-interactions across the Code2Chill web portal without third-party animation library bloat. Defined standardized CSS design tokens for duration and easing (`--duration-fast: 150ms`, `--duration-normal: 240ms`, `--duration-slow: 360ms`, `--ease-out: cubic-bezier(0.16, 1, 0.3, 1)`, and `--ease-in-out`), and wired them across interactive elements:
+- **Buttons (`.action`):** Added subtle elevation lift (`translateY(-1px)`) with a soft blue shadow on hover, tactile press down (`scale(0.98)`) on active click, and distinct disabled styling (`opacity: 0.6`, `cursor: not-allowed`).
+- **Navigation & Links:** Added smooth color and text-decoration shifts for brand mark, primary header links, footer links, and the inverted "Join" pill button.
+- **Form Controls:** Added smooth hover border transitions and replaced default browser outline jumps with a soft focus glow ring (`box-shadow: 0 0 0 3px rgba(33, 79, 197, 0.16)`) across input, textarea, and select elements.
+- **Controls & Rows:** Added hover background highlights and nudges on `.event-row`, `.admin-events li`, hover lift on `.gallery-grid figure`, and tactile scaling on password and mobile menu toggles.
+- **Page-Entry Transitions:** Wrapped `<Outlet />` inside `<div key={pathname} className="page-enter">` in [SiteLayout.jsx](../frontend/src/SiteLayout.jsx), introducing an elegant 240ms subtle fade and rise (`6px -> 0px`) on client-side route changes.
+- **Action Feedback:** Polished `p[role="status"]` (soft blue notice) and `p[role="alert"]` (soft red alert) with slide-in keyframe animations and clear contrast.
+- **Reduced Motion Support:** Configured `@media (prefers-reduced-motion: reduce)` tokens to set duration variables to `0.01ms` and disable motion transforms, ensuring accessibility compliance. [Design Tokens](design/tokens.css) · [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Site Layout](../frontend/src/SiteLayout.jsx)
+
+Validated frontend with `biome lint .` (0 errors, 0 warnings), built production client bundle via `vite build` (passed in 379ms), and executed end-to-end browser verification via headless Chrome CDP (`phase8-ui-check.mjs`) passing all flows. **Viva question.** Why use CSS custom properties for animation durations and easing instead of hardcoding values or importing a JavaScript animation library? CSS variables enable centralized control, allow the browser's compositor thread to optimize hardware acceleration directly, and make accessibility overrides (`prefers-reduced-motion`) zero-cost and instant by switching duration variables to `0.01ms` in a single `:root` media query.
 
 ## 11. Template for Every Future Task or Step
 

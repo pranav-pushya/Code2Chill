@@ -45,6 +45,19 @@
   --stroke: 1px;
   --radius: .35rem;
   --target: 2.75rem;
+  --duration-fast: 150ms;
+  --duration-normal: 240ms;
+  --duration-slow: 360ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0.01ms;
+    --duration-normal: 0.01ms;
+    --duration-slow: 0.01ms;
+  }
 }
 
 .on-ink {
@@ -56,6 +69,7 @@
 :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
+  transition: outline-offset var(--duration-fast) var(--ease-out);
 }
 
 .action {
@@ -73,11 +87,32 @@
   font: 700 var(--body-size)/1.3 var(--body);
   text-decoration: none;
   cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              opacity var(--duration-fast) var(--ease-out);
 }
 
-.action:hover,
+.action:hover {
+  background: var(--blue-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(33, 79, 197, 0.2);
+}
+
 .action:active {
   background: var(--blue-hover);
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
+}
+
+.action:disabled,
+.action[disabled],
+.action[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
 }
 
 .text-link {
