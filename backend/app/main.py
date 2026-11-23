@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
-from . import admin_auth, admin_events, discovery, public_content, recruitment
+from . import admin_auth, admin_events, admin_recruitment, discovery, public_content, recruitment
 from .database import database_engine
 
 
@@ -31,6 +31,7 @@ app = FastAPI(
 )
 app.include_router(admin_auth.router)
 app.include_router(admin_events.router)
+app.include_router(admin_recruitment.router)
 app.include_router(public_content.router)
 app.include_router(recruitment.router)
 app.include_router(discovery.router)

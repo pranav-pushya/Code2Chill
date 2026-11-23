@@ -79,6 +79,26 @@
 .sign-out {
   margin-top: var(--space-8);
 }
+.review-filters,
+.cycle-select {
+  margin-block: var(--space-4);
+}
+.review-filters {
+  grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+}
+.cycle-select {
+  display: grid;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+.review-detail dd {
+  margin: 0 0 var(--space-4);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.review-detail dt {
+  font-weight: 600;
+}
 .admin-events {
   max-width: 55rem;
   list-style: none;

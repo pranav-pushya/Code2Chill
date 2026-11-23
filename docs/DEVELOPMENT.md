@@ -74,6 +74,10 @@ Start FastAPI and Vite, then open the [admin sign-in page](http://localhost:5173
 
 Sign-in uses a host-only, Secure, HTTP-only cookie with an eight-hour lifetime. Use `localhost` for local browser development and HTTPS on a deployed hostname. The frontend and API share an origin through the Vite or Caddy proxy. Admin API clients must include `X-Code2Chill-Admin: 1` on POST requests, including sign-in and sign-out. Five consecutive failed password checks pause sign-in for that account for five minutes.
 
+### Review recruitment applications
+
+For recruitment, choose **Review applications** from the staff dashboard. Select a cycle, then filter by domain or status. Open a name to read the application. **Back to applications** restores the filters and page. Administrators can access all local recruitment cycles, and reviewers see cycles assigned to their active account. Editors manage public content.
+
 ### Publish an event
 
 1. Open **Manage events** and choose **New draft**, or open an existing event. Enter a title, URL slug and summary. You can save the draft while the date is pending. Enter optional times in India Standard Time.

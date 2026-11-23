@@ -5,6 +5,7 @@ import { AdminArea, SignIn } from "./Admin.jsx";
 import { EventWorkspace } from "./EventWorkspace.jsx";
 import { About, Contact } from "./ClubPages.jsx";
 import { Join } from "./Recruitment.jsx";
+import { ReviewDashboard } from "./ReviewDashboard.jsx";
 import { EventDetail, Events } from "./Events.jsx";
 import Home from "./Home.jsx";
 import { ProjectDetail, Projects } from "./Projects.jsx";
@@ -40,6 +41,15 @@ function App() {
             element={<EventWorkspace preview />}
           />
           <Route path="admin" element={<AdminArea key="dashboard" />} />
+          <Route path="admin/recruitment" element={<ReviewDashboard />} />
+          <Route
+            path="admin/recruitment/:cycleId/applications"
+            element={<ReviewDashboard />}
+          />
+          <Route
+            path="admin/recruitment/:cycleId/applications/:applicationId"
+            element={<ReviewDashboard />}
+          />
           <Route
             path="admin/content/events"
             element={<AdminArea key="events" events />}

@@ -214,7 +214,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **8.1 Build the application form.** Join shows the configured cycle and takes eligible applicants to the accessible local form or approved external destination.
 - [x] **8.2 Enforce recruitment rules.** The backend checks the published window, active reviewer assignment, enabled domain, verified university email and one application per cycle and email.
 - [x] **8.3 Save applications.** Persist the application and return a confirmation reference. A verified retry of the same attempt and details can recover the original reference after closing.
-- [ ] **8.4 Build the review dashboard.** Filter applications by domain, recruitment cycle, and status.
+- [x] **8.4 Build the review dashboard.** Authorized staff can choose a cycle, filter by domain and status, and return from an application to the same filtered list.
 - [ ] **8.5 Implement review transitions.** Support pending, shortlisted, accepted, and rejected states with audit records.
 - [ ] **8.6 Complete content editors.** Manage members, projects, media, and site settings.
 - [ ] **8.7 Complete publishing controls.** Support draft previews and explicit publication actions.

@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 8 recruitment intake is implemented through step 8.3. The next step is the staff review dashboard. Opening a real local cycle requires club-approved settings, reviewer assignments and mail delivery. The Phase 7 public pages still use the owner's requested media placeholders.
+**Current stage:** Recruitment intake and the staff review dashboard are implemented through step 8.4. Recording review decisions is next. Opening a real local cycle requires club-approved settings, reviewer assignments and mail delivery.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -56,7 +56,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Verified in development and staging | [Schema, diagram and repeatable seed](DATA_MODEL.md#migrations-and-initial-records) are implemented. |
 | Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
-| Recruitment | Intake verified locally | Join uses published cycle details. Local applicants verify their email and receive a reference after saving. Staff review and exports are pending. [Application API](../backend/app/recruitment.py) |
+| Recruitment | Intake and review dashboard verified locally | Local applicants verify their email and receive a reference. Authorized staff can filter and read submissions. Review decisions and exports are pending. [Review API](../backend/app/admin_recruitment.py) |
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
 | Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
@@ -1220,6 +1220,14 @@ The PostgreSQL integration tests covered scheduled, open and closed cycles, draf
 Each form attempt has a random identifier. The server locks the cycle, validates the request and commits the application before returning its receipt. A verified retry with the same details returns the saved receipt even after closing. Changed details or a second attempt cannot overwrite the saved application. [Migration](../backend/migrations/versions/0003_recruitment_intake.py) · [Integration tests](../backend/tests/test_recruitment.py)
 
 All 17 backend tests passed using local PostgreSQL, including migration round trips, duplicate attempts and receipt recovery with a renewed email code after closing. Ruff passed. The browser retry check used simulated responses and verified the same attempt identifier and form values across both requests. Reloading or leaving the form discards the in-memory attempt. **Viva question.** What happens if the database saves the application but the response is lost? The student can retry in the same open page and recover the original reference.
+
+### TASK-072 — Filter and read recruitment applications
+
+24 November 2026 · Phase 8.4 · Verified locally
+
+Staff can open **Review applications**, choose a local cycle and filter by domain or status. Each page shows up to 50 applications, newest first. Opening a name displays the applicant's email and optional answers. Returning restores the URL filters and page. The API checks the active account and cycle assignment on each private read. Administrators can read all local cycles. [Dashboard](../frontend/src/ReviewDashboard.jsx) · [Review API](../backend/app/admin_recruitment.py)
+
+All 18 backend tests passed against PostgreSQL. The permission tests checked anonymous access, editor access, revoked assignments, filtering and cross-cycle detail requests. The production frontend passed lint, formatting and build checks. Headless Chrome at 390px and 1440px signed in as a reviewer, selected a cycle, filtered the list, read a submission and returned to the same filters using the real API and temporary database records. An unassigned cycle gave an access message. Step 8.5 adds decisions. **Viva question.** Why check the cycle when opening an application by ID? Knowing a record ID does not grant permission to read an applicant's details.
 
 ## 11. Template for Every Future Task or Step
 

@@ -40,13 +40,19 @@ export function SignIn() {
       if (!response.ok) throw new Error();
       const account = await response.json();
       const from = location.state?.from;
-      const permitted =
+      const eventPath =
         account.role !== "reviewer" &&
         typeof from === "string" &&
         /^\/admin\/content\/events(?:\/(?:new|[1-9]\d*(?:\/preview)?))?$/.test(
           from,
         );
-      navigate(permitted ? from : "/admin", { replace: true });
+      const reviewPath =
+        account.role !== "editor" &&
+        typeof from === "string" &&
+        /^\/admin\/recruitment(?:\/[1-9]\d*\/applications(?:\/[1-9]\d*)?)?(?:\?[^#]*)?$/.test(
+          from,
+        );
+      navigate(eventPath || reviewPath ? from : "/admin", { replace: true });
     } catch {
       setError("Couldn’t reach the sign-in service. Try again.");
     } finally {
@@ -180,11 +186,18 @@ export function AdminArea({ events = false }) {
         ) : (
           <>
             <p>Signed in as {result.data.email}</p>
-            {result.data.role !== "reviewer" && (
-              <Link to={eventsPath} className="action">
-                Manage events
-              </Link>
-            )}
+            <div className="page-actions">
+              {result.data.role !== "reviewer" && (
+                <Link to={eventsPath} className="action">
+                  Manage events
+                </Link>
+              )}
+              {result.data.role !== "editor" && (
+                <Link to="/admin/recruitment" className="action">
+                  Review applications
+                </Link>
+              )}
+            </div>
           </>
         ))}
       {(result.data || result.forbidden) && (
