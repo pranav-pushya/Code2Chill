@@ -241,6 +241,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-044 | Phase 3.1 pass 2 | Loaded all three at 390 × 860 with reduced motion. Compared captures and computed layout, then repeated Noddal in fresh sessions until its scene was visible at both widths. | Phone emulation and two Noddal samples. Timing varies with the network and device. |
 | VER-045 | Phase 3.2 pass 1 | Inspected the original mark and alpha bounds and checked the direction for palette, composition, navigation and missing-media behavior. | Design specification. |
 | VER-046 | Phase 3.2 pass 2 | Cross-checked the featured content and primary action against the Phase 2 wireframes, page actions and Phase 1 register. | Content and interaction review. |
+| VER-047 | Phase 3.3 pass 1 | Calculated sRGB contrast for six text, action and focus pairs. Results ranged from 6.50 to 15.61. | Declared color pairs. |
+| VER-048 | Phase 3.3 pass 2 | Rendered an offline 390 px Chrome sample, tabbed to both controls, checked the 44 px action and 3 px ring, verified distinct light and dark focus colors and confirmed both fonts loaded. | One browser and a representative sample. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -596,6 +598,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-045 and VER-046. Both checks passed for the home and event compositions and their data sources.
 - **Limitations / remaining work:** Page rendering is scheduled for Step 3.6. Gallery content depends on approved media.
 - **Viva Q&A:** **Why give the date a large block?** Date and place distinguish an event quickly, and the same structure works for an archived event with no photograph.
+
+### TASK-025 — Define and test the design tokens
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 3.3.
+- **Status:** Design tokens implemented and verified in a local browser sample.
+- **Objective:** Provide reusable typography, color, spacing, control and focus styles for the representative pages.
+- **Changes and files:** Added [tokens.css](design/tokens.css), two licensed Latin font files and their license texts, and the [component specifications](VISUAL_IDENTITY.md#tokens-and-components).
+- **How it works:** The CSS exposes named values for paper, ink, links, display type, spacing, target size and borders. The dark surface overrides the focus color. Font files resolve relative to the stylesheet.
+- **Why this approach:** A shared stylesheet prevents drift across pages. Serving the fonts with the design also makes the mockups usable offline.
+- **Validation:** VER-047 and VER-048. The first focus probe used JavaScript focus and did not reproduce keyboard modality. Repeating with actual Tab events verified both rings.
+- **Limitations / remaining work:** Production components and full-page accessibility checks belong to later phases.
+- **Viva Q&A:** **Why change the focus color on dark surfaces?** The light blue ring remains visible against navy. A separated outline also preserves the button’s own label and fill.
 
 ## 11. Template for Every Future Task or Step
 

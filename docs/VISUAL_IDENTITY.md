@@ -24,3 +24,19 @@ The brand panel and date block are illustrative graphics. Keep documentary photo
 ### Design basis
 
 The [reference review](DESIGN_REFERENCE_ANALYSIS.md) informed the change of scale between heading and metadata. The [wireframes](WIREFRAMES.md) set the order of the content and the [page actions](PAGES_AND_JOURNEYS.md#page-actions) define its destinations. The [content register](CONTENT_REGISTER.md) supplies the public facts and image availability. The two [supplied logo](../Code2Chill.png) [variants](../Code2Chill_transparent.png) establish the club artwork.
+
+## Tokens and components
+
+The [design stylesheet](design/tokens.css) is the shared source for both mockups. Barlow Condensed Bold gives the title a tall, narrow shape. DM Sans handles body text and navigation, and system monospace handles dates. The Latin fonts ship locally with their [Barlow Condensed license](design/fonts/barlowcondensed-OFL.txt) and [DM Sans license](design/fonts/dmsans-OFL.txt). System fallbacks cover other glyphs and failed loads.
+
+| Use | Specification |
+| --- | --- |
+| Reading | Ink on paper, muted text for metadata. Keep paragraphs around 55–65 characters wide. Use 16 px body text at the default size with 1.5 line height or greater. |
+| Hierarchy | Fluid hero and section sizes cap the largest titles. Wrap long event names naturally. Use the small size for credits and metadata. |
+| Layout | Use the spacing scale for local gaps, the responsive gutter for the page edges, and the section gap between topics. Content stops growing at 84 rem. |
+| Primary action | Blue fill, light label, minimum height 44 px. Hover or press darkens the fill. A text link retains its underline in a paragraph. |
+| Focus | Three-pixel blue outline on paper or sky outline on dark backgrounds, offset by three pixels. Keep the outline clear of clipping containers. Forced colors use the system highlight. |
+| Event entry | One thin rule can group the date, title, venue and visible status. The title links to the detail. Underlined links and words communicate meaning independently of color. |
+| Menu and status | A labeled disclosure exposes navigation on small screens. Ended events show “Event ended” and a return route to the archive. A pending recruitment cycle shows membership interest. |
+
+The pale rule is a decorative separator. Use a text label or a contrasting border for any control that needs a visible boundary. Mark default focus on a dark panel using the `.on-ink` class. The examples use immediate state changes and require no motion library.
