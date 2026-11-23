@@ -213,6 +213,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-026 | Phase 1 correction pass 2, staged document review | Checked the corrected roadmap, dated content observation, local links and anchors, and exact staged scope. `git diff --cached --check` passed. | Repository and planning verification. |
 | VER-027 | Phase 2.1 pass 1, route walkthrough | Compared the route table and sitemap, matched named route examples to the content register, and walked through navigation and missing-content paths. | Route design. No router is implemented. |
 | VER-028 | Phase 2.1 pass 2, repository review | Verified the route plan and roadmap links, checkbox sequence, task record, and staged scope. `git diff --cached --check` passed. | Document validation. |
+| VER-029 | Phase 2.2 pass 1, event journey walkthrough | Checked list entry, archive and shared links, registration conditions, missing details, error recovery, and the external handoff against the Phase 1 rules. | Planned journey only. |
+| VER-030 | Phase 2.2 pass 2, repository review | Checked the staged diagram references, repository links, checklist sequence, and task record. `git diff --cached --check` passed. | No booking was attempted. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -437,6 +439,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-027 checked route coverage and examples against the content register. VER-028 checked staged documentation and step order.
 - **Limitations / remaining work:** The site router, data loading, and visual navigation are planned. Journeys and screen states are specified in later Phase 2 steps.
 - **Viva Q&A:** **What is a slug?** It is the unique readable identifier for a published item within its content type. **What happens if an event slug is unknown?** The site shows a not-found state with a link back to Events.
+
+### TASK-016 — Map event discovery and registration
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 2.2.
+- **Status:** Event journey planned and verified.
+- **Objective:** Show how students find current and past events, read details, and reach official sign-up.
+- **Changes and files:** Added the [event journey](PAGES_AND_JOURNEYS.md#event-discovery-and-registration) and updated Step 2.2 in the [roadmap](../WEBSITE_ROADMAP.md#phase-2--define-pages-and-user-journeys).
+- **How it works:** The flow has list and shared-link entry points. It checks registration status and a verified event destination before exposing the handoff. Closed, full, ended, pending, missing, and error conditions have clear outcomes.
+- **Why this approach:** Students can still explore the archive when the schedule is empty. The official university handoff keeps ticket availability and confirmations with the owner of the booking workflow.
+- **Validation:** VER-029 walked the event cases against the launch scope. The first assertion expected eleven links in the diagram. Manual review found twelve, including both shared-URL outcomes, and the corrected assertion passed. VER-030 reviewed the staged documentation and sequence.
+- **Limitations / remaining work:** These are planned routes and actions. A live portal sign-up and browser Back behavior will need testing when Code2Chill has a working frontend.
+- **Viva Q&A:** **Why can a published event omit a registration button?** Publication makes its information visible. The button requires an open registration state and a verified official destination.
 
 ## 11. Template for Every Future Task or Step
 

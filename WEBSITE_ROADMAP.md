@@ -79,7 +79,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 ### Steps
 
 - [x] **2.1 Define public routes.** Plan nine public pages and their entry points in the [public sitemap](docs/PAGES_AND_JOURNEYS.md#public-sitemap).
-- [ ] **2.2 Map event discovery.** Define discover club → explore activities → inspect event → register or follow the official registration link.
+- [x] **2.2 Map event discovery.** Trace discovery, event details, official registration, and fallback paths in the [event journey](docs/PAGES_AND_JOURNEYS.md#event-discovery-and-registration).
 - [ ] **2.3 Map recruitment.** Define the announcement and interest paths, plus application and confirmation when an approved cycle opens.
 - [ ] **2.4 Map administration.** Define sign in → create content → preview → publish → manage submissions.
 - [ ] **2.5 Specify interface states.** Include loading, empty, closed, full, error, and success states.
