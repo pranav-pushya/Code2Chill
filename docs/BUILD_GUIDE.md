@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Recruitment intake, staff review and audited decisions are implemented through step 8.5. Step 8.6 covers content editors. Opening a real local cycle requires club-approved settings, reviewer assignments and mail delivery.
+**Current stage:** Phase 8.6 content editors are implemented. Publishing controls are next.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1244,6 +1244,14 @@ All 19 backend tests passed against PostgreSQL, including rejection of stale sav
 The owner scheduled password changing and show/hide password controls after step 8.8. The [roadmap](../WEBSITE_ROADMAP.md#phase-8--complete-recruitment-and-administration) lists these as steps 8.9 and 8.10. Staff provisioning uses the terminal command. An email invitation flow remains a separate proposal.
 
 The change was checked against the owner's request and existing roadmap sequence. No runtime behavior changed. **Viva question.** Who chooses the initial password in an invitation workflow? The invited mailbox owner chooses it through the invitation link.
+
+### TASK-075 — Edit club content and site links
+
+24 November 2026 · Phase 8.6 · Verified locally
+
+The staff dashboard opens member, project and hosted media editors. Administrators can also edit the official club links. Saving checks the revision and writes an audit entry. Media records describe externally hosted images. Members and projects retain their published copy while a draft is edited. [Editor](../frontend/src/ContentEditor.jsx) · [API](../backend/app/admin_content.py)
+
+PostgreSQL tests passed for migration round trips, private access, stale revisions and contributor order. Chrome created and reopened a member draft using the real API. **Viva question.** Why keep a revision? It prevents an older tab from overwriting a newer save.
 
 ## 11. Template for Every Future Task or Step
 

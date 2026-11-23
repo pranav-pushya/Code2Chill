@@ -6,6 +6,7 @@ import { EventWorkspace } from "./EventWorkspace.jsx";
 import { About, Contact } from "./ClubPages.jsx";
 import { Join } from "./Recruitment.jsx";
 import { ReviewDashboard } from "./ReviewDashboard.jsx";
+import { ContentEditor } from "./ContentEditor.jsx";
 import { EventDetail, Events } from "./Events.jsx";
 import Home from "./Home.jsx";
 import { ProjectDetail, Projects } from "./Projects.jsx";
@@ -41,6 +42,15 @@ function App() {
             element={<EventWorkspace preview />}
           />
           <Route path="admin" element={<AdminArea key="dashboard" />} />
+          <Route path="admin/content/:kind/:id?" element={<ContentEditor />} />
+          <Route
+            path="admin/media/:id?"
+            element={<ContentEditor section="media" />}
+          />
+          <Route
+            path="admin/settings"
+            element={<ContentEditor section="settings" />}
+          />
           <Route path="admin/recruitment" element={<ReviewDashboard />} />
           <Route
             path="admin/recruitment/:cycleId/applications"

@@ -188,6 +188,24 @@ export function AdminArea({ events = false }) {
             <p>Signed in as {result.data.email}</p>
             <div className="page-actions">
               {result.data.role !== "reviewer" && (
+                <>
+                  <Link className="action" to="/admin/content/members">
+                    Manage members
+                  </Link>
+                  <Link className="action" to="/admin/content/projects">
+                    Manage projects
+                  </Link>
+                  <Link className="action" to="/admin/media">
+                    Manage media
+                  </Link>
+                </>
+              )}
+              {result.data.role === "admin" && (
+                <Link className="action" to="/admin/settings">
+                  Site settings
+                </Link>
+              )}
+              {result.data.role !== "reviewer" && (
                 <Link to={eventsPath} className="action">
                   Manage events
                 </Link>

@@ -24,6 +24,7 @@ class AuditAction(StrEnum):
 
 
 class AuditTarget(StrEnum):
+    SITE_SETTINGS = "site_settings"
     MEMBER = "member"
     EVENT = "event"
     PROJECT = "project"

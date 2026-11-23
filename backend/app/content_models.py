@@ -31,11 +31,23 @@ class MediaAsset(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     storage_key: Mapped[str] = mapped_column(String(512), unique=True)
+    asset_url: Mapped[str | None] = mapped_column(Text)
+    revision: Mapped[int] = mapped_column(server_default="1")
     content_type: Mapped[str] = mapped_column(String(100))
     alt_text: Mapped[str] = mapped_column(String(300))
     credit: Mapped[str] = mapped_column(String(200))
     source_url: Mapped[str | None] = mapped_column(Text)
     approved_for_publication: Mapped[bool] = mapped_column(Boolean, server_default=false())
+
+
+class SiteSettings(PublicationFields, Base):
+    __tablename__ = "site_settings"
+    __table_args__ = (CheckConstraint("id = 1", name="singleton"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
+    university: Mapped[str] = mapped_column(Text)
+    instagram: Mapped[str] = mapped_column(Text)
+    linkedin: Mapped[str] = mapped_column(Text)
 
 
 class Member(PublicationFields, Base):

@@ -216,7 +216,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **8.3 Save applications.** Persist the application and return a confirmation reference. A verified retry of the same attempt and details can recover the original reference after closing.
 - [x] **8.4 Build the review dashboard.** Authorized staff can choose a cycle, filter by domain and status, and return from an application to the same filtered list.
 - [x] **8.5 Implement review transitions.** Authorized staff can shortlist, accept or reject applications. Each saved decision records the actor, time and status change, and a stale review must reload before saving.
-- [ ] **8.6 Complete content editors.** Manage members, projects, media, and site settings.
+- [x] **8.6 Complete content editors.** Manage members, projects, media, and site settings.
 - [ ] **8.7 Complete publishing controls.** Support draft previews and explicit publication actions.
 - [ ] **8.8 Protect private data.** Restrict applicant information and exports with server-side permissions.
 - [ ] **8.9 Change staff passwords.** Let signed-in staff verify their current password and set a new one.
