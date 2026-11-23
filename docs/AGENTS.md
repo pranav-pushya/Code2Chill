@@ -4,7 +4,7 @@
 
 The project owner requires detailed build and viva documentation updated after every task or implementation step.
 
-- Read `docs/BUILD_GUIDE.md` and the relevant part of `WEBSITE_ROADMAP.md` before project work.
+- Read `BUILD_GUIDE.md` and the relevant part of `../WEBSITE_ROADMAP.md` before project work.
 - Update the guide after each task or independently completed step, before reporting completion. For multi-step work, document steps as they finish.
 - Record the objective, actual changes and files, how the result works, rationale and tradeoffs, validation and results, limitations, and relevant viva questions with answers.
 - Include research, planning, documentation work, and failed or blocked attempts that affect the project. Label status accurately.

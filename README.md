@@ -12,4 +12,4 @@ Project setup and documentation will be updated here soon.
 
 - [Implementation roadmap](WEBSITE_ROADMAP.md): phases, steps, and completion criteria.
 - [Living build guide](docs/BUILD_GUIDE.md): implementation explanations, decisions, verification, and task history. Update after every task or step.
-- [Contributor and agent instructions](AGENTS.md): documentation maintenance and project rules.
+- [Contributor and agent instructions](docs/AGENTS.md): documentation maintenance and project rules.

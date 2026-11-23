@@ -13,8 +13,8 @@ The launch demonstration follows an administrator publishing an event, the updat
 ## Existing Material and Constraints
 
 - Treat `extra.html` as a prototype and interaction experiment, not the final design.
-- Use `Code2Chill.png` and `Code2Chill_transparent.png` according to background, contrast, and layout requirements. Preserve both originals.
-- Use `CODE2CHILL_WEBSITE_MASTER.md`, `bluprint.pdf`, and the architecture SVGs as planning references. Resolve inconsistencies before implementation.
+- Use the original logos in `docs/design/brand/originals/` (`Code2Chill.png` and `Code2Chill_transparent.png`) according to background, contrast, and layout requirements. Preserve both originals.
+- Use planning references in `docs/planning/` (`CODE2CHILL_WEBSITE_MASTER.md` and `bluprint.pdf`). Resolve inconsistencies before implementation.
 - President: **Lakshay Kalra**; vice-president: **Jiya Arora**, as confirmed by the project owner.
 - Confirm the remaining roster, event details, recruitment status, photographs, and statistics before publishing.
 - Do not treat prototype statistics or sample events as verified facts.

@@ -23,7 +23,7 @@ The brand panel and date block are illustrative graphics. Keep documentary photo
 
 ### Design basis
 
-The [reference review](DESIGN_REFERENCE_ANALYSIS.md) informed the change of scale between heading and metadata. The [wireframes](WIREFRAMES.md) set the order of the content and the [page actions](PAGES_AND_JOURNEYS.md#page-actions) define its destinations. The [content register](CONTENT_REGISTER.md) supplies the public facts and image availability. The two [supplied logo](../Code2Chill.png) [variants](../Code2Chill_transparent.png) establish the club artwork.
+The [reference review](DESIGN_REFERENCE_ANALYSIS.md) informed the change of scale between heading and metadata. The [wireframes](WIREFRAMES.md) set the order of the content and the [page actions](PAGES_AND_JOURNEYS.md#page-actions) define its destinations. The [content register](CONTENT_REGISTER.md) supplies the public facts and image availability. The two [supplied logo](design/brand/originals/Code2Chill.png) [variants](design/brand/originals/Code2Chill_transparent.png) establish the club artwork.
 
 ## Tokens and components
 

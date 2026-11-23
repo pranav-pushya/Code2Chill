@@ -67,12 +67,12 @@ Club records will be stored in a database and returned through the backend. Admi
 | --- | --- |
 | [README.md](../README.md) | Project entry point |
 | [WEBSITE_ROADMAP.md](../WEBSITE_ROADMAP.md) | Planned implementation and completion checklist |
-| [CODE2CHILL_WEBSITE_MASTER.md](../CODE2CHILL_WEBSITE_MASTER.md) | Earlier specification; reconcile proposals and unsupported claims |
-| [bluprint.pdf](../bluprint.pdf) | Earlier ten-page blueprint |
+| [CODE2CHILL_WEBSITE_MASTER.md](planning/CODE2CHILL_WEBSITE_MASTER.md) | Earlier specification; reconcile proposals and unsupported claims |
+| [bluprint.pdf](planning/bluprint.pdf) | Earlier ten-page blueprint |
 | [Expriments/extra.html](../Expriments/extra.html) | Preserved standalone prototype experiment |
-| [Code2Chill.png](../Code2Chill.png) | Background logo |
-| [Code2Chill_transparent.png](../Code2Chill_transparent.png) | Transparent logo |
-| [AGENTS.md](../AGENTS.md) | Contributor/agent instructions and documentation policy |
+| [Code2Chill.png](design/brand/originals/Code2Chill.png) | Background logo |
+| [Code2Chill_transparent.png](design/brand/originals/Code2Chill_transparent.png) | Transparent logo |
+| [AGENTS.md](AGENTS.md) | Contributor/agent instructions and documentation policy |
 | [CONTENT_REGISTER.md](CONTENT_REGISTER.md) | Phase 1 evidence, ownership, publication readiness, and asset inventory |
 | [LAUNCH_SCOPE.md](LAUNCH_SCOPE.md) | Launch workflow decisions and the boundaries of local data handling |
 | [PAGES_AND_JOURNEYS.md](PAGES_AND_JOURNEYS.md) | Planned routes, navigation, and user journeys |
@@ -349,7 +349,7 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Date:** 16 November 2026.
 - **Status:** Documentation created and structurally verified.
 - **Objective:** Keep detailed build explanations and viva preparation updated after every task/step.
-- **Files:** This guide, [AGENTS.md](../AGENTS.md), [GEMINI.md](../GEMINI.md), and [README.md](../README.md).
+- **Files:** This guide, [AGENTS.md](AGENTS.md), [GEMINI.md](../GEMINI.md), and [README.md](../README.md).
 - **Work:** Added current status, prototype explanation, proposed architecture, decisions, validation evidence, viva questions, and task history. Added update instructions and navigation links.
 - **Reason:** Keep documentation tied to actual evidence and avoid presenting proposed features as completed work.
 - **Attempt note:** An initial combined patch failed because README context did not match. No files were changed by that failed patch; the patch was split and retried.
@@ -755,7 +755,7 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Roadmap step:** Phase 4.5.
 - **Status:** Verified.
 - **Objective:** Connect the development PostgreSQL database.
-- **Changes and files:** Added [Compose](../compose.yaml), [SQLAlchemy connection management](../backend/app/database.py) and FastAPI lifespan handling. Updated the backend environment template.
+- **Changes and files:** Added [Compose](../backend/compose.yaml), [SQLAlchemy connection management](../backend/app/database.py) and FastAPI lifespan handling. Updated the backend environment template.
 - **How it works:** A persistent Compose volume stores PostgreSQL 17 data. SQLAlchemy creates a pool for each API process, checks connections before use and disposes it at shutdown. An external DATABASE_URL can override the local settings.
 - **Why this approach:** The host port binds to loopback. The generated development password stays in an ignored file.
 - **Validation:** VER-067 and VER-068. Compose reported a healthy database and psql returned the expected database name inside the container. A separate Python process connected from the host, ran SELECT 1 and verified the connection returned to the pool.
@@ -774,6 +774,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-069 and VER-070. Biome lint and Vite production build passed cleanly. Git index confirmed clean deletion of root artifacts, untracking of assistant prompts, and exact renaming of the build guide.
 - **Limitations / remaining work:** Full end-to-end integration testing and CI checks continue in Phase 4.7.
 - **Viva Q&A:** **Why rename and organize documentation before sharing?** A clean repository demonstrates professional engineering hygiene, clear separation between public documentation and internal notes, and avoids distracting evaluators with unmaintained prototype files.
+
+### TASK-037 — Reorganize root files into dedicated subdirectories
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Repository architecture and layout standardization.
+- **Status:** Verified.
+- **Objective:** Reorganize all remaining root files into dedicated subdirectories to achieve a minimal, production-grade root structure.
+- **Changes and files:** Moved `Code2Chill.png` and `Code2Chill_transparent.png` to [docs/design/brand/originals/](design/brand/originals/); moved `CODE2CHILL_WEBSITE_MASTER.md` and `bluprint.pdf` to [docs/planning/](planning/); moved `AGENTS.md` to [docs/AGENTS.md](AGENTS.md); moved `compose.yaml` to [backend/compose.yaml](../backend/compose.yaml). Updated relative links across [README.md](../README.md), [WEBSITE_ROADMAP.md](../WEBSITE_ROADMAP.md), [docs/CONTENT_REGISTER.md](CONTENT_REGISTER.md), [docs/VISUAL_IDENTITY.md](VISUAL_IDENTITY.md), and this guide.
+- **How it works:** The root directory contains only top-level project folders (`backend/`, `frontend/`, `docs/`, `Expriments/`) and configuration/documentation anchors (`.gitignore`, `README.md`, `WEBSITE_ROADMAP.md`).
+- **Why this approach:** Concentrates brand originals, planning archives, and working instructions in their relevant folders, preventing root clutter while preserving the full project history and file availability.
+- **Validation:** VER-071 and VER-072. Git verified all renames as clean renames (100% similarity index). Internal documentation links verified. Vite production build passed in 302ms.
+- **Limitations / remaining work:** Step 4.6 connectivity and Step 4.7 CI configuration continue in Phase 4.
+- **Viva Q&A:** **Why structure the root directory so strictly?** High-standard open-source and enterprise repositories keep the root folder clean and predictable so contributors and reviewers immediately know where backend, frontend, and documentation live.
 
 ## 11. Template for Every Future Task or Step
 
