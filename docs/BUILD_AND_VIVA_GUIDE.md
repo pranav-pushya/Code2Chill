@@ -46,7 +46,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Phase 2 pages and journeys | Defined and verified | [Page plan](PAGES_AND_JOURNEYS.md) and [wireframes](WIREFRAMES.md) specify actions, states, and recovery paths |
 | Design reference analysis | Reviewed at two widths | Three rendered homepages, including the Noddal scene after loading. See [reference analysis](DESIGN_REFERENCE_ANALYSIS.md) |
 | Visual direction | Specified | [Campus event programme composition](VISUAL_IDENTITY.md) for Home and Event Detail |
-| Brand assets | Existing, inspected | Two 745 × 740 PNG logo variants |
+| Brand assets | Exported and checked | Two preserved originals and five [browser-ready brand files](VISUAL_IDENTITY.md#brand-exports) |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
 | React/Vite scaffold | Planned | No application scaffold created |
@@ -245,6 +245,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-048 | Phase 3.3 pass 2 | Rendered an offline 390 px Chrome sample, tabbed to both controls, checked the 44 px action and 3 px ring, verified distinct light and dark focus colors and confirmed both fonts loaded. | One browser and a representative sample. |
 | VER-049 | Phase 3.4 pass 1 | Composited the actual trimmed mark at widths of 240, 120 and 64 px on dark and pale surfaces and inspected the lettering and edges. | Visual comparison in the selected palette. |
 | VER-050 | Phase 3.4 pass 2 | Compared both original PNGs byte for byte with Git, measured the 481 × 420 alpha bounds and checked all five placement rules, clear space and accessible naming. | Usage specification. Export checks follow in Step 3.5. |
+| VER-051 | Phase 3.5 pass 1 | Decoded all five exports, checked transparent and opaque variants, dimensions and the ICO’s 16, 32 and 48 px frames, and compared the two original PNGs byte for byte with HEAD. | File integrity and source preservation. |
+| VER-052 | Phase 3.5 pass 2 | Inspected a contact sheet showing both full variants, the compact icon and each embedded favicon frame at its intended pixel size. | Visual review at the tested sizes. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -626,6 +628,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-049 and VER-050. The review supports a dark field for the full artwork and a simpler icon plus real text for small uses.
 - **Limitations / remaining work:** The 180 px full-mark minimum is a design choice for these layouts. New placements should also be checked at their actual display size.
 - **Viva Q&A:** **Why keep a real-text club name in the header?** Students can read it at phone size, it remains available when images fail, and it gives the Home link a reliable accessible name.
+
+### TASK-027 — Export responsive club marks and a favicon
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 3.5.
+- **Status:** Five brand files exported and verified.
+- **Objective:** Prepare small browser-ready files while retaining both original PNGs.
+- **Changes and files:** Added five files in the [brand export list](VISUAL_IDENTITY.md#brand-exports), the placement notes and ASSET-05 in the [inventory](CONTENT_REGISTER.md#asset-inventory).
+- **How it works:** Pillow cropped the original transparent alpha bounds, downsampled two full marks and proportionally fit the opaque image in a square. The connected numeral and seated figure became a single-color tab icon.
+- **Why this approach:** A single icon silhouette survives a 16 px rendering. The large marks keep the lettering and gradient that give students the full club identity.
+- **Validation:** VER-051 and VER-052. All five decoded. The two responsive files are 24,180 and 60,688 bytes. The tab remains a recognizable numeral at 16 px.
+- **Limitations / remaining work:** A 16 px tab carries only the silhouette. Use the full mark for prominent branding.
+- **Viva Q&A:** **Why deliver an ICO with three sizes?** Browsers can select a raster close to the tab’s display size, with the same recognizable shape in every frame.
 
 ## 11. Template for Every Future Task or Step
 

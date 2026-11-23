@@ -102,7 +102,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **3.2 Establish an original direction.** Use the [club visual direction](docs/VISUAL_IDENTITY.md) for the home and event compositions.
 - [x] **3.3 Define design tokens.** Use the shared [CSS tokens](docs/design/tokens.css) and [component specifications](docs/VISUAL_IDENTITY.md#tokens-and-components).
 - [x] **3.4 Plan logo usage.** Use the [logo placement matrix](docs/VISUAL_IDENTITY.md#logo-placement) for surfaces, clear space, compact use and alternative text.
-- [ ] **3.5 Prepare assets.** Export appropriately sized logos and a legible favicon while preserving original files.
+- [x] **3.5 Prepare assets.** Use the [responsive brand exports and favicon](docs/VISUAL_IDENTITY.md#brand-exports). Both original PNGs are preserved.
 - [ ] **3.6 Design representative pages.** Complete the homepage and an event detail page for desktop and mobile.
 - [ ] **3.7 Incorporate authentic imagery.** Use confirmed event photographs and project screenshots.
 

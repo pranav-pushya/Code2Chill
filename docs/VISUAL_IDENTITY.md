@@ -52,3 +52,14 @@ The pale rule is a decorative separator. Use a text label or a contrasting borde
 | Photography or a pale surface | Keep a solid dark tile behind the artwork. The transparent source has uneven antialiased edges that become visible on paper. Use the text wordmark where a dark tile would crowd the layout. |
 
 Keep the original proportions and gradient in both full-logo exports. In an image-only placement use the alt text “Code2Chill club logo”. Where the surrounding text already names the club and the art adds no information, use empty alt text. Both [source files](CONTENT_REGISTER.md#asset-inventory) stay at the repository root. Retain them at their original resolution for future exports.
+
+### Brand exports
+
+| File | Intended placement |
+| --- | --- |
+| [240 px full mark](design/brand/club-mark-240.webp) and [480 px full mark](design/brand/club-mark-480.webp) | Responsive poster artwork. Both use the visible bounds of the transparent original. Select the source using the rendered width and device pixel density. |
+| [384 px square](design/brand/club-square-384.webp) | Opaque profile tile. The 745 × 740 original is scaled proportionally and centered. |
+| [64 px icon](design/brand/club-icon-64.png) | Compact club identifier beside a text label. |
+| [Favicon](design/brand/favicon.ico) | Browser icon with embedded 16, 32 and 48 px sizes. |
+
+The icon uses the connected silhouette of the numeral and seated figure from the original alpha mask. A light fill on navy keeps it readable in a small tab. The full marks preserve the gradient. Each export is smaller than its source PNG.
