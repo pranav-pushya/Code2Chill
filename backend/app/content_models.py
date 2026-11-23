@@ -3,6 +3,7 @@ from datetime import date
 from sqlalchemy import Boolean, ForeignKey, String, Text, false
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from .domain import ClubDomain, choices
 from .model_base import Base
 
 
@@ -25,7 +26,7 @@ class Member(Base):
     slug: Mapped[str] = mapped_column(String(120))
     name: Mapped[str] = mapped_column(String(160))
     role_title: Mapped[str] = mapped_column(String(120))
-    domain: Mapped[str | None] = mapped_column(String(32))
+    domain: Mapped[ClubDomain | None] = mapped_column(choices(ClubDomain))
     bio: Mapped[str | None] = mapped_column(Text)
     display_order: Mapped[int] = mapped_column(server_default="0")
     portrait_id: Mapped[int | None] = mapped_column(ForeignKey("media_asset.id"))

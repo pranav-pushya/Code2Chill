@@ -272,6 +272,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-086 | Phase 4.8 pass 2 | Tightened an initially oversized Docker context. A BuildKit check measured 408 KiB and confirmed private settings, package directories and Git metadata were excluded. Rebuilt and verified Chrome navigation, live readiness, failure and retry at 390 and 1440 px. | Scaffold verification. |
 | VER-089 | Phase 5.1 pass 1 | Ruff passed. Created five tables in PostgreSQL and round-tripped linked records, optional dates and ordered credits through the ORM. | Phase 5 verification. |
 | VER-090 | Phase 5.1 pass 2 | Queried PostgreSQL information_schema and found the six expected foreign keys in the disposable transaction. | Phase 5 verification. |
+| VER-091 | Phase 5.2 pass 1 | Created a pending cycle, enabled a domain, saved a synthetic application and confirmed the database rejected a disabled domain. | Phase 5 verification. |
+| VER-092 | Phase 5.2 pass 2 | A fresh disposable schema confirmed the composite key, permitted route constraint and persisted retry fields. Ruff passed. | Phase 5 verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -874,6 +876,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-089 and VER-090. Ruff passed. Created five tables in PostgreSQL and round-tripped linked records, optional dates and ordered credits through the ORM. Queried PostgreSQL information_schema and found the six expected foreign keys in the disposable transaction.
 - **Limitations / remaining work:** Migrations and seed records follow in Step 5.8. Live pages still use the Phase 4 scaffold.
 - **Viva Q&A:** **Why keep project credits as rows?** A project can credit several people in order, including participants outside the club roster.
+
+### TASK-047 — Model recruitment cycles and applications
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 5.2.
+- **Status:** Verified.
+- **Objective:** Model recruitment cycles and applications.
+- **Changes and files:** Added [recruitment models](../backend/app/recruitment_models.py), shared club domains and the [recruitment schema notes](DATA_MODEL.md#recruitment).
+- **How it works:** Each cycle enables a set of domains. Applications reference the selected domain within the cycle and keep a separate attempt identifier and receipt.
+- **Why this approach:** The composite foreign key prevents an application from selecting a domain that belongs elsewhere or was never enabled.
+- **Validation:** VER-091 and VER-092. Created a pending cycle, enabled a domain, saved a synthetic application and confirmed the database rejected a disabled domain. A fresh disposable schema confirmed the composite key, permitted route constraint and persisted retry fields. Ruff passed.
+- **Limitations / remaining work:** Live cycle settings, email verification and review endpoints remain pending.
+- **Viva Q&A:** **Why use two columns for the domain reference?** The same domain can appear in many cycles. The pair identifies the enabled option for this cycle.
 
 ## 11. Template for Every Future Task or Step
 
