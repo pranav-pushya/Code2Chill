@@ -280,6 +280,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-096 | Phase 5.4 pass 2 | Inspected the composite reviewer key and verified that PostgreSQL rejected an audit row for an unknown actor. Ruff passed. | Phase 5 verification. |
 | VER-097 | Phase 5.5 pass 1 | Direct PostgreSQL inserts rejected invalid content, slugs and media. Deleted a test member and project to verify credit preservation and removal. | Phase 5 verification. |
 | VER-098 | Phase 5.5 pass 2 | A separate transaction rejected duplicate applications, attempts and uppercase email, accepted a second cycle and confirmed the reviewer list indexes. Ruff passed. | Phase 5 verification. |
+| VER-099 | Phase 5.6 pass 1 | Verified the UTC-to-IST day boundary, date-only event behavior and UTC ORM round-trip with a different PostgreSQL session timezone. | Phase 5 verification. |
+| VER-100 | Phase 5.6 pass 2 | A separate transaction rejected equal recruitment bounds and a naive datetime. Checked inclusive opening and exclusive closing. Ruff passed. | Phase 5 verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -934,6 +936,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-097 and VER-098. Direct PostgreSQL inserts rejected invalid content, slugs and media. Deleted a test member and project to verify credit preservation and removal. A separate transaction rejected duplicate applications, attempts and uppercase email, accepted a second cycle and confirmed the reviewer list indexes. Ruff passed.
 - **Limitations / remaining work:** Email ownership and application response handling remain application work.
 - **Viva Q&A:** **Why enforce duplicates in PostgreSQL?** Two requests may pass the same application precheck. A database constraint permits only one to commit.
+
+### TASK-051 — Store consistent timestamps and campus dates
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 5.6.
+- **Status:** Verified.
+- **Objective:** Store consistent timestamps and campus dates.
+- **Changes and files:** Added [time helpers](../backend/app/time_rules.py), timezone-aware model columns, database checks and a locked tzdata dependency.
+- **How it works:** Confirmed dates can stand alone. Known instants enter the ORM with an offset, come back in UTC and convert to Asia/Kolkata for display. Time windows include opening and exclude closing.
+- **Why this approach:** This avoids inventing start times for archive records and gives scheduling consistent boundaries across servers.
+- **Validation:** VER-099 and VER-100. Verified the UTC-to-IST day boundary, date-only event behavior and UTC ORM round-trip with a different PostgreSQL session timezone. A separate transaction rejected equal recruitment bounds and a naive datetime. Checked inclusive opening and exclusive closing. Ruff passed.
+- **Limitations / remaining work:** Verified event times and recruitment cycle settings still depend on the club.
+- **Viva Q&A:** **Why keep a date and an optional instant?** A confirmed calendar day can be displayed even when an exact start time is unknown.
 
 ## 11. Template for Every Future Task or Step
 

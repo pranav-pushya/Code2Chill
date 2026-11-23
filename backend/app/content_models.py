@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from enum import StrEnum
 
 from sqlalchemy import Boolean, CheckConstraint, ForeignKey, Index, String, Text, false
@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .domain import ClubDomain, choices
 from .model_base import Base, required_text, route_slug
+from .time_rules import UTCDateTime
 
 
 class RegistrationStatus(StrEnum):
@@ -63,6 +64,20 @@ class Event(Base):
         route_slug(),
         required_text("title"),
         required_text("summary"),
+        CheckConstraint(
+            "starts_at IS NULL OR (event_date IS NOT NULL AND "
+            "event_date = (starts_at AT TIME ZONE 'Asia/Kolkata')::date)",
+            name="campus_date",
+        ),
+        CheckConstraint(
+            "ends_at IS NULL OR (starts_at IS NOT NULL AND ends_at > starts_at)",
+            name="event_duration",
+        ),
+        CheckConstraint(
+            "registration_opens_at IS NULL OR registration_closes_at IS NULL "
+            "OR registration_closes_at > registration_opens_at",
+            name="registration_window",
+        ),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -70,6 +85,10 @@ class Event(Base):
     title: Mapped[str] = mapped_column(String(200))
     summary: Mapped[str] = mapped_column(Text)
     event_date: Mapped[date | None] = mapped_column(index=True)
+    starts_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
+    ends_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
+    registration_opens_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
+    registration_closes_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
     venue: Mapped[str | None] = mapped_column(String(240))
     official_url: Mapped[str | None] = mapped_column(Text)
     registration_url: Mapped[str | None] = mapped_column(Text)

@@ -39,3 +39,9 @@ The reviewer assignment joins an account to a particular recruitment cycle. The 
 - Indexes support event date ordering, roster display order, projects by event, scoped applicant filtering, account sessions, and audit lookup by record.
 
 Database constraints act even when records are written outside the HTTP API. [Public models](../backend/app/content_models.py) · [Recruitment models](../backend/app/recruitment_models.py) · [Administrator models](../backend/app/admin_models.py)
+
+## Time handling
+
+Store confirmed campus dates as dates. Leave the time fields empty when the source gives only a date. When the organizer supplies an exact start, store the instant and its corresponding campus date. PostgreSQL checks that the two agree in Asia/Kolkata and that an optional end is after the start.
+
+Application timestamps, session timestamps, registration windows and event instants use PostgreSQL timestamp with time zone. The ORM requires a timezone offset and returns UTC. Use the shared campus conversion for dates and labels in India Standard Time. Windows include their opening instant and exclude their closing instant. A completed recruitment cycle needs both bounds. An external event can carry either confirmed bound. [Time helpers](../backend/app/time_rules.py)

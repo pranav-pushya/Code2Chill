@@ -1,11 +1,12 @@
 from datetime import datetime
 from enum import StrEnum
 
-from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, Index, String, func, true
+from sqlalchemy import Boolean, CheckConstraint, ForeignKey, Index, String, func, true
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .domain import choices
 from .model_base import Base, normalized_email, required_text
+from .time_rules import UTCDateTime
 
 
 class AdminRole(StrEnum):
@@ -45,16 +46,20 @@ class AdminAccount(Base):
 
 class AdminSession(Base):
     __tablename__ = "admin_session"
-    __table_args__ = (CheckConstraint("token_digest ~ '^[0-9a-f]{64}$'", name="digest_format"),)
+    __table_args__ = (
+        CheckConstraint("token_digest ~ '^[0-9a-f]{64}$'", name="digest_format"),
+        CheckConstraint("expires_at > created_at", name="expiry_order"),
+        CheckConstraint("revoked_at IS NULL OR revoked_at >= created_at", name="revocation_order"),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     account_id: Mapped[int] = mapped_column(
         ForeignKey("admin_account.id", ondelete="CASCADE"), index=True
     )
     token_digest: Mapped[str] = mapped_column(String(64), unique=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime(), server_default=func.now())
+    expires_at: Mapped[datetime] = mapped_column(UTCDateTime())
+    revoked_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
 
 
 class RecruitmentReviewer(Base):
@@ -79,6 +84,4 @@ class AuditRecord(Base):
     target_id: Mapped[int]
     previous_state: Mapped[str | None] = mapped_column(String(32))
     new_state: Mapped[str | None] = mapped_column(String(32))
-    occurred_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    occurred_at: Mapped[datetime] = mapped_column(UTCDateTime(), server_default=func.now())

@@ -3,7 +3,7 @@ from enum import StrEnum
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
-    DateTime,
+    CheckConstraint,
     ForeignKey,
     ForeignKeyConstraint,
     Index,
@@ -16,6 +16,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .domain import ClubDomain, choices
 from .model_base import Base, normalized_email, required_text, route_slug
+from .time_rules import UTCDateTime
 
 
 class ApplicationRoute(StrEnum):
@@ -33,13 +34,20 @@ class ApplicationStatus(StrEnum):
 
 class RecruitmentCycle(Base):
     __tablename__ = "recruitment_cycle"
-    __table_args__ = (route_slug(), required_text("title"))
+    __table_args__ = (
+        route_slug(),
+        required_text("title"),
+        CheckConstraint(
+            "opens_at IS NULL OR closes_at IS NULL OR closes_at > opens_at",
+            name="application_window",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     slug: Mapped[str] = mapped_column(String(120), unique=True)
     title: Mapped[str] = mapped_column(String(200))
-    opens_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    closes_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    opens_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
+    closes_at: Mapped[datetime | None] = mapped_column(UTCDateTime())
     eligibility: Mapped[str | None] = mapped_column(Text)
     route: Mapped[ApplicationRoute] = mapped_column(
         choices(ApplicationRoute), server_default=ApplicationRoute.PENDING
@@ -87,6 +95,4 @@ class Application(Base):
     )
     attempt_id: Mapped[UUID]
     receipt: Mapped[UUID] = mapped_column(default=uuid4, unique=True)
-    submitted_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    submitted_at: Mapped[datetime] = mapped_column(UTCDateTime(), server_default=func.now())
