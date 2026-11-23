@@ -39,9 +39,10 @@
   background: var(--sheet);
   color: var(--ink);
   font: inherit;
-  transition: border-color var(--duration-fast) var(--ease-out),
-              box-shadow var(--duration-fast) var(--ease-out),
-              background-color var(--duration-fast) var(--ease-out);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
 }
 .sign-in-form input:hover {
   border-color: var(--ink);
@@ -78,8 +79,9 @@
   border-radius: var(--radius);
   color: var(--muted);
   cursor: pointer;
-  transition: color var(--duration-fast) var(--ease-out),
-              transform var(--duration-fast) var(--ease-out);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 }
 .password-toggle:hover {
   color: var(--ink);
@@ -131,9 +133,10 @@
   color: var(--ink);
   background: var(--sheet);
   font: inherit;
-  transition: border-color var(--duration-fast) var(--ease-out),
-              box-shadow var(--duration-fast) var(--ease-out),
-              background-color var(--duration-fast) var(--ease-out);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
 }
 .draft-form textarea:hover,
 .draft-form select:hover {
@@ -311,8 +314,9 @@
 }
 .gallery-grid figure {
   margin: 0;
-  transition: transform var(--duration-normal) var(--ease-out),
-              box-shadow var(--duration-normal) var(--ease-out);
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
 }
 .gallery-grid figure:hover {
   transform: translateY(-2px);
@@ -341,8 +345,9 @@
     border: 0;
     cursor: pointer;
     font: 600 1rem var(--body);
-    transition: opacity var(--duration-fast) var(--ease-out),
-                transform var(--duration-fast) var(--ease-out);
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
   }
   .menu-toggle:active {
     transform: scale(0.96);
@@ -490,10 +495,26 @@ span[role="status"]:empty {
     animation: none;
     transform: none;
   }
+  .action:hover,
+  .action:active,
   .gallery-grid figure:hover,
   .password-toggle:hover,
+  .password-toggle:active,
   .menu-toggle:active {
     transform: none;
+  }
+  .gallery-grid figure:hover {
     box-shadow: none;
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+  .password-toggle:hover {
+    background-color: rgba(33, 79, 197, 0.08);
+  }
+  .password-toggle:active {
+    background-color: rgba(33, 79, 197, 0.16);
+  }
+  .menu-toggle:active {
+    opacity: 0.75;
   }
 }

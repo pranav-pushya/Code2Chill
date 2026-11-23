@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 9.1 and 9.2 are implemented and verified. Reduced motion (9.3) and ink transition evaluation (9.4) are next.
+**Current stage:** Phase 9.1, 9.2, and 9.3 are implemented and verified. Ink transition evaluation (9.4) and resilience/asset optimization (9.5-9.7) are next.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1343,6 +1343,32 @@ Evaluated theme behavior under Step 9.2 (*"Implement theme behavior if included"
 - **Hygiene & Reset:** Removed theme toggle button and layout clutter from [SiteLayout.jsx](../frontend/src/SiteLayout.jsx), removed unused theme variables and CSS overrides, and ensured [main.jsx](../frontend/src/main.jsx) safely wipes legacy `c2c-theme` localStorage keys and `data-theme` attributes on application initialization. [Design Tokens](design/tokens.css) · [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Main App](../frontend/src/main.jsx)
 
 Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files), production client build `vite build` (passed in 1.59s), all 23 backend pytest tests (passed in 50.94s), and end-to-end browser UI check (`phase8-ui-check.mjs`). **Viva question.** Why is dark mode considered conditional in the roadmap ("if included") rather than mandatory for this project? Editorial and physical-metaphor websites (such as print programmes, newspapers, and physical zines) derive their core character from their material paper palette (`#f8f6ef`); inverting paper to obsidian frequently destroys the visual metaphor and damages contrast hierarchy across intentionally dark poster modules, so omitting a dark toggle preserves brand cohesion while guaranteeing WCAG AA contrast on every screen.
+
+### TASK-084 — Implement reduced-motion alternatives and accessibility behavior (Step 9.3)
+
+24 November 2026 · Phase 9.3 · Verified locally
+
+Enhanced `@media (prefers-reduced-motion: reduce)` rules across the application to eliminate vestibular motion while providing clear, non-moving visual alternatives for interactive elements (complying with WCAG 2.2 Success Criterion 2.3.3):
+- **Duration Token Collapse:** Standardized CSS design variables (`--duration-fast`, `--duration-normal`, `--duration-slow`) collapse from 150ms/240ms/360ms to `0.01ms`, causing all CSS transitions and animations to resolve instantaneously without layout lag.
+- **Alternative Non-Motion Interactive States:**
+  - **Action Buttons (`.action`):** Disabled physical lift and shrink (`transform: none`). Hover provides instant background shift (`var(--blue-hover)`), and active press provides a tactile ring (`box-shadow: 0 0 0 2px var(--focus)`).
+  - **Hero Brand Print (`.brand-art .print`):** Replaced 3D rotate-to-flat and scaling transforms with a static tilt (`rotate(-5deg)`), depth shadow elevation (`box-shadow: 0.8rem 0.9rem 0 #183c99`), border illumination (`border-color: #a9c6ff`), and logo cyan drop-shadow glow (`filter: drop-shadow(0 0 10px rgba(169, 198, 255, 0.45))`).
+  - **Event Rows (`.event-row`):** Disabled horizontal text displacement (`padding-inline: 0`), preserving instant background row tinting (`rgba(33, 79, 197, 0.05)`) and text underline.
+  - **Gallery Cards (`.gallery-grid figure`):** Replaced `translateY(-2px)` with an accessible outline ring (`outline: 2px solid var(--blue); outline-offset: 2px`).
+  - **Toggles:** Replaced button scaling with background tinting on `.password-toggle` (`rgba(33, 79, 197, 0.08)` hover, `0.16` active) and clean opacity response on `.menu-toggle` (`opacity: 0.75`).
+- **Route & Feedback Animation Suppression:**
+  - Completely disabled slide-in animations on `.page-enter`, `.data-enter`, `p[role="status"]`, and `p[role="alert"]` (`animation: none; transform: none;`), displaying incoming pages and feedback notices immediately.
+  - Set `html { scroll-behavior: auto; }` to prevent automated disorienting page scrolling on anchor jumps. [Design Tokens](design/tokens.css) · [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Motion Check](../.local/phase9-motion-check.mjs)
+
+Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files) and `vite build` (passed in 2.21s). Verified both normal and reduced-motion states using headless Chrome via CDP in `.local/phase9-motion-check.mjs`: confirmed default duration is 150ms and page-enter keyframe active; confirmed reduced-motion media emulation collapses duration to 0.01ms, disables page-enter and data-enter animations, and sets scroll-behavior to auto. **Viva question.** Why provide alternative visual feedback instead of simply disabling all hover and active styling when reduced motion is preferred? Users with vestibular disorders or motion sensitivities need non-moving visual confirmation that an interactive control was hovered, focused, or clicked. Stripping all feedback creates an unresponsive, broken feel; substituting non-spatial visual indicators (color shifts, outlines, border highlights) satisfies accessibility without vestibular distress.
+
+### TASK-085 — Stick navigation bar to top of viewport
+
+24 November 2026 · UI enhancement · Verified locally
+
+Updated `.site-head` in [docs/design/pages.css](design/pages.css) to stick to the top of the viewport during scrolling (`position: sticky; top: 0; z-index: 20;`). Applied `var(--paper)` background with 92% `color-mix` and 12px `backdrop-filter` blur, maintaining legible separation over scrolling page content while preserving the editorial print aesthetic. Also raised `.skip` z-index to `30` so the keyboard accessibility skip link renders cleanly above the sticky header on focus. [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css)
+
+Validated frontend with `biome format --check .` (0 errors across 24 files), `biome lint .` (0 errors, 0 warnings across 25 files), and `vite build` (passed in 2.46s). Verified sticky positioning, stacking context layering, and blur filter across desktop and responsive mobile drawer navigation. **Viva question.** Why use `position: sticky` instead of `position: fixed` for the top navigation bar? `position: sticky` keeps the element within normal document flow until the scroll threshold is met, preventing layout collapse and avoiding the need for artificial top padding on page content, while still pinning the navigation once scrolling begins.
 
 ## 11. Template for Every Future Task or Step
 

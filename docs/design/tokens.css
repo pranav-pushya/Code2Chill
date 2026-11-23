@@ -59,6 +59,15 @@
     --duration-normal: 0.01ms;
     --duration-slow: 0.01ms;
   }
+
+  .action:hover,
+  .action:active {
+    transform: none;
+  }
+
+  .action:active {
+    box-shadow: 0 0 0 2px var(--focus);
+  }
 }
 
 .on-ink {
