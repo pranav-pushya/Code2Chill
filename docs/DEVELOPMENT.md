@@ -42,6 +42,18 @@ uv sync --locked
 uv run --locked uvicorn app.main:app --reload --port 8000
 ```
 
+
+### Initialize the data schema
+
+Run these commands from `backend/` after `uv sync --locked` and after PostgreSQL reports ready.
+
+```sh
+uv run --locked alembic upgrade head
+uv run --locked python -m app.seed
+```
+
+The first command creates the tables. Run it after pulling a schema change. The seed is optional for developers who want an empty schema. Repeat it to insert missing initial content without overwriting edits. To add the labeled practice draft to a development database, add `--include-demo` to the seed command.
+
 ### Verification Endpoints
 * **Interactive API Documentation (Swagger)**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
 * **Health Check & Database Connectivity**: [http://localhost:8000/api/health](http://localhost:8000/api/health)
@@ -89,8 +101,8 @@ npm run build
 cd backend
 
 # Run Ruff linter and format check
-uv run --locked ruff check app tests
-uv run --locked ruff format --check app tests
+uv run --locked ruff check app migrations tests
+uv run --locked ruff format --check app migrations tests
 
 # Run test suite
 uv run --locked python -m pytest -q
@@ -116,3 +128,12 @@ Repeat the build command after changing code. To stop staging while keeping its 
 ~~~sh
 docker compose -p code2chill-staging --env-file backend/.env.staging -f backend/compose.yaml -f backend/compose.staging.yaml down
 ~~~
+
+### Initialize the staging database
+
+Run the staging build first, then apply the migration and seed against the staging volume.
+
+```sh
+docker compose -p code2chill-staging --env-file backend/.env.staging -f backend/compose.yaml -f backend/compose.staging.yaml run --rm --no-deps api .venv/bin/alembic upgrade head
+docker compose -p code2chill-staging --env-file backend/.env.staging -f backend/compose.yaml -f backend/compose.staging.yaml run --rm --no-deps api .venv/bin/python -m app.seed
+```

@@ -19,5 +19,7 @@ RUN pip install --no-cache-dir uv==0.13.9
 COPY backend/pyproject.toml backend/uv.lock ./
 RUN uv sync --locked --no-dev --no-cache
 COPY backend/app ./app
+COPY backend/alembic.ini ./
+COPY backend/migrations ./migrations
 USER 65534:65534
 CMD [".venv/bin/uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

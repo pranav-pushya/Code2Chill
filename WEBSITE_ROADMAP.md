@@ -156,13 +156,13 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **5.5 Define data integrity.** Specify relationships, required fields, unique slugs, indexes, and duplicate-prevention constraints.
 - [x] **5.6 Define time handling.** Store event times consistently and display them in the appropriate timezone.
 - [x] **5.7 Define publication rules.** Include draft/published status, registration windows, and allowed status transitions.
-- [ ] **5.8 Create migrations and seed data.** Seed confirmed content and isolate clearly labeled demonstration records.
+- [x] **5.8 Create migrations and seed data.** Seed confirmed content and isolate clearly labeled demonstration records.
 
 ### Deliverables
 
-- Entity relationship diagram.
-- Database models and migrations.
-- Repeatable seed command and documented business rules.
+- [Entity relationship diagram](docs/DATA_MODEL.md#entity-relationship-diagram).
+- [Database models and migrations](docs/DATA_MODEL.md#migrations-and-initial-records).
+- [Repeatable seed command](docs/DEVELOPMENT.md#initialize-the-data-schema) and [business rules](docs/DATA_MODEL.md).
 
 **Completion criterion:** A fresh database can be created and populated reproducibly, with key integrity rules enforced.
 

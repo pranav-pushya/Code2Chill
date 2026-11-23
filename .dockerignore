@@ -4,6 +4,10 @@
 !backend/pyproject.toml
 !backend/uv.lock
 !backend/app/*.py
+!backend/alembic.ini
+!backend/migrations/*.py
+!backend/migrations/*.mako
+!backend/migrations/versions/*.py
 !frontend/package*.json
 !frontend/index.html
 !frontend/tsconfig.json

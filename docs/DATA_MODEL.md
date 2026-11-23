@@ -55,3 +55,29 @@ The publication helper validates the record, checks media approval, and copies f
 Events show ended after their confirmed end or, when only a calendar date is usable, after that campus day. Saved full or closed states take precedence over an open window. Open registration requires the confirmed event-specific Chitkara University destination. A published recruitment cycle requires dates, active reviewer assignment, available domains, eligibility and an approved route. Its public state is scheduled, open or closed according to its window. Without a published cycle the state is announcement. A pending application can be shortlisted, accepted or rejected. A shortlisted application can be accepted or rejected. The accepted and rejected review states are final.
 
 [Publication operations](../backend/app/publication.py) · [Launch rules](LAUNCH_SCOPE.md) · [Administrator journey](PAGES_AND_JOURNEYS.md#administrator-journey)
+
+## Entity relationship diagram
+
+```mermaid
+erDiagram
+    MEDIA_ASSET o|--o{ MEMBER : portrait
+    MEDIA_ASSET o|--o{ EVENT : poster
+    MEDIA_ASSET o|--o{ PROJECT : screenshot
+    EVENT o|--o{ PROJECT : origin
+    PROJECT ||--o{ PROJECT_CREDIT : credits
+    MEMBER o|--o{ PROJECT_CREDIT : credited
+    RECRUITMENT_CYCLE ||--o{ RECRUITMENT_DOMAIN : enables
+    RECRUITMENT_DOMAIN ||--o{ APPLICATION : accepts
+    RECRUITMENT_CYCLE ||--o{ RECRUITMENT_REVIEWER : assigns
+    ADMIN_ACCOUNT ||--o{ RECRUITMENT_REVIEWER : reviews
+    ADMIN_ACCOUNT ||--o{ ADMIN_SESSION : opens
+    ADMIN_ACCOUNT ||--o{ AUDIT_RECORD : acts
+```
+
+An application reaches its cycle through the composite reference to an enabled domain. Audit targets use a type and record ID, while the administrator who performed the action uses a foreign key. Public snapshots live on the member, event, project and recruitment cycle rows.
+
+## Migrations and initial records
+
+Alembic revision `0001` creates the twelve application tables. The initial seed inserts ten public roster entries, two archived events and two credited projects from the content register. Event times with unresolved evidence stay empty. No recruitment cycle, account or application is created by the seed.
+
+The seed inserts records by unique slug inside one transaction. Reruns keep existing rows and preserve both draft edits and previously published copies. An optional `--include-demo` flag inserts a separate, labeled draft event with no booking link. [Setup commands](DEVELOPMENT.md#initialize-the-data-schema) · [Seed implementation](../backend/app/seed.py) · [Content register](CONTENT_REGISTER.md)

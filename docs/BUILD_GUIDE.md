@@ -2,7 +2,7 @@
 
 **Last updated:** 23 November 2026
 
-**Current stage:** Database modeling and validation.
+**Current stage:** Data modeling complete. Development and local staging use the initial schema.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -53,7 +53,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
 | React/Vite scaffold | Built and browser-verified | [React routes](../frontend/src/main.tsx) and shared visual assets |
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
-| Database and migrations | Modeling underway | [Public models](../backend/app/content_models.py) passed PostgreSQL checks. Migrations follow in Step 5.8. |
+| Database and migrations | Verified in development and staging | [Schema, diagram and repeatable seed](DATA_MODEL.md#migrations-and-initial-records) are implemented. |
 | Registration and recruitment | Planned | Prototype buttons do not save submissions |
 | Authentication and dashboard | Planned | Not implemented |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
@@ -284,6 +284,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-100 | Phase 5.6 pass 2 | A separate transaction rejected equal recruitment bounds and a naive datetime. Checked inclusive opening and exclusive closing. Ruff passed. | Phase 5 verification. |
 | VER-101 | Phase 5.7 pass 1 | Verified draft isolation, stale publish rejection, republish, unpublish and audit writes against PostgreSQL. Checked event registration boundaries. | Phase 5 verification. |
 | VER-102 | Phase 5.7 pass 2 | In a separate schema, verified reviewer requirements, recruitment boundaries, allowed review transitions and unapproved media rejection. Ruff lint and format passed. | Phase 5 verification. |
+| VER-103 | Phase 5.8 pass 1 | Ruff and all three PostgreSQL tests passed. The new test upgraded a blank schema, checked metadata drift and preserved edits on rerun, then downgraded and rebuilt the disposable schema. Cross-checked all twelve diagram relationships. | Phase 5 verification. |
+| VER-104 | Phase 5.8 pass 2 | Applied the migration to development and local staging. Both first seeds inserted ten members, two events and two projects. Both reruns inserted zero rows. Staging readiness passed. | Phase 5 verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -964,6 +966,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-101 and VER-102. Verified draft isolation, stale publish rejection, republish, unpublish and audit writes against PostgreSQL. Checked event registration boundaries. In a separate schema, verified reviewer requirements, recruitment boundaries, allowed review transitions and unapproved media rejection. Ruff lint and format passed.
 - **Limitations / remaining work:** Later endpoints must enforce authorization and bump the parent draft revision for edits to child collections.
 - **Viva Q&A:** **Why store a public snapshot?** The last published title and details stay visible while an editor updates the saved draft.
+
+### TASK-053 — Create the initial migration and verified content seed
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 5.8.
+- **Status:** Verified.
+- **Objective:** Create the initial migration and verified content seed.
+- **Changes and files:** Added [Alembic configuration](../backend/alembic.ini), the [initial migration](../backend/migrations/versions/0001_initial_data_model.py), [seed command](../backend/app/seed.py), migration test and [entity relationship diagram](DATA_MODEL.md#entity-relationship-diagram). Updated setup, Docker and CI.
+- **How it works:** Alembic creates twelve application tables and records revision 0001. The seed inserts missing content by slug in one transaction. An optional flag creates a separately labeled draft event.
+- **Why this approach:** A new environment can reproduce the vetted starting data. Existing draft edits and public snapshots survive a seed rerun.
+- **Validation:** VER-103 and VER-104. Ruff and all three PostgreSQL tests passed. The new test upgraded a blank schema, checked metadata drift and preserved edits on rerun, then downgraded and rebuilt the disposable schema. Cross-checked all twelve diagram relationships. Applied the migration to development and local staging. Both first seeds inserted ten members, two events and two projects. Both reruns inserted zero rows. Staging readiness passed.
+- **Limitations / remaining work:** The first lint pass flagged an implicit string concatenation and passed after it was parenthesized. The existing Starlette deprecation warning remains. Public API and editor integration follow in Phase 6.
+- **Viva Q&A:** **What separates a migration from a seed?** The migration changes the database structure. The seed inserts verified starting rows into that structure.
 
 ## 11. Template for Every Future Task or Step
 
