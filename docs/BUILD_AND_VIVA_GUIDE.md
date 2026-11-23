@@ -45,6 +45,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Phase 1 launch scope | Defined and verified | [Launch scope](LAUNCH_SCOPE.md) describes the essential release, university registration, recruitment defaults, and open decisions |
 | Phase 2 pages and journeys | Defined and verified | [Page plan](PAGES_AND_JOURNEYS.md) and [wireframes](WIREFRAMES.md) specify actions, states, and recovery paths |
 | Design reference analysis | Reviewed at two widths | Three rendered homepages, including the Noddal scene after loading. See [reference analysis](DESIGN_REFERENCE_ANALYSIS.md) |
+| Visual direction | Specified | [Campus event programme composition](VISUAL_IDENTITY.md) for Home and Event Detail |
 | Brand assets | Existing, inspected | Two 745 × 740 PNG logo variants |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
 | Ink theme effect | Existing, source-reviewed | WebGL2, html2canvas, and GSAP logic |
@@ -238,6 +239,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-042 | Phase 1 and 2 audit, correction pass 2 | Chrome rendered all three diagrams to SVG with Mermaid 11.12.0. Checked staged links, 14 wireframe pairs, 36 control labels, the 22 interface states, and `git diff --cached --check`. | Planning and diagram validation. The website implementation still needs runtime tests. |
 | VER-043 | Phase 3.1 pass 1 | Rendered all three homepages at 1440 × 860 and compared the first-screen captures with computed headings, insets, and navigation. | Homepage samples with normal motion. |
 | VER-044 | Phase 3.1 pass 2 | Loaded all three at 390 × 860 with reduced motion. Compared captures and computed layout, then repeated Noddal in fresh sessions until its scene was visible at both widths. | Phone emulation and two Noddal samples. Timing varies with the network and device. |
+| VER-045 | Phase 3.2 pass 1 | Inspected the original mark and alpha bounds and checked the direction for palette, composition, navigation and missing-media behavior. | Design specification. |
+| VER-046 | Phase 3.2 pass 2 | Cross-checked the featured content and primary action against the Phase 2 wireframes, page actions and Phase 1 register. | Content and interaction review. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -580,6 +583,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-043 and VER-044. Both viewport reviews found the expected identities and layouts. A staged whitespace check also caught two trailing spaces in the guide date, which were removed. The repeated Noddal load exposed the logo, music control, and full hero.
 - **Limitations / remaining work:** These samples do not measure general load performance, real-device touch behavior, or accessibility across the full reference sites.
 - **Viva Q&A:** **Why examine the visible surface as well as the HTML?** Text may be present below a full-screen overlay. Only the rendered view established when the Noddal hero could be seen.
+
+### TASK-024 — Set the club’s visual direction
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 3.2.
+- **Status:** Design direction specified.
+- **Objective:** Give Home and Event Detail a common identity rooted in the club’s own artwork and activities.
+- **Changes and files:** Added [visual identity](VISUAL_IDENTITY.md) and linked it from the roadmap.
+- **How it works:** Warm paper, dark ink, blue artwork and a prominent date connect a campus event programme to the club’s coding events. The hero action comes before the brand artwork on a phone.
+- **Why this approach:** The source logo already combines code and a person. Real venues, archive dates and participant work make the design specific to the club.
+- **Validation:** VER-045 and VER-046. Both checks passed for the home and event compositions and their data sources.
+- **Limitations / remaining work:** Page rendering is scheduled for Step 3.6. Gallery content depends on approved media.
+- **Viva Q&A:** **Why give the date a large block?** Date and place distinguish an event quickly, and the same structure works for an archived event with no photograph.
 
 ## 11. Template for Every Future Task or Step
 

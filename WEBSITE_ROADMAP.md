@@ -99,7 +99,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 ### Steps
 
 - [x] **3.1 Inspect the references.** Once accessible, record specific observations about typography, spacing, navigation, motion, and mobile behavior.
-- [ ] **3.2 Establish an original direction.** Connect the blue logo and the club's engineering/community identity with a distinctive composition.
+- [x] **3.2 Establish an original direction.** Use the [club visual direction](docs/VISUAL_IDENTITY.md) for the home and event compositions.
 - [ ] **3.3 Define design tokens.** Specify colors, typography, spacing, borders, button styles, and visible focus indicators.
 - [ ] **3.4 Plan logo usage.** Choose the transparent or background version based on contrast and placement.
 - [ ] **3.5 Prepare assets.** Export appropriately sized logos and a legible favicon while preserving original files.
