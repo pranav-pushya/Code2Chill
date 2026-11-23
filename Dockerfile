@@ -2,7 +2,7 @@ FROM node:24-bookworm-slim AS frontend-build
 WORKDIR /source/frontend
 COPY frontend/package*.json ./
 RUN npm ci --no-audit --no-fund
-COPY frontend/index.html frontend/tsconfig.json frontend/vite.config.ts ./
+COPY frontend/index.html frontend/vite.config.js ./
 COPY frontend/src/ ./src/
 COPY docs/design/ /source/docs/design/
 RUN npm run build

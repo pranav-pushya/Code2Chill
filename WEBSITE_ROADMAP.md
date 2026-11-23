@@ -41,7 +41,7 @@ This roadmap assumes that “Python full stack” means a Python backend with a 
 
 | Layer | Proposed choice |
 | --- | --- |
-| Frontend | React, TypeScript, Vite |
+| Frontend | React, JavaScript, Vite |
 | Styling | Tailwind CSS with custom design tokens |
 | Backend | FastAPI |
 | Request and response validation | Pydantic |
@@ -130,7 +130,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **4.1 Create the directory structure.** Establish `frontend/`, `backend/`, and `docs/`.
 - [x] **4.2 Configure repository tooling.** Add environment templates, ignore rules, formatting, linting, and dependency lock files.
 - [x] **4.3 Initialize the backend.** Configure the Python environment and FastAPI application.
-- [x] **4.4 Initialize the frontend.** Configure React, TypeScript, routing, and the styling system.
+- [x] **4.4 Initialize the frontend.** Configure React, JavaScript, routing, and the styling system.
 - [x] **4.5 Connect PostgreSQL.** Establish development database configuration and connection management.
 - [x] **4.6 Verify connectivity.** Add a health endpoint and call it from the frontend.
 - [x] **4.7 Add CI and setup documentation.** Check builds, formatting, and relevant tests; document startup commands.

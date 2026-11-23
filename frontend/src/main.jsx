@@ -1,4 +1,4 @@
-import Status from "./Status";
+import Status from "./Status.jsx";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Link, Route, Routes } from "react-router";
 import icon from "../../docs/design/brand/club-icon-64.png";

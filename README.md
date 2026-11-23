@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.110+-009688?style=flat&logo=fastapi&logoColor=white" alt="FastAPI" />
   <img src="https://img.shields.io/badge/PostgreSQL-17-4169E1?style=flat&logo=postgresql&logoColor=white" alt="PostgreSQL 17" />
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=black" alt="React 19" />
-  <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black" alt="JavaScript" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-4.0-06B6D4?style=flat&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
   <img src="https://img.shields.io/badge/Vite-8.0-646CFF?style=flat&logo=vite&logoColor=white" alt="Vite" />
 </p>
@@ -65,10 +65,10 @@ Code2Chill/
 │   ├── compose.yaml          # Local PostgreSQL 17 container orchestration
 │   ├── pyproject.toml        # uv / PEP 621 dependency management
 │   └── uv.lock               # Deterministic Python dependency lock
-├── frontend/                 # React 19 + TypeScript + Vite + Tailwind CSS
+├── frontend/                 # React 19 + JavaScript + Vite + Tailwind CSS
 │   ├── src/                  # Component tree, router, and page styles
 │   ├── package.json          # npm scripts and dependencies
-│   ├── vite.config.ts        # Vite build configuration
+│   ├── vite.config.js        # Vite build configuration
 │   └── biome.json            # Biome formatting and linting configuration
 ├── docs/                     # Living documentation, design system & planning
 │   ├── BUILD_GUIDE.md        # Living build guide & technical viva preparation

@@ -11,7 +11,7 @@
     "format": "biome format --write .",
     "format:check": "biome format .",
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -22,12 +22,8 @@
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
     "@tailwindcss/vite": "^4.0.0",
-    "@types/node": "^24.0.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^6.0.0",
     "tailwindcss": "^4.0.0",
-    "typescript": "~5.9.0",
     "vite": "^8.0.0"
   }
 }

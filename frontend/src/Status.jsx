@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 export default function Status() {
-  const [state, setState] = useState<"loading" | "ready" | "unavailable">(
-    "loading",
-  );
+  const [state, setState] = useState("loading");
   const [attempt, setAttempt] = useState(0);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: attempt is an explicit retry trigger
