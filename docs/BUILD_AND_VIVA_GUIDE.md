@@ -73,6 +73,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | [CONTENT_REGISTER.md](CONTENT_REGISTER.md) | Phase 1 evidence, ownership, publication readiness, and asset inventory |
 | [LAUNCH_SCOPE.md](LAUNCH_SCOPE.md) | Launch workflow decisions and the boundaries of local data handling |
 | [PAGES_AND_JOURNEYS.md](PAGES_AND_JOURNEYS.md) | Planned routes, navigation, and user journeys |
+| [WIREFRAMES.md](WIREFRAMES.md) | Desktop and mobile layout sketches using verified club copy |
 | This guide | Current build explanation, decisions, verification, and task history |
 
 ## 5. Existing Prototype — How It Works
@@ -221,6 +222,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-034 | Phase 2.4 pass 2, repository review | Verified staged links, the admin route plan, task log, and roadmap sequence. `git diff --cached --check` passed. | No sign-in service or dashboard was exercised. |
 | VER-035 | Phase 2.5 pass 1, state coverage and precedence | Checked 21 state definitions against the event, recruitment, and administrator journeys. Walked through success, failure, empty, status, and access recovery. | Design review. Accessibility behaviors still need implementation and browser testing. |
 | VER-036 | Phase 2.5 pass 2, repository review | Verified staged links, checklist order, task log, and exact change scope. `git diff --cached --check` passed. | Document validation. |
+| VER-037 | Phase 2.6 pass 1, layout and content review | Inspected the rendered text layout and checked 28 desktop and mobile panels for consistent widths, planned routes, readable wrapping, and source-backed examples. | Low-fidelity diagrams. Browser breakpoints and accessibility still need implementation checks. |
+| VER-038 | Phase 2.6 pass 2, repository review | Verified staged links, the wireframe file, task log, and checklist order. `git diff --cached --check` passed. | Document validation. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -497,6 +500,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-035 checked coverage and state precedence against the planned journeys. VER-036 checked the staged plan and linked records.
 - **Limitations / remaining work:** These messages and behaviors still need UI components, server responses, and browser accessibility testing.
 - **Viva Q&A:** **Why distinguish a failed request from an empty list?** The server may have records even when the request fails. A retry addresses the failure, while an empty result can direct visitors to other content.
+
+### TASK-020 — Create desktop and mobile wireframes
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 2.6.
+- **Status:** Fourteen desktop and mobile wireframe pairs planned and verified.
+- **Objective:** Show how verified content and the planned workflows fit on wide and narrow pages.
+- **Changes and files:** Added [WIREFRAMES.md](WIREFRAMES.md), linked it from the [page plan](PAGES_AND_JOURNEYS.md#wireframes), and checked off Step 2.6 in the [roadmap](../WEBSITE_ROADMAP.md#phase-2--define-pages-and-user-journeys).
+- **How it works:** Each wireframe pairs a desktop arrangement with a single-column mobile reading order. Public examples use a real event date and venue, a sourced project, and the club roster. Local recruitment and reviewer screens are marked conditional.
+- **Why this approach:** Real copy exposes where titles and calls to action wrap. A simple sketch lets Phase 3 establish identity after the content order and workflows are agreed in the plan.
+- **Validation:** VER-037 checked 28 panels and their source content. VER-038 verified the staged links, scope, and roadmap sequence.
+- **Limitations / remaining work:** The sketches specify layout and reading order. Phase 3 will add visual styling, and the frontend phases will validate actual browser behavior.
+- **Viva Q&A:** **Why use a long event name in mobile wireframes?** Real labels reveal where wrapping needs room. A short placeholder can hide a problem until published content arrives.
 
 ## 11. Template for Every Future Task or Step
 

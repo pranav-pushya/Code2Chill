@@ -148,3 +148,7 @@ Use the local review paths only when recruitment uses a local cycle. Signed-in r
 An initial load error takes priority over an empty result. Only show an empty state after a successful load. For event details, an ended event takes priority over a saved registration state. For other events, use the confirmed full or closed status before evaluating the registration link. Recruitment applies the [configured cycle rules](LAUNCH_SCOPE.md#recruitment) again at submission.
 
 Use visible status text alongside color. Announce progress and confirmed results in a status region and associate field errors with their inputs. Focus the error summary after an invalid submit. Keep keyboard focus available during loading and errors, and make each recovery action usable from the keyboard.
+
+## Wireframes
+
+The [desktop and mobile sketches](WIREFRAMES.md) show all nine public pages, the conditional local application form, and the administrator entry, publishing, settings, media, and review screens. The event archive, NEXUS, and team examples use source-backed copy. The sketches establish content order before Phase 3 sets visual styles.
