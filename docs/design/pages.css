@@ -57,9 +57,9 @@ h1 { font-size: var(--hero-size); line-height: .91; letter-spacing: -.035em; }
 h1 span { display: block; color: var(--blue); }
 .hero-copy > p:not(.kicker) { max-width: 38ch; margin-block: 1.35rem 1.5rem; font-size: clamp(1rem, 1.3vw, 1.25rem); }
 .brand-art { position: relative; isolation: isolate; display: grid; place-items: center; aspect-ratio: 1.26; overflow: hidden; background: #254fae; border-radius: var(--radius); cursor: pointer; }
-.brand-art::before { content: ""; position: absolute; inset: -45%; transform: rotate(-28deg); background: repeating-linear-gradient(90deg,transparent 0 27px,#a9c6ff50 27px 28px); }
+.brand-art::before { content: ""; position: absolute; inset: -45%; transform: rotate(-28deg); background: repeating-linear-gradient(90deg,transparent 0 27px,#a9c6ff50 27px 28px); pointer-events: none; }
 .print { position: relative; width: 81%; height: 85%; display: grid; place-items: center; overflow: hidden; background: var(--night); border: 1px solid #6182b1; box-shadow: .6rem .7rem 0 #102c69; transform: rotate(-5deg); transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.6s ease; will-change: transform; }
-.print::before { content: ""; position: absolute; inset: -45%; background: repeating-radial-gradient(ellipse at center, transparent 0 15px, #55729b70 15px 16px); }
+.print::before { content: ""; position: absolute; inset: -45%; background: repeating-radial-gradient(ellipse at center, transparent 0 15px, #55729b70 15px 16px); pointer-events: none; }
 .print img { position: relative; width: 66%; height: auto; background: transparent; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.6s ease; will-change: transform, filter; }
 .brand-art:hover .print { transform: scale(1.04) rotate(0deg); box-shadow: 1rem 1.25rem 0 #102c69; }
 .brand-art:hover .print img { transform: scale(1.12) translateY(-6px); filter: drop-shadow(0 15px 25px rgba(169, 198, 255, 0.35)) drop-shadow(0 0 10px rgba(33, 79, 197, 0.5)); }
@@ -131,7 +131,7 @@ h2 { font-size: var(--section-size); letter-spacing: -.025em; line-height: 1; }
 .breadcrumb { display: inline-flex; padding-block: var(--space-2); margin-bottom: var(--space-4); }
 .status { display: inline-block; padding: .25rem .65rem; margin-top: var(--space-6); border: 1px solid var(--ink); border-radius: 2rem; font-size: var(--small-size); font-weight: 700; }
 .ticket { position: relative; background: var(--blue); color: #ffffff; padding: clamp(1.5rem, 4vw, 4rem); overflow: hidden; }
-.ticket::before, .ticket::after { content: ""; position: absolute; width: 1.5rem; height: 1.5rem; top: 63%; border-radius: 50%; background: var(--paper); }
+.ticket::before, .ticket::after { content: ""; position: absolute; width: 1.5rem; height: 1.5rem; top: 63%; border-radius: 50%; background: var(--paper); pointer-events: none; }
 .ticket::before { left: -.75rem; } .ticket::after { right: -.75rem; }
 .ticket time { display: block; font: 700 1.1rem/1.5 var(--mono); }
 .ticket-day { display: block; font-size: clamp(5rem, 9vw, 9rem); line-height: .95; }

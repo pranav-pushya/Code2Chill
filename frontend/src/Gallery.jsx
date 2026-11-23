@@ -7,6 +7,7 @@ export function PublishedImage({ image }) {
       <img
         style={{ maxWidth: "100%", height: "auto" }}
         loading="lazy"
+        decoding="async"
         src={image.asset_url}
         alt={image.alt_text}
       />

@@ -57,7 +57,7 @@ function Header() {
           aria-label="Code2Chill home"
           onClick={() => setOpen(false)}
         >
-          <img src={icon} width="32" height="32" alt="" />
+          <img src={icon} width="32" height="32" alt="" decoding="async" />
           Code2Chill
         </Link>
         <button

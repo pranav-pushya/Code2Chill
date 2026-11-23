@@ -239,7 +239,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **9.3 Respect reduced motion.** Provide appropriate alternatives to nonessential movement. Collapsed transition durations to 0.01ms, disabled vestibular spatial transforms and page-enter translations, and provided clear color, outline, and shadow alternatives for interactive controls.
 - [x] **9.4 Evaluate the ink transition separately.** Evaluated responsiveness, memory footprint, dynamic data interleaving, and accessibility; resolved DEC-007 by adopting zero-overhead CSS compositor transitions in production.
 - [x] **9.5 Keep actions usable.** Essential interactions must work while visual effects load or fail. Protected sticky header anchor scroll padding, guaranteed non-blocking transition pointer events, enabled forced-colors high contrast focus outlines, and provided print media fallbacks.
-- [ ] **9.6 Optimize visual assets.** Improve image sizing, font loading, and expensive rendering effects.
+- [x] **9.6 Optimize visual assets.** Improve image sizing, font loading, and expensive rendering effects. Added fetchPriority="high" and decoding="async" on hero and gallery images, isolated decorative background hit-testing with pointer-events: none, and applied layout/paint containment to cards.
 - [ ] **9.7 Remove experiment controls.** Keep developer-facing animation settings out of the public interface.
 
 ### Deliverables

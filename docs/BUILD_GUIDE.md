@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 9.1 through 9.5 are implemented and verified. Asset optimization (9.6) and experiment controls removal (9.7) are next.
+**Current stage:** Phase 9.1 through 9.6 are implemented and verified. Removing experiment controls (9.7) is next.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1395,6 +1395,17 @@ Guaranteed that all essential user actions, navigation paths, form submissions, 
 - **Print Stylesheet Resilience:** Added `@media print` rules in [styles.css](../frontend/src/styles.css) to flatten sticky headers (`position: static; background: transparent;`), strip decorative motion and interactive toggles (skip link, hamburger menu, password toggle), and ensure crisp printing on physical paper. [Design Tokens](design/tokens.css) · [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Recruitment View](../frontend/src/Recruitment.jsx)
 
 Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files), production client build `vite build` (passed in 1.03s), motion CDP check (`phase9-motion-check.mjs`), and end-to-end recruitment UI check (`phase8-ui-check.mjs`). **Viva question.** Why must `scroll-padding-top` be configured when using a sticky header, and how does it affect usability? When a sticky header is pinned to the top of the viewport (`position: sticky; top: 0`), standard browser anchor scrolling (`#id` or skip-to-content links) aligns the target element with the viewport edge, causing the sticky header to overlap and obscure the top lines of content. Setting `scroll-padding-top` equal to or greater than the sticky header height instructs the browser's scroll engine to stop before the target, keeping the focused content and its visual context fully visible.
+
+### TASK-088 — Optimize visual assets, image sizing, and rendering containment (Step 9.6)
+
+24 November 2026 · Phase 9.6 · Verified locally
+
+Optimized asset loading sequences, image decoding pipelines, and CSS rendering containment to minimize Largest Contentful Paint (LCP), prevent layout shifts (CLS), and reduce GPU/CPU paint overhead:
+- **Hero Image LCP Optimization:** Added `fetchPriority="high"` and `decoding="async"` to the responsive WebP hero artwork (`<img>`) in [Home.jsx](../frontend/src/Home.jsx). This instructs the browser's network dispatcher to prioritize the hero image over lower-priority network requests and decodes image pixels off the main JavaScript UI thread.
+- **Asynchronous Image Decoding:** Added `decoding="async"` to [SiteLayout.jsx](../frontend/src/SiteLayout.jsx) brand icon and [Gallery.jsx](../frontend/src/Gallery.jsx) `PublishedImage`, eliminating potential frame stutters on initial render.
+- **Hit-Testing & Paint Containment:** Added `pointer-events: none;` to large decorative background layers (`.brand-art::before`, `.print::before`, `.ticket::before`, `.ticket::after`) in [pages.css](design/pages.css) to eliminate mouse movement hit-testing overhead on rotated gradient canvases. Added `contain: layout paint;` to `.gallery-grid figure` in [styles.css](../frontend/src/styles.css) to isolate card layout computations and hover box-shadow repaints from the broader document. [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Home View](../frontend/src/Home.jsx) · [Site Layout](../frontend/src/SiteLayout.jsx) · [Gallery View](../frontend/src/Gallery.jsx)
+
+Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files), production client build `vite build` (passed in 416ms), motion CDP check (`phase9-motion-check.mjs`), and end-to-end recruitment UI check (`phase8-ui-check.mjs`). **Viva question.** Why combine `fetchPriority="high"` with `decoding="async"` on hero images? `fetchPriority="high"` informs the browser's preload and network scheduler to bump the critical Largest Contentful Paint (LCP) hero asset ahead of lower-priority scripts or background fetches, while `decoding="async"` decodes the raster WebP pixels off the main JavaScript UI thread, avoiding frame stutters during initial render.
 
 ## 11. Template for Every Future Task or Step
 

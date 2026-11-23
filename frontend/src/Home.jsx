@@ -32,6 +32,8 @@ export default function Home() {
               width="480"
               height="419"
               alt=""
+              fetchPriority="high"
+              decoding="async"
             />
           </div>
         </div>
