@@ -54,6 +54,14 @@ uv run --locked python -m app.seed
 
 The first command creates the tables. Run it after pulling a schema change. The seed is optional for developers who want an empty schema. Repeat it to insert missing initial content without overwriting edits. To add the labeled practice draft to a development database, add `--include-demo` to the seed command.
 
+### Enable local recruitment on a configured cycle
+
+Apply migration `0003` with the schema command above. Set `RECRUITMENT_SMTP_HOST` and `RECRUITMENT_MAIL_FROM` in the backend environment. The mailer uses SMTP over TLS on port 465 by default. Set the port and any required credentials using the names in the [environment example](../backend/.env.example). For staging, supply the values in the staging Compose environment and recreate the API service.
+
+The seed leaves recruitment unannounced. A published local cycle needs opening and closing times, eligibility, enabled domains, an active assigned reviewer, and the approved lowercase email domain (for example, `campus.example` in a test). Set `optional_field` to `motivation`, `portfolio_url` or leave it empty. Publish the configured cycle through the existing publication helper. Previously published local cycles need an approved email domain and a fresh publication before the application link appears. Cycle configuration currently requires backend access.
+
+Applicants start at `/join`. Verification codes expire after 15 minutes. An applicant who loses the submit response should keep the page open and retry with the same details to recover the confirmation. The form keeps the attempt and entered values in page memory.
+
 ### Create a staff account
 
 After applying migrations, run the command below from `backend/` in an interactive terminal. Substitute the staff member's email and choose the role they need. The command prompts twice for a hidden password of 15–256 characters. An existing email keeps its current password and role.

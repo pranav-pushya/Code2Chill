@@ -7,6 +7,7 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from sqlalchemy import delete, func, select
+from sqlalchemy.exc import IntegrityError
 
 from . import recruitment_mail
 from .admin_models import AdminAccount, AdminRole, RecruitmentReviewer
@@ -109,6 +110,8 @@ def current_cycle(db: Database):
     if state == "open":
         if snap["route"] == "external":
             result.update(route="external", external_url=snap["external_url"])
+        elif valid_email_domain(snap.get("email_domain")) and recruitment_mail.mail_ready():
+            result["route"] = "local"
     return result
 
 
@@ -205,3 +208,46 @@ def validate_new_application(db, cycle, body, now):
         )
     ):
         raise HTTPException(409, "An application for this email already exists in this cycle.")
+
+
+@router.post("/{cycle_id}/applications")
+def submit(cycle_id: int, body: Submission, db: Database):
+    cycle = locked_cycle(db, cycle_id)
+    now = datetime.now(UTC)
+    challenge = db.get(EmailChallenge, (cycle_id, body.attempt_id))
+    if (
+        not challenge
+        or challenge.email != body.university_email
+        or challenge.sent_at + CODE_LIFETIME <= now
+        or not secrets.compare_digest(challenge.digest, digest(body.code.upper()))
+    ):
+        raise HTTPException(403, "Enter a valid email code or request a new one.")
+    values = {
+        "full_name": body.full_name,
+        "domain": body.domain,
+        "university_email": body.university_email,
+        "motivation": body.motivation or None,
+        "portfolio_url": body.portfolio_url,
+    }
+    saved = db.scalar(
+        select(Application).where(
+            Application.cycle_id == cycle_id, Application.attempt_id == body.attempt_id
+        )
+    )
+    if saved:
+        if all(getattr(saved, key) == value for key, value in values.items()):
+            return {"receipt": saved.receipt}
+        raise HTTPException(409, "This attempt was already submitted with different details.")
+    validate_new_application(db, cycle, body, now)
+    application = Application(cycle_id=cycle_id, attempt_id=body.attempt_id, **values)
+    db.add(application)
+    try:
+        db.flush()
+        receipt = application.receipt
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            409, "The application could not be saved. Check the current cycle details."
+        ) from None
+    return {"receipt": receipt}

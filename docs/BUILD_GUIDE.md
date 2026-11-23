@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 8.2 is implemented. Local submission opens once persistence and receipt handling are connected.
+**Current stage:** Phase 8 recruitment intake is implemented through step 8.3. The next step is the staff review dashboard. Opening a real local cycle requires club-approved settings, reviewer assignments and mail delivery. The Phase 7 public pages still use the owner's requested media placeholders.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -56,7 +56,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Verified in development and staging | [Schema, diagram and repeatable seed](DATA_MODEL.md#migrations-and-initial-records) are implemented. |
 | Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
-| Recruitment | Phase 8.2 | Published cycle information and the application form are in place. Local intake is under construction. |
+| Recruitment | Intake verified locally | Join uses published cycle details. Local applicants verify their email and receive a reference after saving. Staff review and exports are pending. [Application API](../backend/app/recruitment.py) |
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
 | Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
@@ -1212,6 +1212,14 @@ The production frontend passed lint, formatting and build checks. A headless Chr
 Local cycles include the approved email domain and an optional motivation or portfolio field. The server checks the published window and enabled domains, current reviewer assignment and exact email domain. It sends a random 15-minute email code, stores its digest, and limits code requests by address and cycle. Free-text eligibility requirements remain for reviewers to assess. [Publication rules](../backend/app/publication.py) · [Intake API](../backend/app/recruitment.py) · [Mail settings](DEVELOPMENT.md#enable-local-recruitment-on-a-configured-cycle)
 
 The PostgreSQL integration tests covered scheduled, open and closed cycles, draft isolation, disabled reviewers, email and domain restrictions, code rejection, repeat requests and duplicate submissions. Tests captured outgoing codes in memory. Real mailbox delivery needs the club's SMTP configuration and a delivery check. **Viva question.** Why verify the address before reporting a duplicate? Only the mailbox owner should learn whether that address has applied.
+
+### TASK-071 — Save a submission and recover its confirmation
+
+24 November 2026 · Phase 8.3 · Verified locally
+
+Each form attempt has a random identifier. The server locks the cycle, validates the request and commits the application before returning its receipt. A verified retry with the same details returns the saved receipt even after closing. Changed details or a second attempt cannot overwrite the saved application. [Migration](../backend/migrations/versions/0003_recruitment_intake.py) · [Integration tests](../backend/tests/test_recruitment.py)
+
+All 17 backend tests passed using local PostgreSQL, including migration round trips, duplicate attempts and receipt recovery with a renewed email code after closing. Ruff passed. The browser retry check used simulated responses and verified the same attempt identifier and form values across both requests. Reloading or leaving the form discards the in-memory attempt. **Viva question.** What happens if the database saves the application but the response is lost? The student can retry in the same open page and recover the original reference.
 
 ## 11. Template for Every Future Task or Step
 

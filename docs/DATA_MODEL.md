@@ -16,7 +16,7 @@ New media starts without approval. Missing times and unapproved photographs rema
 
 A recruitment cycle has a route, optional opening and closing instants, eligibility text and the domains explicitly enabled for that cycle. A new cycle starts pending with an empty domain list. An application refers to a cycle and a domain together. PostgreSQL checks that the domain belongs to that cycle.
 
-Applications carry the submitted name and university email, optional motivation or portfolio, a review status, a submission attempt identifier and an opaque receipt. These records are private. The application intake, email ownership verification and review screens are scheduled for Phase 8. [Recruitment models](../backend/app/recruitment_models.py) · [Launch rules](LAUNCH_SCOPE.md#recruitment)
+Applications carry the submitted name and university email, optional motivation or portfolio, a review status, a submission attempt identifier and an opaque receipt. These records are private. Local intake verifies the university address using a code tied to the cycle and attempt. The review dashboard is pending. [Recruitment models](../backend/app/recruitment_models.py) · [Launch rules](LAUNCH_SCOPE.md#recruitment)
 
 ## Event registration ownership
 
@@ -37,7 +37,7 @@ The reviewer assignment joins an account to a particular recruitment cycle. The 
 - Public route slugs use lowercase letters, digits, and single hyphens between words. Slugs are unique within each content type. Recruitment cycle slugs follow the same format.
 - Primary and foreign keys protect relationships. Removing a project removes its credit rows. Removing a linked roster member keeps the credited name and clears the optional member reference. A used media asset or originating event requires its references to be cleared before deletion.
 - PostgreSQL checks required public text, nonnegative display order and credit positions, and approved media descriptions and credits. Storage keys are unique.
-- Accounts and applications store trimmed lowercase email addresses. PostgreSQL permits one application per cycle and email, and one row per cycle and attempt identifier. A receipt and a session token digest each have their own unique identifier. Authenticating email ownership and recovering a receipt remain Phase 8 application responsibilities.
+- Accounts and applications store trimmed lowercase email addresses. PostgreSQL permits one application per cycle and email, and one row per cycle and attempt identifier. A receipt and a session token digest each have their own unique identifier. The intake API verifies the email code and matches the original attempt and normalized fields before returning a saved receipt.
 - Indexes support event date ordering, roster display order, projects by event, scoped applicant filtering, account sessions, and audit lookup by record.
 
 Database constraints act even when records are written outside the HTTP API. [Public models](../backend/app/content_models.py) · [Recruitment models](../backend/app/recruitment_models.py) · [Administrator models](../backend/app/admin_models.py)
@@ -81,5 +81,7 @@ An application reaches its cycle through the composite reference to an enabled d
 ## Migrations and initial records
 
 Alembic revision `0001` creates the twelve application tables. The initial seed inserts ten public roster entries, two archived events and two credited projects from the content register. Event times with unresolved evidence stay empty. No recruitment cycle, account or application is created by the seed.
+
+Revision `0003` adds the approved email domain and optional question choice to each cycle. Each email challenge records the cycle, attempt, recipient, digest and sending time. A code expires after 15 minutes. Sending a new code removes expired challenges for that cycle.
 
 The seed inserts records by unique slug inside one transaction. Reruns keep existing rows and preserve both draft edits and previously published copies. An optional `--include-demo` flag inserts a separate, labeled draft event with no booking link. [Setup commands](DEVELOPMENT.md#initialize-the-data-schema) · [Seed implementation](../backend/app/seed.py) · [Content register](CONTENT_REGISTER.md)
