@@ -227,6 +227,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-038 | Phase 2.6 pass 2, repository review | Verified staged links, the wireframe file, task log, and checklist order. `git diff --cached --check` passed. | Document validation. |
 | VER-039 | Phase 2.7 pass 1, action and journey audit | Checked public and private page actions against the sitemap, wireframe controls, interface states, and Phase 1 ownership boundaries. | Planned actions. Runtime routing and submission tests are later phases. |
 | VER-040 | Phase 2.7 pass 2, final Phase 2 repository review | Verified staged links, all seven Phase 2 completion markers, verification records, and changed files. `git diff --cached --check` passed. | Document validation. |
+| VER-041 | Phase 1 and 2 audit, correction pass 1 | Checked the 14 completed roadmap items, 29 content records, both logos, the live GitHub branch, and the corrected event and recruitment scenarios. The university pages, project repositories, NEXUS demo, and Instagram endpoint returned HTTP 200. | The LinkedIn profile returned HTTP 403 to the direct request. Public indexing still showed the club profile. The audit used no live applications or bookings. |
+| VER-042 | Phase 1 and 2 audit, correction pass 2 | Chrome rendered all three diagrams to SVG with Mermaid 11.12.0. Checked staged links, 14 wireframe pairs, 36 control labels, the 22 interface states, and `git diff --cached --check`. | Planning and diagram validation. The website implementation still needs runtime tests. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -529,6 +531,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-039 checked routes, labels, wireframe controls, and workflow boundaries. VER-040 checked all Phase 2 deliverables in the staged repository.
 - **Limitations / remaining work:** Phase 3 will establish visual identity. Later development must implement the actions, permission checks, feedback, and routes before they can be exercised in a browser.
 - **Viva Q&A:** **When should an action use a link?** Use links to navigate to a destination. Use buttons for state changes such as opening a menu or saving a draft, with progress and outcome feedback where needed.
+
+### TASK-022 — Recheck Phase 1 and Phase 2 deliverables
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 1 and Phase 2 follow-up audit.
+- **Status:** Verified after two workflow corrections.
+- **Objective:** Check the pushed phase deliverables together and resolve any gaps in the documented journeys.
+- **Changes and files:** Updated the [event and recruitment journeys](PAGES_AND_JOURNEYS.md), the [interface states](PAGES_AND_JOURNEYS.md#interface-states), the [page actions](PAGES_AND_JOURNEYS.md#page-actions), and the [launch recruitment rules](LAUNCH_SCOPE.md#recruitment).
+- **How it works:** When both event lists load empty, show one message and link to About. When a local application's result is uncertain, retry the same attempt. Return its saved reference only to the verified applicant, even if the deadline elapsed after the original save. An unsaved attempt still follows the closing time and validation rules.
+- **Why this approach:** The event fallback avoids links between two empty sections. Confirmation recovery gives students a reliable receipt without creating a second application or exposing another student's record.
+- **Validation:** VER-041 checked the pushed baseline, public source responses, and workflow scenarios. VER-042 rendered the diagrams and checked the staged planning documents and wireframes.
+- **Limitations / remaining work:** The direct LinkedIn request was blocked. The portal and social checks covered public page reachability. The application flow remains a design until the frontend and API are implemented.
+- **Viva Q&A:** **What happens if the network drops after a local application is saved?** A retry of the same attempt can return the original reference once the university email is verified. A new or unsaved attempt must still meet the cycle rules.
 
 ## 11. Template for Every Future Task or Step
 

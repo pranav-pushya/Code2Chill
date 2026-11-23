@@ -35,7 +35,7 @@ The public Join page starts with **Recruitment dates to be announced**. It can l
 | Domain choice | Required. Show the domains enabled for that cycle. |
 | Short motivation or a public portfolio link | Optional. The club can request the relevant prompt when configuring the cycle. |
 
-The approved dates, eligibility, domains, reviewers, and application route must be present before the public Apply action can appear. Before opening, show the scheduled date. While open, point to the approved route. After closing, show that applications are closed. Phase 8 will enforce the same window, domain choices, and duplicate rule on the backend for local forms. The club still needs to supply the actual cycle settings and assignments.
+The approved dates, eligibility, domains, reviewers, and application route must be present before the public Apply action can appear. Before opening, show the scheduled date. While open, point to the approved route. After closing, show that applications are closed. Phase 8 will enforce the same window, domain choices, and duplicate rule on the backend for local forms. A retry of an already saved attempt can recover the original confirmation after the cutoff when the requester verifies ownership of the university email used for the application. The club still needs to supply the actual cycle settings and assignments.
 
 ## First public release
 

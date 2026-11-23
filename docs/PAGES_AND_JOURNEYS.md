@@ -35,11 +35,15 @@ The header logo links to Home. Desktop and mobile navigation provide About, Even
 ```mermaid
 flowchart TD
     H[Home or shared navigation] --> L[Events]
-    L --> U[Upcoming events]
-    L --> P[Past events]
-    U -->|No published upcoming events| P
-    U --> D[Published event detail]
-    P --> D
+    L -->|Load succeeded| C{Any published events}
+    L -->|Load failed| W[Show error and offer retry]
+    C -->|Both sections empty| B[Show empty schedule and offer About]
+    C -->|At least one section has events| U[Upcoming events]
+    C -->|At least one section has events| P[Past events]
+    U -->|Only Past has events| P
+    P -->|Only Upcoming has events| U
+    U -->|Select an event| D[Published event detail]
+    P -->|Select an event| D
     S[Shared event URL] --> D
     S -->|Event unavailable| L
     D --> R{Registration state and link}
@@ -48,7 +52,7 @@ flowchart TD
     R -->|Unconfirmed or missing link| Y[Show registration details pending]
 ```
 
-On `/events`, put Upcoming before Past. Offer section links to `/events#upcoming-events` and `/events#past-events`. An empty upcoming section links to Past. Cards link to published detail pages and show the title, date, and verified venue when available. Use the [two dated event records](CONTENT_REGISTER.md#events-and-projects) for the starting archive.
+On `/events`, put Upcoming before Past. Offer section links to `/events#upcoming-events` and `/events#past-events` when those sections have records. If one section is empty, link to the populated section. If both load successfully with zero records, show **No events are listed** once and offer **Learn about the club** to `/about`. Cards link to published detail pages and show the title, date, and verified venue when available. Use the [two dated event records](CONTENT_REGISTER.md#events-and-projects) for the starting archive.
 
 | Detail case | Student experience |
 | --- | --- |
@@ -71,8 +75,9 @@ flowchart TD
     C -->|Open with approved external route| E[Official application destination]
     C -->|Open with approved local route| D[Read eligibility and choose an enabled domain]
     D --> F[Complete and submit local application]
-    F -->|Saved successfully| R[Show confirmation and reference]
+    F -->|Saved or confirmed retry| R[Show confirmation and reference]
     F -->|Submission needs attention| S[Show error and recovery]
+    S -->|Retry the same attempt when its result is uncertain| F
 ```
 
 | Cycle or submission state | Student experience |
@@ -82,11 +87,11 @@ flowchart TD
 | Open with an approved external route | **Apply through the official form** opens the approved destination. That provider handles the submission and confirmation. |
 | Open with an approved local route | **Start application** opens the planned `/join/apply` page. Show eligibility and enabled domains. Collect the name, university email, and domain with the cycle's configured optional prompt. |
 | Invalid local submission | Explain the field errors beside the inputs and in a focusable summary. Keep the student's entered values while they correct the form. |
-| Local request fails or its result is uncertain | Keep the entered values in the current page and offer **Try again**. The server's duplicate rule prevents a retry from creating another record. |
+| Local request fails or its result is uncertain | Keep the entered values in the current page and offer **Try again** for the same attempt. If it already saved, recover the original confirmation and reference. Otherwise verify the cycle and validate before accepting the attempt. |
 | Local save confirmed | Show **Application received** and the confirmation reference. Keep applicant details out of the URL. Give the student a link back to Join. |
-| Window closes, including while the local form is open | Show **Applications are closed** and return students to Join. The server checks the time again before accepting a submission. |
+| Window closes, including while the local form is open | Show **Applications are closed** and return students to Join if the application has yet to save. A retry can still recover an already saved confirmation for the same attempt. |
 
-For a local application, only show duplicate-record details after verifying that the requester controls the university email. The implementation phase will choose how to verify ownership. The [recruitment rules](LAUNCH_SCOPE.md#recruitment) define cycle configuration and time boundaries. A direct visit to `/join/apply` when the local route is unavailable returns the student to the current Join state.
+For a local application, verify ownership of the university email before showing duplicate details or returning an existing confirmation. Tie confirmation recovery to the same attempt, unchanged form data, applicant, and cycle. A different attempt follows the normal eligibility, timeline, and duplicate rules. The implementation phase will choose how to verify ownership. The [recruitment rules](LAUNCH_SCOPE.md#recruitment) define cycle configuration and time boundaries. A direct visit to `/join/apply` when the local route is unavailable returns the student to the current Join state.
 
 ## Administrator journey
 
@@ -126,8 +131,8 @@ Use the local review paths only when recruitment uses a local cycle. Signed-in r
 | UI-01 | A public list, detail, or dashboard is loading | Keep the heading and navigation stable. Show loading feedback in the content area. | Use the available navigation. |
 | UI-02 | A requested view fails to load | Show **This content couldn't load**. Keep the current address and any usable navigation. | **Try again** in the same view. |
 | UI-03 | A public page or item is missing | Show **Page not found**, **Event not found**, or **Project not found**. Use the same public item state for an unpublished record. | **Go home**, **Browse events**, or **Browse projects**, respectively. |
-| UI-04 | The Upcoming section loaded with zero events | Show **No upcoming events are listed**. | **Browse past events** jumps to Past. |
-| UI-05 | The Past section loaded with zero events | Show **No past events are listed**. | **Back to upcoming events** jumps to Upcoming. |
+| UI-04 | Only the Upcoming section is empty after loading | Show **No upcoming events are listed**. | **Browse past events** jumps to the populated Past section. |
+| UI-05 | Only the Past section is empty after loading | Show **No past events are listed**. | **Back to upcoming events** jumps to the populated Upcoming section. |
 | UI-06 | Projects or Team loaded with zero published records | Show **No projects are published yet** or **Team information is coming soon**. | **Explore events** opens `/events`. |
 | UI-07 | Optional approved media is missing or fails to load | Keep the usable text, credits, and links in their normal reading order. | Use any existing verified link. |
 | UI-08 | Event registration is open and its destination is verified | Show **Registration open**. | **Register on the university portal**. |
@@ -139,11 +144,12 @@ Use the local review paths only when recruitment uses a local cycle. Signed-in r
 | UI-14 | An approved cycle is open | Show the enabled domains, eligibility, and deadline. | **Apply through the official form** or **Start application**, according to the approved route. |
 | UI-15 | A form has actionable validation errors | Show field messages and a focusable summary. Preserve input in the current page. | Correct fields and submit again. |
 | UI-16 | A save, publish, or submission is in progress | Give progress feedback and disable duplicate activation of the pending action. | Wait for the result. |
-| UI-17 | A write fails, its result is uncertain, or the saved draft version changed | Preserve usable input and the last saved draft. Explain the failure. Confirm saved state before reporting success. | Retry a safe request or **Reload draft** when the saved version changed. |
+| UI-17 | A write fails, its result is uncertain, or the saved draft version changed | Preserve usable input and the last saved draft. Explain the failure. Confirm saved state before reporting success. | **Try again** for the same local application attempt, retry another safe request, or **Reload draft** when the saved version changed. |
 | UI-18 | A write is confirmed | Display **Draft saved**, **Published**, or **Application received** with an application reference when applicable. | **Preview draft**, **View published page**, or **Back to Join**, respectively. |
 | UI-19 | A protected session expires | Ask the user to sign in again. Restore the last saved draft when permitted. | **Sign in**. |
 | UI-20 | A signed-in user lacks permission | Show **Access denied** and keep protected content private. | **Back to dashboard**. |
 | UI-21 | An administrator list loaded empty | Explain whether there are no records or no results for the active filters. | **New draft** for an empty content list or **Clear filters** when filters are active. An empty application list has a **Back to dashboard** route. |
+| UI-22 | Both event sections loaded successfully with zero events | Show **No events are listed** once. | **Learn about the club** opens `/about`. |
 
 An initial load error takes priority over an empty result. Only show an empty state after a successful load. For event details, an ended event takes priority over a saved registration state. For other events, use the confirmed full or closed status before evaluating the registration link. Recruitment applies the [configured cycle rules](LAUNCH_SCOPE.md#recruitment) again at submission.
 
@@ -159,14 +165,14 @@ The [desktop and mobile sketches](WIREFRAMES.md) show all nine public pages, the
 | --- | --- | --- |
 | Home | **Explore events** → `/events`. | Featured event and project titles open their detail routes. The team and recruitment previews open `/team` and `/join`. |
 | About | **Meet the team** → `/team`. | **Contact** → `/contact`. |
-| Events | Select a published event title → `/events/:slug`. | **Upcoming events** and **Past events** jump to their sections. **Browse past events** and **Back to upcoming events** use the same anchors. |
+| Events | Select a published event title → `/events/:slug`. When both sections are empty, **Learn about the club** → `/about`. | **Upcoming events**, **Past events**, **Browse past events**, and **Back to upcoming events** jump to a section with records. |
 | Event Detail | **Register on the university portal** → the approved event-specific page, when open. For pending, full, closed, or ended events, **Back to events** returns to the appropriate list section. | **Browse events** returns to `/events` if the detail is unavailable. |
 | Projects | **View project** → `/projects/:slug`. Include the project name in the accessible label. | **Explore events** → `/events` when the project list is empty. |
 | Project Detail | **Open project demo** → the checked demo when available. Otherwise use **View source repository** → the checked repository, or **Browse projects** → `/projects` if neither resource is available. | When both resources are available, the source repository is the secondary action. |
 | Team | **Explore joining** → `/join`. | **Explore events** → `/events` when team information is unavailable after a successful load. |
 | Join | **View the club on the university portal** → the [official listing](https://chitkarau.life/clubs/code2chill) for announcement, scheduled, or closed states. When recruitment is open, **Apply through the official form** opens the approved external route or **Start application** opens `/join/apply`. | Use the action defined by the confirmed cycle state. |
 | Contact | **View the club on the university portal** → the [official listing](https://chitkarau.life/clubs/code2chill). | Open the verified [Instagram](https://www.instagram.com/code2chill/) or [LinkedIn](https://www.linkedin.com/company/code2chill) profile. |
-| Local application, when enabled | **Submit application** submits for the active cycle. Show a reference after a confirmed save. | Edit **Full name**, **University email**, **Select an enabled domain**, and the **Optional cycle prompt** when configured. **Back to Join** → `/join`. |
+| Local application, when enabled | **Submit application** submits for the active cycle. Show a reference after a confirmed save. | **Try again** repeats the same attempt and recovers its confirmation if already saved. Edit **Full name**, **University email**, **Select an enabled domain**, and the **Optional cycle prompt** when configured. **Back to Join** → `/join`. |
 
 The shared logo returns to `/`. Header links open their routes, and footer Contact opens `/contact`. The mobile **Menu** button toggles navigation and exposes its expanded state. Escape closes it and returns focus to Menu when focus was inside. For unavailable routes, **Go home**, **Browse events**, and **Browse projects** lead to the corresponding public page. **Try again** reloads the current request, following the [interface state rules](#interface-states).
 
