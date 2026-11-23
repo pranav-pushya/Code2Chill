@@ -56,7 +56,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Database and migrations | Local PostgreSQL verified | [Connection management](../backend/app/database.py) is implemented. Models and migrations are planned. |
 | Registration and recruitment | Planned | Prototype buttons do not save submissions |
 | Authentication and dashboard | Planned | Not implemented |
-| Automated tests and CI | Planned | No application test suite or CI setup |
+| Automated tests and CI | Health tests verified | Database success and failure are covered. CI follows in step 4.7. |
 | Deployment | Planned | No deployment created during this work |
 
 **Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile design previews demonstrate the event discovery and return path. The FastAPI scaffold serves its schema.”
@@ -264,6 +264,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-066 | Phase 4.4 pass 2 | Chrome loaded the built Home and status pages at 390 and 1440 px, verified images and layout width, refreshed the status route and returned home. | Scaffold verification. |
 | VER-067 | Phase 4.5 pass 1 | Compose reported a healthy database and psql returned the expected database name inside the container. | Scaffold verification. |
 | VER-068 | Phase 4.5 pass 2 | A separate Python process connected from the host, ran SELECT 1 and verified the connection returned to the pool. | Scaffold verification. |
+| VER-081 | Phase 4.6 pass 1 | Both backend tests passed, covering a real query and HTTP 503 for an unreachable database. | Scaffold verification. |
+| VER-082 | Phase 4.6 pass 2 | Verified direct and proxied HTTP responses, navigation and refresh in Chrome at 390 and 1440 px. Blocking the request produced the failure message and retry recovered. | Scaffold verification. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -769,7 +771,7 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Roadmap step:** Repository maintenance and Phase 4.6 connectivity foundation.
 - **Status:** Verified.
 - **Objective:** Clean root clutter before sharing the repository and rename `BUILD_AND_VIVA_GUIDE.md` to `BUILD_GUIDE.md`.
-- **Changes and files:** Renamed [BUILD_GUIDE.md](BUILD_GUIDE.md); untracked `GEMINI.md` and added it to [.gitignore](../.gitignore); removed root duplicate `extra.html` (preserved in [Expriments/extra.html](../Expriments/extra.html)) and loose `download.svg`/`download2.svg`; updated documentation links in [AGENTS.md](../AGENTS.md) and [README.md](../README.md); tracked backend healthcheck in [backend/app/main.py](../backend/app/main.py), tests in [backend/tests/test_health.py](../backend/tests/test_health.py), and frontend status view in [frontend/src/Status.tsx](../frontend/src/Status.tsx).
+- **Changes and files:** Renamed [BUILD_GUIDE.md](BUILD_GUIDE.md); untracked `GEMINI.md` and added it to [.gitignore](../.gitignore); removed root duplicate `extra.html` (preserved in [Expriments/extra.html](../Expriments/extra.html)) and loose `download.svg`/`download2.svg`; updated documentation links in [AGENTS.md](AGENTS.md) and [README.md](../README.md); tracked backend healthcheck in [backend/app/main.py](../backend/app/main.py), tests in [backend/tests/test_health.py](../backend/tests/test_health.py), and frontend status view in [frontend/src/Status.tsx](../frontend/src/Status.tsx).
 - **How it works:** Sensitive assistant prompts and experimental prototypes are removed from the root Git tree. All internal references resolve to `docs/BUILD_GUIDE.md`. The backend and frontend verify service availability via `/api/health`.
 - **Why this approach:** Evaluators inspecting the repository see an uncluttered, production-oriented structure without duplicate HTML prototypes, loose SVG downloads, or exposed assistant instruction files.
 - **Validation:** VER-069 and VER-070. Biome lint and Vite production build passed cleanly. Git index confirmed clean deletion of root artifacts, untracking of assistant prompts, and exact renaming of the build guide.
@@ -814,6 +816,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-075 and VER-076. Verified all relative links between `README.md` and `docs/DEVELOPMENT.md`. Verified Markdown syntax.
 - **Limitations / remaining work:** Container orchestration instructions will be updated when production Dockerfiles are created in Phase 7.
 - **Viva Q&A:** **Why separate developer instructions from the main README?** Separating audience concerns ensures the public README serves as a clear organizational portal, while technical contributors have a focused, in-depth setup reference.
+
+### TASK-042 — Verify the full database readiness path
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 4.6.
+- **Status:** Verified.
+- **Objective:** Verify the full database readiness path.
+- **Changes and files:** Reviewed the existing [health endpoint](../backend/app/main.py), [health tests](../backend/tests/test_health.py) and [React status page](../frontend/src/Status.tsx). Updated the roadmap and this guide after verification.
+- **How it works:** The React route requests /api/health through Vite. FastAPI borrows a database connection and runs SELECT 1. The browser offers a retry after an unavailable response.
+- **Why this approach:** This checks a real round trip from the browser to PostgreSQL. The reorganized checkout already contained the implementation.
+- **Validation:** VER-081 and VER-082. Both backend tests passed, covering a real query and HTTP 503 for an unreachable database. Verified direct and proxied HTTP responses, navigation and refresh in Chrome at 390 and 1440 px. Blocking the request produced the failure message and retry recovered.
+- **Limitations / remaining work:** The first browser probe raced API startup. Waiting for readiness resolved it. Chrome teardown later timed out after the browser assertions passed. TestClient emitted an httpx deprecation warning.
+- **Viva Q&A:** **When can the frontend report success?** After the API returns a successful response with the expected readiness status.
 
 ## 11. Template for Every Future Task or Step
 
