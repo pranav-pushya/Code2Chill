@@ -102,3 +102,34 @@ h2 { font-size: var(--section-size); letter-spacing: -.025em; line-height: 1; }
   .print { width: 90%; }
   .print img { width: 73%; }
 }
+
+.community { padding-top: var(--section-gap); }
+.community h2 { margin-bottom: var(--space-6); }
+.media-placeholder { margin-top: var(--space-6); }
+.media-frame {
+  --frame-line: #becbd8;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 2.7;
+  min-height: 7rem;
+  padding: var(--space-4);
+  border: 1px dashed #637385;
+  border-radius: var(--radius);
+  color: var(--ink);
+  background: repeating-linear-gradient(135deg, transparent 0 13px, var(--frame-line) 13px 14px), #eaf0f6;
+}
+.media-frame span {
+  padding: .35rem .75rem;
+  background: var(--paper);
+  font: 600 var(--small-size)/1.5 var(--body);
+  text-align: center;
+}
+.screen-slot .media-frame {
+  --frame-line: #263d55;
+  background-color: #14283c;
+  border-color: #8daac2;
+}
+.screen-slot .media-frame span { background: var(--night); color: var(--paper); }
+.media-placeholder figcaption { margin-top: var(--space-2); color: var(--muted); font-size: var(--small-size); }
+.on-ink .media-placeholder figcaption { color: var(--sky); }
+.community .media-frame { max-height: 16rem; }

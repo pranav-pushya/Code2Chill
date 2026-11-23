@@ -104,7 +104,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **3.4 Plan logo usage.** Use the [logo placement matrix](docs/VISUAL_IDENTITY.md#logo-placement) for surfaces, clear space, compact use and alternative text.
 - [x] **3.5 Prepare assets.** Use the [responsive brand exports and favicon](docs/VISUAL_IDENTITY.md#brand-exports). Both original PNGs are preserved.
 - [x] **3.6 Design representative pages.** Open the responsive [homepage](docs/design/index.html) and [event detail](docs/design/domination.html) designs.
-- [ ] **3.7 Incorporate authentic imagery.** Use confirmed event photographs and project screenshots.
+- [ ] **3.7 Incorporate authentic imagery.** [Labeled design placeholders](docs/VISUAL_IDENTITY.md#temporary-media-placements) are in both previews. Approved DOMination photography and a NEXUS screenshot with credits are still pending.
 
 ### Proposed Homepage Sequence
 

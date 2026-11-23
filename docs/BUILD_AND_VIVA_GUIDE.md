@@ -46,6 +46,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Phase 2 pages and journeys | Defined and verified | [Page plan](PAGES_AND_JOURNEYS.md) and [wireframes](WIREFRAMES.md) specify actions, states, and recovery paths |
 | Design reference analysis | Reviewed at two widths | Three rendered homepages, including the Noddal scene after loading. See [reference analysis](DESIGN_REFERENCE_ANALYSIS.md) |
 | Visual direction | Specified | [Campus event programme composition](VISUAL_IDENTITY.md) for Home and Event Detail |
+| Community and project media | Placeholder layouts verified, originals pending | [Replacement notes](VISUAL_IDENTITY.md#temporary-media-placements) identify the assets and the remaining work |
 | Brand assets | Exported and checked | Two preserved originals and five [browser-ready brand files](VISUAL_IDENTITY.md#brand-exports) |
 | Representative page designs | Verified static HTML | [Home](design/index.html) and [event detail](design/domination.html) work at phone and desktop widths |
 | Website prototype | Existing, source-reviewed | `extra.html`; no live-browser validation during initial review |
@@ -250,6 +251,8 @@ When replacing a decision, record the reason and affected implementation. Retain
 | VER-052 | Phase 3.5 pass 2 | Inspected a contact sheet showing both full variants, the compact icon and each embedded favicon frame at its intended pixel size. | Visual review at the tested sizes. |
 | VER-053 | Phase 3.6 pass 1 | Served both pages over loopback HTTP and tested them in Chrome at 1440 and 768 px. Checked fonts, images, layout width, skip-link focus and the full archive–detail–return path. | Static views of the two representative pages. |
 | VER-054 | Phase 3.6 pass 2 | Opened both HTML files directly at 320 and 390 px with reduced motion requested. Checked the menu, Escape focus, logo size, archived date and venue, loaded assets, and the same return path. Inspected captured desktop and phone layouts. | Chrome phone emulation, without physical-device or assistive-technology testing. |
+| VER-055 | Phase 3.7 pass 1 | Checked the two figures on each page at 1440 and 768 px over HTTP. Verified visible labels, media bounds, asset loading, keyboard focus and archive navigation. | Desktop and tablet design samples. |
+| VER-056 | Phase 3.7 pass 2 | Repeated the checks offline at 320 and 390 px, inspected desktop and phone captures, and independently resolved local assets, link fragments and the two distinct figure types with the HTML parser. | No documentary image, image crop or photographer credit can be verified yet. |
 
 Append actual checks, commands or procedures, results, and limitations. “Code reviewed” is not equivalent to “runtime tested.”
 
@@ -657,6 +660,19 @@ These entries summarize work visible in this conversation. The prototype and ear
 - **Validation:** VER-053 and VER-054. The initial sandbox preview was unreachable. A loopback-only server in the browser environment worked. The first render found a missing working copy of the committed PNG icon. Restored it byte for byte and repeated both browser passes. The width check uses the document client width to account for the desktop scrollbar.
 - **Limitations / remaining work:** Several production destinations use local section links in the design. The API, database, application router and live recruitment remain planned.
 - **Viva Q&A:** **How can you demonstrate the design today?** Open Home, follow Explore events, open DOMination and follow Back to events. Reduce the window width to see the menu and stacked event ticket.
+
+### TASK-029 — Add the approved temporary media placeholders
+
+- **Date:** 23 November 2026.
+- **Roadmap step:** Phase 3.7.
+- **Status:** Placeholder work verified. Authentic media pending from the club and project contributors.
+- **Objective:** Show how event and project media fit both design previews while the owner has no approved files to supply.
+- **Changes and files:** Updated the [homepage](design/index.html), [event detail](design/domination.html), [styles](design/pages.css), [asset inventory](CONTENT_REGISTER.md#asset-inventory) and [replacement notes](VISUAL_IDENTITY.md#temporary-media-placements).
+- **How it works:** Both pages render a labeled figure for a DOMination photo and another for a NEXUS screenshot. CSS draws the pattern. The subject is visible in the caption and the label explicitly calls it a placeholder.
+- **Why this approach:** The owner requested placeholders for now. A labeled layout reserves space without suggesting that a synthetic or unrelated image documents the event.
+- **Validation:** VER-055 and VER-056. Both passes found two labeled placements per page and no horizontal overflow. The navigation and archive return path still passed.
+- **Limitations / remaining work:** Step 3.7 stays open for an approved DOMination event photograph and NEXUS screenshot, with credits and permission. The owner confirmed these are currently unavailable.
+- **Viva Q&A:** **What would finish the media step?** Record permission and credit, replace the corresponding placeholders with the actual images in both views, supply informative alternative text, then verify the crops at phone and desktop widths.
 
 ## 11. Template for Every Future Task or Step
 

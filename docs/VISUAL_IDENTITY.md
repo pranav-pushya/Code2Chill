@@ -19,7 +19,7 @@ Open DOMination with its title, date, venue and **Event ended**. An oversized da
 
 Use the condensed face for major titles, a readable sans serif for sentences and navigation, and short monospaced dates where alignment helps scanning. Use a single column for descriptions and a generous gap between sections. Links in paragraphs have an underline. Keep event status in words. Preserve normal reading order and visible keyboard focus across widths.
 
-The brand panel and date block are illustrative graphics. Keep documentary photography and screenshots tied to a named event or project, its credit and reuse permission. When a photo is absent, collapse the gallery and retain the written event detail. Movement is optional and immediately responsive to reduced-motion preferences.
+The brand panel and date block are illustrative graphics. Keep documentary photography and screenshots tied to a named event or project, its credit and reuse permission. For the public release, collapse an empty gallery and retain the written event detail. During design review, show the owner-requested labeled placements described below. Movement is optional and immediately responsive to reduced-motion preferences.
 
 ### Design basis
 
@@ -71,3 +71,9 @@ Open [Home](design/index.html) or [DOMination event detail](design/domination.ht
 The wide layout pairs the introduction with a printed club panel and places the ticket beside the event name. Below 48 rem each becomes a vertical reading sequence. The compact navigation uses a native disclosure. Escape closes it and returns focus to Menu. The primary action, archived status and ticket information are available without scripting.
 
 The two preview files cover the representative designs. Their section links stand in for the dedicated About, Events, Projects, Team and Join routes specified in the [production page plan](PAGES_AND_JOURNEYS.md#public-sitemap). The static files contain sample views of verified club records. Database publishing, remaining routes and live state changes belong to later phases.
+
+### Temporary media placements
+
+The owner approved placeholders on 23 November 2026 while the original media is unavailable. Each preview shows a figure labeled “Event photo placeholder” for DOMination and another labeled “Project screenshot placeholder” for NEXUS. Visible captions identify the intended subject. The pattern is CSS, so reviewers can see the footprint without a network request or a misleading photograph.
+
+To replace a figure, record the actual file, subject, credit and permission against ASSET-03 or ASSET-04 in the [content register](CONTENT_REGISTER.md#asset-inventory). Replace the patterned panel in both previews with the approved image, set its intrinsic dimensions and descriptive alt text, then update the caption with the credit. Check the crop at desktop and phone widths before checking off Step 3.7.
