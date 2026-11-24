@@ -1534,6 +1534,14 @@ Comprehensive operational and administrative handover documentation is establish
 
 Validated across two verification passes: Pass 1 executed the complete backend test suite (33 passing tests) and frontend lint/build. Pass 2 confirmed the full Playwright suite (18 passing tests across mobile and desktop viewports), Ruff linting across 45 files, and verified internal documentation links. **Viva question.** How does account deactivation protect the club if an administrator leaves? Rather than deleting database accounts (which would break foreign key audit trails in `audit_record`), setting `active = false` immediately invalidates current and future session lookups on their very next HTTP request because `current_account` checks `AdminAccount.active.is_(True)`.
 
+### TASK-104 — Compile comprehensive technical explanation and defense viva guide
+
+24 November 2026 · Step 11.6 · Verified locally
+
+Authored [docs/TECHNICAL_EXPLANATION.md](TECHNICAL_EXPLANATION.md) and linked it from [README.md](../README.md). The reference breaks down the complete request lifecycle from Caddy TLS termination and security headers through ASGI middleware, Pydantic input validation, and PostgreSQL connection pooling. It explains the multi-layer defense-in-depth validation strategy (browser constraints, 32 KiB streaming byte limit, Pydantic contracts, and PostgreSQL check/foreign key constraints), cryptographic session security (Argon2id password hashing, SHA-256 session token digests, `HttpOnly`/`SameSite=Lax` cookies, and `X-Code2Chill-Admin: 1` custom CSRF defense), transactional database migrations, and disaster recovery. Key engineering tradeoffs are formally articulated: client-side SPA rendering with dynamic metadata vs SSR overhead, CSS hardware-accelerated compositor transitions vs CPU canvas ink simulations, PostgreSQL JSONB snapshot denormalization for zero-join public reads vs join latency, and university portal handoff vs in-house event booking. A 10-question viva defense Q&A equips presenters with concise, technically rigorous answers.
+
+Validated across two verification passes: Pass 1 ran all 33 backend tests against PostgreSQL and verified frontend lint and build. Pass 2 executed the 18 browser tests in Chrome at phone and desktop viewports, Ruff linting across 45 files, and validated internal Markdown links. **Viva question.** Why store SHA-256 digests of session tokens in the database rather than plaintext tokens? Storing session tokens in plaintext would allow anyone with read access to the database or an archive dump to impersonate active administrators; storing cryptographic SHA-256 digests ensures compromised database records cannot be converted into valid browser session cookies.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
