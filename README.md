@@ -78,6 +78,10 @@ Code2Chill/
 │   ├── PAGES_AND_JOURNEYS.md # 9 route specs, user flows, and error resilience
 │   ├── VISUAL_IDENTITY.md    # Design system, tokens, and logo placement matrix
 │   ├── WIREFRAMES.md         # Responsive desktop and mobile wireframes
+│   ├── HANDOVER.md           # Production deployment & operations manual
+│   ├── TECHNICAL_EXPLANATION.md # Architecture & viva defense guide
+│   ├── DEMONSTRATION.md      # Live demonstration script & interface walkthrough
+│   ├── OWNERSHIP.md          # Platform ownership, governance & maintenance charter
 │   ├── AGENTS.md             # Contributor instructions and documentation policy
 │   ├── planning/             # Historical planning specifications and blueprints
 │   └── design/               # Standalone HTML page previews & offline web assets
@@ -110,6 +114,7 @@ The project enforces continuous living documentation updated across all developm
 | **[Technical Architecture & Viva](docs/TECHNICAL_EXPLANATION.md)** | Architecture breakdown, request lifecycles, validation, auth, migrations, and viva Q&A. |
 | **[Demonstration & Walkthrough](docs/DEMONSTRATION.md)** | 8-step live walkthrough script, talking points, and polished interface screenshots. |
 | **[Handover & Operations](docs/HANDOVER.md)** | Production deployment, rollback procedures, admin onboarding, and operational checklists. |
+| **[Ownership & Governance](docs/OWNERSHIP.md)** | Governance charter, credential security, maintenance calendar, and escalation matrix. |
 | **[Local Development Guide](docs/DEVELOPMENT.md)** | Prerequisites, local PostgreSQL container, FastAPI startup, and Vite client execution. |
 | **[Content Register](docs/CONTENT_REGISTER.md)** | Verified club facts, leadership roster, past events, and media provenance. |
 | **[Launch Scope & Rules](docs/LAUNCH_SCOPE.md)** | MVP feature boundaries, university registration handoff, and recruitment rules. |

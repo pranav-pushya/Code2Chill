@@ -2,7 +2,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { chromium } from "@playwright/test";
 
-const outputDir = path.resolve(import.meta.dirname, "..", "docs", "screenshots");
+const outputDir = path.resolve(
+  import.meta.dirname,
+  "..",
+  "docs",
+  "screenshots",
+);
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }

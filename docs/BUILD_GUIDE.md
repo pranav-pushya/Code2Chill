@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 10 verified through step 10.8. Phase 11 launch preparation is next.
+**Current stage:** Phase 11 (Launch, Demonstrate, and Hand Over) fully completed and verified through step 11.8.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -60,9 +60,10 @@ Club records will be stored in a database and returned through the backend. Admi
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
 | Interaction and visual polish | Verified locally | The interface supports reduced motion. Step 10.7 records cold-load measurements and the reduction in public requests. |
 | Automated tests and CI | Verified locally and configured in CI | [GitHub Actions](../.github/workflows/ci.yml) runs PostgreSQL workflow and restore tests, browser accessibility and failure checks, lint, formatting and the frontend build. |
-| Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
+| Deployment | Production configuration and local staging verified | Production Compose stack, Caddy TLS reverse proxy, non-root execution, automated backups, and health probes verified. |
+| Platform Handover & Governance | Verified | [Handover Manual](HANDOVER.md), [Technical Reference](TECHNICAL_EXPLANATION.md), [Demonstration Guide](DEMONSTRATION.md), and [Ownership Charter](OWNERSHIP.md) completed. |
 
-**Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile design previews demonstrate the event discovery and return path. The local staging status page calls FastAPI and verifies a PostgreSQL query.”
+**Accurate current viva statement:** “I completed and verified the full 11-phase Code2Chill platform implementation, from content discovery and data modeling through responsive client interfaces, FastAPI backend with PostgreSQL, administrative publishing workflows, automated testing across Playwright and pytest, and production deployment configuration with operational monitoring, live demonstration guides, and ownership governance.”
 
 ## 4. Repository Map
 
@@ -1549,6 +1550,14 @@ Validated across two verification passes: Pass 1 ran all 33 backend tests agains
 Authored [docs/DEMONSTRATION.md](DEMONSTRATION.md) and automated high-resolution interface screenshot capture via [frontend/capture-screenshots.mjs](../frontend/capture-screenshots.mjs). The demonstration walkthrough outlines an 8-stage live presentation sequence aligned with the project roadmap: (1) Homepage presentation across desktop (1440 × 900) and phone (390 × 844) viewports showcasing typography, layout, and reduced-motion adaptation; (2) Staff authentication at `/admin` with Argon2id hashing and CSRF custom headers; (3) Event editorial flow illustrating draft isolation and atomic publication; (4) University portal handoff (`chitkarau.life`) and dynamic registration window handling; (5) Workflow persistence surviving container and backend restarts; (6) Student recruitment verification and anti-abuse byte limits; (7) Dynamic team and showcase project updates with degraded image fallbacks; and (8) Real-time operational diagnostics via `/status`. Eight polished 2x Retina screenshots were captured directly into [docs/screenshots/](screenshots/) and embedded into the guide.
 
 Validated across two verification passes: Pass 1 executed the screenshot automation script against the running application stack, verified all eight PNG outputs (ranging from 90 KB to 490 KB), ran the 33 backend pytest cases, and verified frontend lint and build. Pass 2 executed all 18 Playwright browser tests in Chrome, Ruff checks across 45 files, and validated all documentation and image paths. **Viva question.** How do you demonstrate that published event data is truly persistent and not held in volatile server memory? Publish an event draft through the administrative workspace, verify its appearance on the public `/events` schedule, stop and restart the FastAPI backend container (`docker compose restart api`), and refresh the public page; the event persists because the commit was written to PostgreSQL on the persistent Docker data volume.
+
+### TASK-106 — Establish platform ownership, operational maintenance calendar, and credential governance
+
+24 November 2026 · Step 11.8 · Verified locally
+
+Platform governance, credential transfer protocols, routine maintenance cycles, and incident escalation procedures are codified in [docs/OWNERSHIP.md](OWNERSHIP.md) and linked from [README.md](../README.md). The governance charter divides administrative authority across executive leadership (Presidency), technical operations, editorial content curation, and brand media. The secure credential transfer protocol defines sensitivity classifications and mandatory rotation cycles for SSH host keys, PostgreSQL passwords, recruitment SMTP credentials, and staff account hashes, enforcing encrypted-vault distribution and account deactivation rather than deletion. A structured maintenance calendar outlines weekly automated backup verification, monthly container and disk health audits, per-event publication workflows, per-semester dependency refreshes, and an emergency escalation hierarchy detailing severity-tiered responses (Severity 1 outages, Severity 2 defacement, Severity 3 credential compromise).
+
+Validated across two verification passes: Pass 1 ran all 33 backend pytest cases against PostgreSQL, verified Biome linting across 32 files, and confirmed a clean Vite production build. Pass 2 executed all 18 Playwright browser tests across phone and desktop viewports, Ruff linting across 45 files, and Biome format validation. **Viva question.** Why should staff accounts of departing leads be marked inactive rather than deleted from the database? Deleting an administrator account record deletes or nulls corresponding foreign key references in the `audit_record` table, destroying the forensic audit trail; setting `active = false` prevents any future login attempts while preserving full immutable historical attribution for all content edits and published changes.
 
 ## 11. Template for Every Future Step
 
