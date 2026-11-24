@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 10 verified through step 10.6. The next step is 10.7.
+**Current stage:** Phase 10 verified through step 10.7. The next step is 10.8.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -58,7 +58,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
 | Recruitment | Intake and decisions verified locally | Local applicants verify their email and receive a reference. Authorized staff can filter submissions, record decisions and read their history. Exports are pending. [Review API](../backend/app/admin_recruitment.py) |
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
-| Interaction and visual polish | Step 9.1 verified | Restrained CSS transitions on actions, links, inputs, lists, page-entry fade/rise, and action feedback with reduced-motion support. |
+| Interaction and visual polish | Verified locally | The interface supports reduced motion. Step 10.7 records cold-load measurements and the reduction in public requests. |
 | Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
 | Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
 
@@ -1454,6 +1454,16 @@ All six Playwright cases passed in Chrome with synthetic API responses. Both wid
 The [browser tests](../frontend/tests/degraded-pages.spec.js) hold an event request open, return a service error, retry to an empty list and follow its recovery link. A separate test gives a published project an image that returns 404. The [shared image component](../frontend/src/Gallery.jsx) now displays “Image unavailable” with the original description and credit. The rest of the project stays usable.
 
 All four scenarios passed across phone and desktop widths using controlled network responses. **Viva question.** Why distinguish an empty list from an outage? An empty list is a valid response with a next destination. A service error gives the visitor a retry action.
+
+### TASK-097 — Reduce public page requests and startup JavaScript
+
+24 November 2026 · Step 10.7 · Verified locally
+
+Network measurements found that loading any route immediately requested four collections, including collections the current page already requested. The [public data component](../frontend/src/PublicData.jsx) now fetches on demand and revalidates on navigation. The [staff routes](../frontend/src/StaffRoutes.jsx) load only when a visitor opens the staff area. A failed staff bundle offers a reload. The [route-loading test](../frontend/tests/route-loading.spec.js) verifies the public request count and staff retry path.
+
+Three cold Chrome loads per route and build used a 390 × 844 viewport, 4× CPU slowdown, 100 ms latency, 200 kB/s download, gzip and local fixture responses. Home went from 9 API requests to 5 and About from 6 to 2. Initial JS transfer fell from 96,247 to 89,346 bytes. Median largest contentful paint went from 2.29 s to 1.85 s on Home and from 2.05 s to 1.72 s on About. One timed-out baseline run was discarded and the complete baseline repeated. These are desktop emulation measurements with empty lists. Real-device timings and large rosters remain unmeasured.
+
+The production build, lint, format check and all 12 browser cases passed. **Viva question.** What moves off the public page’s critical path? The staff code and requests for collections the visitor has not opened.
 
 ## 11. Template for Every Future Task or Step
 

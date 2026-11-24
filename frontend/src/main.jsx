@@ -1,14 +1,10 @@
+import { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import favicon from "../../docs/design/brand/favicon.ico";
-import { AdminArea, SignIn } from "./Admin.jsx";
-import { EventWorkspace } from "./EventWorkspace.jsx";
 import { About, Contact } from "./ClubPages.jsx";
 import { Join } from "./Recruitment.jsx";
-import { ReviewDashboard } from "./ReviewDashboard.jsx";
-import { ContentEditor } from "./ContentEditor.jsx";
 import { SiteLinksProvider } from "./SiteLinks.jsx";
-import { ContentPreview } from "./ContentPreview.jsx";
 import { EventDetail, Events } from "./Events.jsx";
 import Home from "./Home.jsx";
 import { ProjectDetail, Projects } from "./Projects.jsx";
@@ -16,6 +12,25 @@ import { Missing, SiteLayout } from "./SiteLayout.jsx";
 import Status from "./Status.jsx";
 import { Team } from "./Team.jsx";
 import "./styles.css";
+
+function StaffLoadError() {
+  return (
+    <div className="wrap public-page">
+      <h1>Couldn’t load the staff workspace</h1>
+      <button
+        className="action"
+        type="button"
+        onClick={() => window.location.reload()}
+      >
+        Reload page
+      </button>
+    </div>
+  );
+}
+
+const StaffRoutes = lazy(() =>
+  import("./StaffRoutes.jsx").catch(() => ({ default: StaffLoadError })),
+);
 
 function App() {
   return (
@@ -39,46 +54,19 @@ function App() {
           <Route path="join" element={<Join key="join" />} />
           <Route path="join/apply" element={<Join key="apply" apply />} />
           <Route path="status" element={<Status />} />
-          <Route path="admin/sign-in" element={<SignIn />} />
           <Route
-            path="admin/content/events/new"
-            element={<EventWorkspace create />}
-          />
-          <Route path="admin/content/events/:id" element={<EventWorkspace />} />
-          <Route
-            path="admin/content/events/:id/preview"
-            element={<EventWorkspace preview />}
-          />
-          <Route path="admin" element={<AdminArea key="dashboard" />} />
-          <Route
-            path="admin/content/:kind/:id/preview"
-            element={<ContentPreview />}
-          />
-          <Route
-            path="admin/settings/preview"
-            element={<ContentPreview settings />}
-          />
-          <Route path="admin/content/:kind/:id?" element={<ContentEditor />} />
-          <Route
-            path="admin/media/:id?"
-            element={<ContentEditor section="media" />}
-          />
-          <Route
-            path="admin/settings"
-            element={<ContentEditor section="settings" />}
-          />
-          <Route path="admin/recruitment" element={<ReviewDashboard />} />
-          <Route
-            path="admin/recruitment/:cycleId/applications"
-            element={<ReviewDashboard />}
-          />
-          <Route
-            path="admin/recruitment/:cycleId/applications/:applicationId"
-            element={<ReviewDashboard />}
-          />
-          <Route
-            path="admin/content/events"
-            element={<AdminArea key="events" events />}
+            path="admin/*"
+            element={
+              <Suspense
+                fallback={
+                  <p className="wrap" role="status">
+                    Opening staff workspace…
+                  </p>
+                }
+              >
+                <StaffRoutes />
+              </Suspense>
+            }
           />
           <Route path="*" element={<Missing />} />
         </Route>

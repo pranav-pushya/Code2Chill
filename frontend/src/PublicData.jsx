@@ -3,26 +3,6 @@ import { Page } from "./SiteLayout.jsx";
 
 const cache = new Map();
 
-export function prefetchPublicData(
-  paths = ["events", "projects", "team", "recruitment"],
-) {
-  for (const path of paths) {
-    if (cache.has(path)) continue;
-    fetch(`/api/${path}`, { cache: "no-store" })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data) cache.set(path, data);
-      })
-      .catch(() => {});
-  }
-}
-
-export function clearPublicDataCache() {
-  cache.clear();
-}
-
-prefetchPublicData();
-
 export function PublicData(props) {
   return <Request key={props.path} {...props} />;
 }
@@ -48,13 +28,18 @@ function Request({ path, name, missing, fallbackTitle, children }) {
           ]),
         });
         if (response.status === 404 && hasMissingPage) {
-          if (!controller.signal.aborted) setResult({ missing: true });
+          if (!controller.signal.aborted) {
+            cache.delete(path);
+            setResult({ missing: true });
+          }
           return;
         }
         if (!response.ok) throw new Error();
         const data = await response.json();
-        cache.set(path, data);
-        if (!controller.signal.aborted) setResult({ data });
+        if (!controller.signal.aborted) {
+          cache.set(path, data);
+          setResult({ data });
+        }
       } catch {
         if (!controller.signal.aborted) setResult({ error: true });
       }
