@@ -1510,6 +1510,14 @@ Production data preparation is enforced through [backend/app/seed.py](../backend
 
 Validated across two verification passes: Pass 1 executed migration upgrade to head on an isolated test schema followed by clean seed, verifying exact record counts (10 members, 2 events, 2 projects, 0 demo events, 0 applications), published snapshot structures, idempotency on subsequent runs, and passing all 27 backend tests plus frontend lint and build. Pass 2 executed isolated data bootstrap assertions, Ruff linting across 42 files, and migration continuity. **Viva question.** How do you guarantee no demo records or test applicant data contaminate production? Production deployment runs `seed.py` without `--include-demo`, which restricts insertions to verified roster, event, project, and link tuples, while recruitment tables remain empty until an authorized club administrator opens an active cycle.
 
+### TASK-101 — Configure operational logging, health probes, and automated backups
+
+24 November 2026 · Step 11.3 · Verified locally
+
+Operational monitoring and data resilience tooling are established across [backend/app/main.py](../backend/app/main.py), [backend/scripts/backup.py](../backend/scripts/backup.py), [backend/scripts/health_monitor.py](../backend/scripts/health_monitor.py), and [backend/tests/test_operations.py](../backend/tests/test_operations.py). Structured request monitoring records duration in milliseconds, paths, and status codes while suppressing unhandled 500 error leaks. The `/api/health/ops` endpoint reports real-time database connectivity and query latency alongside the classic `/api/health` probe. The backup utility generates custom-format (`-Fc`) compressed PostgreSQL dumps, creates SHA-256 checksum manifests, provides integrity verification (`--verify`), and enforces automated retention pruning based on `BACKUP_RETENTION_DAYS`. The CLI health probe validates HTTP responses and database health, exiting with standard POSIX exit codes for automation.
+
+Validated across two verification passes: Pass 1 ran the full backend test suite with 33 passing tests, Biome lint, and the Vite production build. Pass 2 executed CLI health monitor probes against local services, backup listing and verification, isolated operations unit tests, and Ruff linting across 45 files. **Viva question.** Why store SHA-256 checksums alongside database backups? Checksums guarantee bit-level integrity, detecting storage corruption or truncated file transfers before an administrator attempts a restore during an incident.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.

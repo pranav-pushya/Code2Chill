@@ -1,3 +1,5 @@
+import logging
+import time
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Request
@@ -69,6 +71,48 @@ async def protect_admin_requests(request: Request, call_next):
     return response
 
 
+logger = logging.getLogger("code2chill.ops")
+
+
+@app.middleware("http")
+async def monitor_requests(request: Request, call_next):
+    start = time.perf_counter()
+    try:
+        response = await call_next(request)
+        duration_ms = round((time.perf_counter() - start) * 1000, 2)
+        if response.status_code >= 500:
+            logger.error(
+                "request_error method=%s path=%s status=%d duration_ms=%.2f",
+                request.method,
+                request.url.path,
+                response.status_code,
+                duration_ms,
+            )
+        elif request.url.path.startswith("/api/"):
+            logger.info(
+                "request_complete method=%s path=%s status=%d duration_ms=%.2f",
+                request.method,
+                request.url.path,
+                response.status_code,
+                duration_ms,
+            )
+        return response
+    except Exception as exc:
+        duration_ms = round((time.perf_counter() - start) * 1000, 2)
+        logger.exception(
+            "unhandled_server_error method=%s path=%s duration_ms=%.2f error=%s",
+            request.method,
+            request.url.path,
+            duration_ms,
+            type(exc).__name__,
+        )
+        return JSONResponse(
+            {"detail": "Internal server error. Please try again later."},
+            status_code=500,
+            headers={"Cache-Control": "no-store"},
+        )
+
+
 @app.exception_handler(RequestValidationError)
 async def validation_error(request: Request, exc: RequestValidationError):
     if request.url.path.startswith("/api/recruitment/"):
@@ -101,3 +145,27 @@ def health(request: Request) -> dict[str, str]:
     except SQLAlchemyError:
         raise HTTPException(status_code=503, detail="Database unavailable") from None
     return {"status": "ok"}
+
+
+@app.get("/api/health/ops")
+def health_ops(request: Request) -> dict[str, object]:
+    start = time.perf_counter()
+    try:
+        with request.app.state.database.connect() as connection:
+            connection.execute(text("SELECT 1"))
+        latency_ms = round((time.perf_counter() - start) * 1000, 2)
+        db_status = "healthy"
+    except SQLAlchemyError:
+        latency_ms = round((time.perf_counter() - start) * 1000, 2)
+        raise HTTPException(
+            status_code=503,
+            detail={"status": "degraded", "database": "unavailable", "latency_ms": latency_ms},
+        ) from None
+    return {
+        "status": "healthy",
+        "services": {
+            "api": "ok",
+            "database": db_status,
+        },
+        "database_latency_ms": latency_ms,
+    }
