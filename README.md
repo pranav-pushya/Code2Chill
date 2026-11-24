@@ -19,6 +19,16 @@
   <img src="https://img.shields.io/badge/Vite-8.0-646CFF?style=flat&logo=vite&logoColor=white" alt="Vite" />
 </p>
 
+<p align="center">
+  <a href="https://code-2-chill.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_LAUNCH_LIVE_SITE-000000?style=for-the-badge&logo=vercel&logoColor=white" height="36" alt="Live Website" />
+  </a>
+  &nbsp;
+  <a href="https://code2chill.onrender.com/api/docs" target="_blank">
+    <img src="https://img.shields.io/badge/⚡_SWAGGER_API_DOCS-009688?style=for-the-badge&logo=fastapi&logoColor=white" height="36" alt="Swagger API Docs" />
+  </a>
+</p>
+
 ---
 
 ## 🎧 Overview

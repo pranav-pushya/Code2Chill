@@ -1769,6 +1769,24 @@ Fresh Chrome loads on both ports displayed the homepage heading, navigation and 
   *Why is a Vercel rewrite proxy superior to configuring CORS and hardcoding the backend URL in client bundles?*
   Hardcoding backend URLs tightly couples client builds to specific hostnames, exposes internal origins, and triggers cross-origin CORS preflight latency (`OPTIONS` requests) on every interaction. A reverse proxy preserves relative URLs (`/api/...`), enabling first-party cookie transmission (`SameSite=Lax`), preventing third-party cookie blocking, and allowing the backend host to change without rebuilding or redeploying client assets.
 
+### TASK-116 — Add high-impact live deployment buttons to README
+
+24 November 2026 · Documentation & Repository Presentation · Verified locally
+
+- **Date:** 24 November 2026.
+- **Roadmap step:** Production Documentation & Public Portfolio Showcase.
+- **Status:** Implemented and verified.
+- **Objective:** Surface high-impact, clickable live deployment buttons for the production client portal and interactive Swagger API documentation directly at the top of the repository README.
+- **Changes and files:**
+  - [README.md](../README.md): Added high-contrast badges for "Launch Live Site" (`code-2-chill.vercel.app`) and "Swagger API Docs" (`code2chill.onrender.com/api/docs`).
+- **How it works:**
+  Placed prominently beneath the technology stack badges, the buttons provide instantaneous 1-click access for evaluators, club members, and contributors to view the live client application on Vercel and interactively query FastAPI endpoints through the Swagger interface.
+- **Validation:**
+  - **Pass 1:** Verified markdown rendering, badge URLs, and target destinations using curl against both live HTTPS endpoints (both returning HTTP 200).
+- **Viva Q&A:**
+  *Why is it standard engineering practice to link interactive API documentation in project documentation?*
+  Live OpenAPI/Swagger documentation allows technical reviewers, consumers, and auditors to inspect schema models, request/response validation constraints, error codes, and endpoint payloads interactively without setting up a local runtime environment.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
