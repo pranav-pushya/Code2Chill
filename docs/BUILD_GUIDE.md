@@ -1729,6 +1729,27 @@ Fresh Chrome loads on both ports displayed the homepage heading, navigation and 
   *Why did the portrait "(O)n Fire" poster previously cause its gallery card to appear taller than the empty placeholders?*
   By CSS Grid specification, grid items have an automatic minimum size of `min-height: auto`. When in-flow content such as an `<img>` with an intrinsic portrait aspect ratio (506x672) is placed inside a grid container without an explicit height, the browser expands the row to accommodate the content's min-content height, overriding the preferred `aspect-ratio: 2.7`. By applying `position: relative` to `.media-frame.media-frame-photo` and `position: absolute; inset: 0` to `.media-frame-link`, the image is taken out of normal flow, guaranteeing that the container height is strictly dictated by `aspect-ratio: 2.7` matching every placeholder card.
 
+### TASK-114 — Adapt database engine for cloud PostgreSQL URLs and deploy live Neon database
+
+24 November 2026 · Deployment & Cloud Infrastructure · Verified locally
+
+- **Date:** 24 November 2026.
+- **Roadmap step:** Production Cloud Deployment & Database Infrastructure.
+- **Status:** Verified live.
+- **Objective:** Enable automatic compatibility with cloud-managed PostgreSQL connection strings (e.g. Neon serverless Postgres) and execute initial schema migration and data seeding against the live cloud database cluster.
+- **Changes and files:**
+  - [backend/app/database.py](../backend/app/database.py): Updated `database_engine()` to inspect `DATABASE_URL` and automatically replace `postgres://` and `postgresql://` prefixes with `postgresql+psycopg://`. This resolves SQLAlchemy's default fallback to `psycopg2` when connecting to modern cloud services providing standard URI schemes.
+  - [backend/app/seed.py](../backend/app/seed.py): Formatted scalar select queries with Ruff to maintain strict zero-warning CI formatting standards.
+  - [.gitignore](../.gitignore): Added `.neon` configuration directory to prevent local CLI state and credentials from committing.
+- **How it works:**
+  When `DATABASE_URL` is supplied in the cloud runtime environment (or local environment), `database_engine()` normalizes the URL scheme before invoking `create_engine()`. This allows standard connection strings copied directly from cloud consoles to work out of the box with the installed `psycopg` v3 driver.
+- **Validation:**
+  - **Pass 1:** Verified connection against the live Neon PostgreSQL cluster (`SELECT 1` succeeded in 1.4s). Ran `alembic upgrade head` to generate all application schemas and indexes, followed by `python -m app.seed` (successfully inserted 11 members, 3 events, 2 projects).
+  - **Pass 2:** Executed backend Ruff check and format check across all 45 files (0 errors, 0 warnings). Ran frontend Biome format, lint, and Vite production client build (passed in 2.72s).
+- **Viva Q&A:**
+  *Why does SQLAlchemy require `postgresql+psycopg://` instead of the standard `postgresql://` URI provided by cloud hosts?*
+  In SQLAlchemy, the URL scheme specifies both the database dialect and the driver (`dialect+driver://`). The plain `postgresql://` scheme historically defaults to the legacy `psycopg2` C-extension driver. Because modern Python 3.13/3.14 deployments use `psycopg` (v3), specifying or automatically mapping to `postgresql+psycopg://` instructs SQLAlchemy to load the v3 driver, preventing runtime `NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgresql.psycopg2` exceptions.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.

@@ -13,6 +13,11 @@ ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
 def database_engine() -> Engine:
     settings = {**dotenv_values(ENV_FILE), **os.environ}
     url = settings.get("DATABASE_URL")
+    if url:
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql+psycopg://", 1)
+        elif url.startswith("postgresql://") and not url.startswith("postgresql+psycopg://"):
+            url = url.replace("postgresql://", "postgresql+psycopg://", 1)
     if not url:
         password = settings.get("POSTGRES_PASSWORD")
         if not password:

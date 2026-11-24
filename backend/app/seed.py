@@ -125,9 +125,7 @@ def seed_content(session: Session, *, include_demo: bool = False) -> dict[str, i
             created["members"] += 1
 
     for storage_key, asset_url, alt_text, credit in EVENT_POSTERS:
-        poster = session.scalar(
-            select(MediaAsset).where(MediaAsset.storage_key == storage_key)
-        )
+        poster = session.scalar(select(MediaAsset).where(MediaAsset.storage_key == storage_key))
         if poster is None:
             poster = MediaAsset(
                 storage_key=storage_key,

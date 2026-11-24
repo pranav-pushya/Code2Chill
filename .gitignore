@@ -16,3 +16,5 @@ test-results/
 GEMINI.md
 Expriments/
 experiments/
+.neon
+neon.ts
