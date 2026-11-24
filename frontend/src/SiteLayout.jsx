@@ -187,12 +187,6 @@ export function SiteLayout() {
                 <span className="foot-sep" aria-hidden="true">
                   ·
                 </span>
-                <Link to="/status" className="foot-meta-link">
-                  Service Status
-                </Link>
-                <span className="foot-sep" aria-hidden="true">
-                  ·
-                </span>
                 <Link to="/admin" className="foot-meta-link">
                   Staff Sign-In
                 </Link>
