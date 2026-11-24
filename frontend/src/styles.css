@@ -1037,8 +1037,179 @@ span[role="status"]:empty {
 
 @media (prefers-reduced-motion: reduce) {
   .foot-link:hover,
-  .foot-social-link:hover .foot-arrow {
+  .foot-social-link:hover .foot-arrow,
+  .not-found-pill:hover {
     transform: none;
+  }
+}
+
+/* 404 Void Event Pass */
+.not-found-page {
+  padding-block: clamp(2rem, 5vw, 4.5rem);
+  max-width: 58rem;
+}
+.not-found-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+.not-found-stamp {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  font: 700 0.75rem / 1.2 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c43235;
+  background: color-mix(in srgb, #c43235 8%, var(--sheet));
+  border: 1.5px solid #c43235;
+  border-radius: var(--radius);
+  transform: rotate(-2deg);
+}
+.not-found-hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-block: var(--space-4) var(--space-8);
+}
+.not-found-digit {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(4.5rem, 12vw, 8.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  text-shadow: 0.4rem 0.4rem 0 var(--blue);
+}
+.not-found-digit span {
+  color: var(--blue);
+  text-shadow: 0.4rem 0.4rem 0 var(--ink);
+}
+.not-found-lead {
+  font-family: var(--display);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+}
+.not-found-desc {
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  line-height: 1.55;
+  max-width: 48ch;
+}
+.void-ticket {
+  position: relative;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  margin-block: var(--space-6) var(--space-8);
+  box-shadow: 0.35rem 0.45rem 0 rgba(16, 29, 50, 0.06);
+}
+.void-ticket::before,
+.void-ticket::after {
+  content: "";
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--paper);
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1px solid var(--rule);
+}
+.void-ticket::before {
+  left: -0.65rem;
+}
+.void-ticket::after {
+  right: -0.65rem;
+}
+.void-ticket-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px dashed var(--rule);
+  font: 700 0.8rem / 1.4 var(--mono);
+}
+.void-ticket-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ink);
+}
+.void-ticket-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--blue);
+}
+.void-ticket-origin {
+  color: var(--blue);
+  letter-spacing: 0.05em;
+}
+.void-ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  font: 0.85rem / 1.4 var(--mono);
+}
+.void-ticket-item span {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+.void-ticket-item strong {
+  color: var(--ink);
+  word-break: break-all;
+}
+.void-ticket-item .error-code {
+  color: #c43235;
+}
+.not-found-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule);
+}
+.not-found-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  padding-inline: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--sheet);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+.not-found-pill:hover {
+  background-color: color-mix(in srgb, var(--blue) 8%, var(--sheet));
+  border-color: var(--blue);
+  color: var(--blue);
+}
+@media (max-width: 42rem) {
+  .not-found-hero {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 }
 

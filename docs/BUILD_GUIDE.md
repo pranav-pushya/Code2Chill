@@ -1787,6 +1787,28 @@ Fresh Chrome loads on both ports displayed the homepage heading, navigation and 
   *Why is it standard engineering practice to link interactive API documentation in project documentation?*
   Live OpenAPI/Swagger documentation allows technical reviewers, consumers, and auditors to inspect schema models, request/response validation constraints, error codes, and endpoint payloads interactively without setting up a local runtime environment.
 
+### TASK-117 — Implement custom 404 Void Event Pass page
+
+24 November 2026 · UI & Error Handling · Verified locally
+
+- **Date:** 24 November 2026.
+- **Roadmap step:** Phase 1 / Custom Error Handling & Visual Identity.
+- **Status:** Implemented and verified.
+- **Objective:** Design and implement a bespoke, branded 404 ("Not Found") page tailored to the Code2Chill editorial zine and campus event programme aesthetic ("Where Serious Code Meets Chill Vibes").
+- **Changes and files:**
+  - [frontend/src/SiteLayout.jsx](../frontend/src/SiteLayout.jsx): Upgraded `Missing` component to display a custom editorial 404 hero section with a monospace kicker, stamped status (`VOID PASS`), giant condensed `404` typography with blue offset shadows, an interactive physical ticket stub with perforated cutouts, dynamic route telemetry (`location.pathname`), and an action deck linking back to home, events, projects, and the team.
+  - [frontend/src/styles.css](../frontend/src/styles.css): Added `.not-found-page`, `.not-found-header`, `.not-found-stamp`, `.not-found-hero`, `.not-found-digit`, `.void-ticket` (with circular punch-hole pseudo-elements `::before` / `::after`), `.void-ticket-grid`, and `.not-found-pill` styles respecting reduced motion preferences.
+- **How it works:**
+  When a visitor navigates to an unmatched client-side route (`<Route path="*" element={<Missing />} />`) or when `PublicData` encounters an HTTP 404 for an event or project slug, `Missing` mounts inside `SiteLayout`. It dynamically derives the queried path via `useLocation()`, displays the physical voided ticket with telemetry audit metadata, and gives users direct 1-click navigation pathways back to active content.
+- **Why this approach:**
+  Replaces a bare-bones default fallback with a branded physical ticket artifact that reinforces the club's visual identity. It guides users without dead ends, maintains full semantic accessibility (`<section aria-label="...">`, decorative `aria-hidden` tags), and adheres to the design tokens without adding runtime JavaScript animation dependencies.
+- **Validation:**
+  - **Pass 1:** Verified Biome formatting across 32 files (0 errors) and Biome linter across 33 files (0 errors, 0 warnings).
+  - **Pass 2:** Built production client distribution bundle with Vite (`dist/index.html` built cleanly in 4.13s with zero bundle errors).
+- **Viva Q&A:**
+  *Why should custom 404 pages provide multiple contextual links rather than just a single "Go home" button?*
+  Providing high-intent secondary pathways (e.g. "Browse Events", "Student Projects", "Meet the Team") significantly reduces user bounce rates when landing on dead or broken links. It immediately directs visitors into active discovery funnels while contextual telemetry reassures them of the application's underlying reliability.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.

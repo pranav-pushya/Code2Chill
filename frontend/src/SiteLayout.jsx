@@ -227,12 +227,89 @@ export function Page({ title, children }) {
   );
 }
 
-export function Missing({ item = "Page", to = "/", action = "Go home" }) {
+export function Missing({
+  item = "Page",
+  to = "/",
+  action = "Return to homepage",
+}) {
+  const location = useLocation();
+  const isPage = item.toLowerCase() === "page";
+  const pathDisplay = location?.pathname || `/${item.toLowerCase()}`;
+
   return (
-    <Page title={`${item} not found`}>
-      <Link className="action" to={to}>
-        {action}
-      </Link>
-    </Page>
+    <section className="wrap public-page not-found-page">
+      <PageMetadata
+        title={`${item} Not Found`}
+        description={`The requested ${item.toLowerCase()} could not be found on Code2Chill.`}
+      />
+
+      <div className="not-found-header">
+        <p className="kicker">
+          <span>
+            HTTP_STATUS: 404 {"//"} {item.toUpperCase()}_UNRESOLVED
+          </span>
+        </p>
+        <span className="not-found-stamp">VOID PASS</span>
+      </div>
+
+      <div className="not-found-hero">
+        <div className="not-found-digit" aria-hidden="true">
+          4<span>0</span>4
+        </div>
+        <div>
+          <h1 className="not-found-lead">
+            {isPage
+              ? "Lost beyond the scheduled programme."
+              : `${item} out of bounds.`}
+          </h1>
+          <p className="not-found-desc">
+            {isPage
+              ? "You've wandered off the scheduled programme. The page, project, or event you requested was either deprecated, moved to another branch, or is currently chilling out of bounds."
+              : `The ${item.toLowerCase()} you requested could not be located in the current edition. It may have concluded, changed URL, or hasn't been published yet.`}
+          </p>
+        </div>
+      </div>
+
+      <section className="void-ticket" aria-label="Ticket Inspection Details">
+        <div className="void-ticket-head">
+          <span className="void-ticket-badge">
+            <span className="void-ticket-dot" aria-hidden="true" />
+            TICKET_INSPECTOR: ROUTE_AUDIT
+          </span>
+          <span className="void-ticket-origin">CODE2CHILL_PROGRAMME</span>
+        </div>
+        <div className="void-ticket-grid">
+          <div className="void-ticket-item">
+            <span>Queried Target</span>
+            <strong>{pathDisplay}</strong>
+          </div>
+          <div className="void-ticket-item">
+            <span>Error Status</span>
+            <strong className="error-code">404 NOT_FOUND</strong>
+          </div>
+          <div className="void-ticket-item">
+            <span>Suggested Action</span>
+            <strong style={{ color: "var(--blue)" }}>
+              {action.toUpperCase()}
+            </strong>
+          </div>
+        </div>
+      </section>
+
+      <div className="not-found-actions">
+        <Link className="action" to={to}>
+          {action} →
+        </Link>
+        <Link className="not-found-pill" to="/events">
+          Browse Events
+        </Link>
+        <Link className="not-found-pill" to="/projects">
+          Student Projects
+        </Link>
+        <Link className="not-found-pill" to="/team">
+          Meet the Team
+        </Link>
+      </div>
+    </section>
   );
 }
