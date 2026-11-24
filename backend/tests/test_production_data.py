@@ -34,15 +34,15 @@ def test_production_migration_and_clean_data_bootstrap():
                     # 2. Seed production data (clean, no demo records)
                     created = seed_content(session, include_demo=False)
                     assert created == {
-                        "members": 10,
-                        "events": 2,
+                        "members": 11,
+                        "events": 3,
                         "projects": 2,
                         "demo_events": 0,
                     }
 
-                    # 3. Verify exactly 10 official members
+                    # 3. Verify exactly 11 official members
                     members = session.scalars(select(Member).order_by(Member.display_order)).all()
-                    assert len(members) == 10
+                    assert len(members) == 11
                     assert [m.name for m in members] == [item[1] for item in ROSTER]
                     assert members[0].name == "Lakshay Kalra"
                     assert members[0].role_title == "President"
@@ -53,9 +53,9 @@ def test_production_migration_and_clean_data_bootstrap():
                         assert m.public_snapshot is not None
                         assert m.public_snapshot["name"] == m.name
 
-                    # 4. Verify exactly 2 archived events with verified venues
+                    # 4. Verify exactly 3 archived events with verified venues
                     events = session.scalars(select(Event).order_by(Event.event_date)).all()
-                    assert len(events) == 2
+                    assert len(events) == 3
                     assert events[0].slug == "byte-the-vibe"
                     assert events[0].event_date == date(2026, 5, 18)
                     assert events[0].registration_status == RegistrationStatus.ENDED
@@ -64,6 +64,14 @@ def test_production_migration_and_clean_data_bootstrap():
                     assert events[1].slug == "domination-the-frontend-challenge"
                     assert events[1].event_date == date(2026, 7, 18)
                     assert events[1].registration_status == RegistrationStatus.ENDED
+                    assert events[1].venue == "Pierre Hall, Architecture Block"
+
+                    assert events[2].slug == "on-fire"
+                    assert events[2].event_date == date(2026, 9, 23)
+                    assert events[2].registration_status == RegistrationStatus.ENDED
+                    assert events[2].venue == "Einstein Hall"
+                    assert events[2].poster is not None
+                    assert events[2].poster.asset_url == "/media/on-fire-poster.jpg"
 
                     # 5. Verify NO demo records exist in production seed
                     demo_count = session.scalar(

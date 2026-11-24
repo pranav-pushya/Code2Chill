@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router";
-import { EventGallery } from "./Gallery.jsx";
+import { EventGallery, PublishedImage } from "./Gallery.jsx";
 import { PublicData } from "./PublicData.jsx";
 import { ExternalLink, Missing, Page } from "./SiteLayout.jsx";
 
@@ -21,6 +21,48 @@ const campusTime = new Intl.DateTimeFormat("en-IN", {
   timeZone: "Asia/Kolkata",
 });
 
+const CATEGORIES = [
+  { id: "all", label: "All events" },
+  { id: "competition", label: "Coding Competitions" },
+  { id: "hackathon", label: "Hackathons & Sprints" },
+  { id: "challenge", label: "Frontend Challenges" },
+  { id: "workshop", label: "Workshops" },
+];
+
+function classifyEvent(event) {
+  const text = `${event.title} ${event.summary ?? ""}`.toLowerCase();
+  if (
+    text.includes("leetcode") ||
+    text.includes("competition") ||
+    text.includes("competitive") ||
+    text.includes("on fire")
+  ) {
+    return "competition";
+  }
+  if (
+    text.includes("hackathon") ||
+    text.includes("sprint") ||
+    text.includes("byte the vibe")
+  ) {
+    return "hackathon";
+  }
+  if (
+    text.includes("challenge") ||
+    text.includes("domination") ||
+    text.includes("frontend")
+  ) {
+    return "challenge";
+  }
+  if (
+    text.includes("workshop") ||
+    text.includes("bootcamp") ||
+    text.includes("duel")
+  ) {
+    return "workshop";
+  }
+  return "general";
+}
+
 function EventDate({ date, ticket = false }) {
   return (
     <time className={ticket ? undefined : "date-stamp"} dateTime={date}>
@@ -39,7 +81,12 @@ export function EventRow({ event }) {
       <span className="event-name">{event.title}</span>
       <span className="event-place">
         {event.venue}
-        <span className="meta">{states[event.registration_status]}</span>
+        <span
+          className={`event-badge event-badge-${event.registration_status}`}
+        >
+          <span className="status-dot" aria-hidden="true" />
+          {states[event.registration_status]}
+        </span>
       </span>
     </Link>
   );
@@ -47,9 +94,12 @@ export function EventRow({ event }) {
 
 function Schedule({ upcoming, past }) {
   const { hash } = useLocation();
+  const [filter, setFilter] = useState("all");
+
   useEffect(() => {
     if (hash) document.getElementById(hash.slice(1))?.scrollIntoView();
   }, [hash]);
+
   if (!upcoming.length && !past.length)
     return (
       <>
@@ -59,6 +109,20 @@ function Schedule({ upcoming, past }) {
         </Link>
       </>
     );
+
+  const allEvents = [...upcoming, ...past];
+  const filteredUpcoming = upcoming.filter(
+    (ev) => filter === "all" || classifyEvent(ev) === filter,
+  );
+  const filteredPast = past.filter(
+    (ev) => filter === "all" || classifyEvent(ev) === filter,
+  );
+
+  const getCategoryCount = (catId) => {
+    if (catId === "all") return allEvents.length;
+    return allEvents.filter((ev) => classifyEvent(ev) === catId).length;
+  };
+
   return (
     <>
       <nav className="page-actions" aria-label="Event sections">
@@ -78,30 +142,56 @@ function Schedule({ upcoming, past }) {
           </a>
         )}
       </nav>
+
+      <div
+        className="filter-bar"
+        role="tablist"
+        aria-label="Event category filters"
+      >
+        {CATEGORIES.map((cat) => {
+          const count = getCategoryCount(cat.id);
+          return (
+            <button
+              key={cat.id}
+              type="button"
+              role="tab"
+              aria-selected={filter === cat.id}
+              className={`filter-pill ${filter === cat.id ? "active" : ""}`}
+              onClick={() => setFilter(cat.id)}
+            >
+              {cat.label} <span className="filter-count">({count})</span>
+            </button>
+          );
+        })}
+      </div>
+
       <section className="content-block" id="upcoming-events">
         <h2>Upcoming events</h2>
-        {upcoming.length ? (
-          upcoming.map((event) => <EventRow key={event.slug} event={event} />)
+        {filteredUpcoming.length ? (
+          filteredUpcoming.map((event) => (
+            <EventRow key={event.slug} event={event} />
+          ))
         ) : (
-          <>
-            <p>No upcoming events are listed.</p>
-            <a className="text-link" href="#past-events">
-              Browse past events
-            </a>
-          </>
+          <p className="empty-category-msg">
+            {filter === "all"
+              ? "No upcoming events are listed."
+              : "No upcoming events in this category."}
+          </p>
         )}
       </section>
+
       <section className="content-block" id="past-events">
         <h2>Past events</h2>
-        {past.length ? (
-          past.map((event) => <EventRow key={event.slug} event={event} />)
+        {filteredPast.length ? (
+          filteredPast.map((event) => (
+            <EventRow key={event.slug} event={event} />
+          ))
         ) : (
-          <>
-            <p>No past events are listed.</p>
-            <a className="text-link" href="#upcoming-events">
-              Back to upcoming events
-            </a>
-          </>
+          <p className="empty-category-msg">
+            {filter === "all"
+              ? "No past events are listed."
+              : "No past events in this category."}
+          </p>
         )}
       </section>
       {past.length > 0 && <EventGallery events={past} />}
@@ -190,6 +280,14 @@ export function EventArticle({ event, preview = false }) {
           )}
         </div>
       </section>
+      {event.poster && (
+        <section className="brief event-poster-section">
+          <h2>Event poster</h2>
+          <div className="event-poster-card">
+            <PublishedImage image={event.poster} />
+          </div>
+        </section>
+      )}
     </article>
   );
 }

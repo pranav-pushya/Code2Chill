@@ -12,8 +12,15 @@ export default function Home() {
       <section className="wrap hero">
         <div className="hero-copy">
           <p className="kicker">Chitkara University</p>
-          <h1>
-            Learn by <span>building.</span>
+          <h1 className="hero-heading-reveal">
+            <span className="line-mask">
+              <span className="line-reveal">Learn by</span>
+            </span>{" "}
+            <span className="line-mask">
+              <span className="line-reveal line-reveal-delay hero-accent">
+                building.
+              </span>
+            </span>
           </h1>
           <p>
             Code2Chill is a student-led technical club. We bring students

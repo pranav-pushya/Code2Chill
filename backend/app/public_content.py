@@ -15,7 +15,14 @@ router = APIRouter(prefix="/api", tags=["Public content"])
 Database = Annotated[Session, Depends(request_session)]
 
 
+class PublicImage(BaseModel):
+    asset_url: str | None = None
+    alt_text: str
+    credit: str
+
+
 class PublicEvent(BaseModel):
+    poster: PublicImage | None = None
     slug: str
     title: str
     summary: str
@@ -31,12 +38,6 @@ class PublicEvent(BaseModel):
 class Schedule(BaseModel):
     upcoming: list[PublicEvent]
     past: list[PublicEvent]
-
-
-class PublicImage(BaseModel):
-    asset_url: str | None = None
-    alt_text: str
-    credit: str
 
 
 class PublicProject(BaseModel):

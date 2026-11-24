@@ -1,5 +1,30 @@
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-padding-top: 5.5rem; }
+html {
+  scroll-padding-top: 5.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) var(--paper);
+}
+
+/* Custom scrollbar according to website theme */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--rule);
+  border-radius: 9999px;
+  border: 2px solid var(--paper);
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted);
+}
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--blue);
+}
+
 body { margin: 0; background: var(--paper); color: var(--ink); font: 400 var(--body-size)/1.55 var(--body); }
 a { color: inherit; }
 img { display: block; max-width: 100%; }
@@ -16,7 +41,7 @@ h1, h2, h3 { text-wrap: balance; }
   background-color: color-mix(in srgb, var(--paper) 92%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: var(--stroke) solid var(--rule);
+  border-bottom: none;
 }
 .head-inner, .foot-inner, .nav-links, .brand { display: flex; align-items: center; }
 .head-inner { min-height: 4.75rem; justify-content: space-between; gap: var(--space-6); position: relative; }

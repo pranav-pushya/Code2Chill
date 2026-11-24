@@ -1,3 +1,4 @@
+from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
@@ -33,21 +34,24 @@ def test_initial_migration_and_seed_round_trip():
                 command.check(config)
                 with Session(bind=connection, join_transaction_mode="create_savepoint") as session:
                     assert seed_content(session) == {
-                        "members": 10,
-                        "events": 2,
+                        "members": 11,
+                        "events": 3,
                         "projects": 2,
                         "demo_events": 0,
                     }
                     event = session.scalar(select(Event).where(Event.slug == "byte-the-vibe"))
                     assert event.public_snapshot["event_date"] == "2026-05-18"
-                    assert event.starts_at is None and event.registration_url is None
+                    assert (
+                        event.starts_at == datetime(2026, 5, 18, 7, 30, tzinfo=UTC)
+                        and event.registration_url is None
+                    )
                     event.title = "Local draft edit"
                     session.flush()
 
                     assert not any(seed_content(session).values())
                     assert event.title == "Local draft edit"
                     assert event.public_snapshot["title"] == "Byte The Vibe"
-                    assert session.scalar(select(func.count()).select_from(Member)) == 10
+                    assert session.scalar(select(func.count()).select_from(Member)) == 11
                     nexus = session.scalar(select(Project).where(Project.slug == "nexus"))
                     assert nexus.event.slug == "domination-the-frontend-challenge"
                     assert len(nexus.credits) == 3

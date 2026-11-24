@@ -30,12 +30,17 @@ def test_public_pages_serve_the_published_version(api_db):
     schedule = client.get("/api/events").json()
     assert not schedule["upcoming"]
     assert [event["slug"] for event in schedule["past"]] == [
+        "on-fire",
         "domination-the-frontend-challenge",
         "byte-the-vibe",
     ]
     assert client.get("/api/events/demo-event-handoff").status_code == 404
     archive = client.get("/api/events/byte-the-vibe").json()
     assert archive["registration_status"] == "ended" and archive["registration_url"] is None
+    on_fire = client.get("/api/events/on-fire").json()
+    assert on_fire["registration_status"] == "ended"
+    assert on_fire["venue"] == "Einstein Hall"
+    assert on_fire["poster"]["asset_url"] == "/media/on-fire-poster.jpg"
     projects = client.get("/api/projects").json()
     assert [project["slug"] for project in projects] == ["nexus", "chronoatlas"]
     assert client.get("/api/projects/nexus").json() == projects[0]
@@ -44,7 +49,7 @@ def test_public_pages_serve_the_published_version(api_db):
     assert client.get("/api/projects/draft-project").status_code == 404
     assert client.get("/api/projects/absent").status_code == 404
     members = client.get("/api/team").json()
-    assert len(members) == 10
+    assert len(members) == 11
     assert (members[0]["name"], members[0]["role_title"]) == ("Lakshay Kalra", "President")
 
 

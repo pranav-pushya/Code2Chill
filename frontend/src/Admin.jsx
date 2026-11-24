@@ -175,6 +175,45 @@ export function SignIn() {
   );
 }
 
+function SystemStatusIndicator() {
+  const [status, setStatus] = useState("checking");
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/health", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (active) setStatus(data?.status === "ok" ? "healthy" : "error");
+      })
+      .catch(() => {
+        if (active) setStatus("error");
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return (
+    <div className="admin-system-status" role="status">
+      <span className={`status-indicator-dot ${status}`} aria-hidden="true" />
+      <span>
+        {status === "checking"
+          ? "Checking system connectivity…"
+          : status === "healthy"
+            ? "Database & API Operational"
+            : "Service issue detected"}
+      </span>
+      <Link
+        to="/status"
+        className="text-link"
+        style={{ fontSize: "0.8rem", marginLeft: "auto" }}
+      >
+        Diagnostics &rarr;
+      </Link>
+    </div>
+  );
+}
+
 export function AdminArea({ events = false }) {
   const navigate = useNavigate();
   const [result, setResult] = useState({ loading: true });
@@ -268,6 +307,7 @@ export function AdminArea({ events = false }) {
         ) : (
           <>
             <p>Signed in as {result.data.email}</p>
+            <SystemStatusIndicator />
             <div className="page-actions">
               {result.data.role !== "reviewer" && (
                 <>

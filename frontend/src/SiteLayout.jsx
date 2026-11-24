@@ -57,7 +57,6 @@ function Header() {
           aria-label="Code2Chill home"
           onClick={() => setOpen(false)}
         >
-          <img src={icon} width="32" height="32" alt="" decoding="async" />
           Code2Chill
         </Link>
         <button
@@ -92,8 +91,7 @@ function Header() {
 }
 
 export function SiteLayout() {
-  const { instagram, linkedin } = useSiteLinks();
-  const profiles = { Instagram: instagram, LinkedIn: linkedin };
+  const { university, instagram, linkedin } = useSiteLinks();
   const { pathname, hash } = useLocation();
   const previous = useRef(pathname);
   const main = useRef(null);
@@ -117,18 +115,109 @@ export function SiteLayout() {
         </div>
       </main>
       <footer className="site-foot">
-        <div className="wrap foot-inner">
-          <span className="footer-name">Code2Chill · Chitkara University</span>
-          <nav aria-label="Footer">
-            <Link to="/contact">Contact</Link>
-            {Object.entries(profiles).map(([label, href]) => (
-              <ExternalLink key={label} href={href}>
-                {label}
+        <div className="wrap foot-container">
+          <div className="foot-grid">
+            <div className="foot-brand-col">
+              <Link className="brand" to="/" aria-label="Code2Chill home">
+                <img
+                  src={icon}
+                  width="32"
+                  height="32"
+                  alt=""
+                  decoding="async"
+                />
+                Code2Chill
+              </Link>
+              <p className="foot-desc">
+                Where serious code meets chill vibes. Official student-led
+                technical community under the{" "}
+                <strong>Office of Student Life at Chitkara University</strong>.
+              </p>
+              <p className="foot-motto">
+                <em>Build together, grow together.</em>
+              </p>
+            </div>
+
+            <nav className="foot-nav-col" aria-label="Explore pages">
+              <h2 className="foot-eyebrow">Explore</h2>
+              <ul className="foot-links">
+                {["Home", "About", "Events", "Projects", "Team", "Join"].map(
+                  (label) => (
+                    <li key={label}>
+                      <Link
+                        to={label === "Home" ? "/" : `/${label.toLowerCase()}`}
+                        className="foot-link"
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </nav>
+
+            <div className="foot-connect-col">
+              <h2 className="foot-eyebrow">Connect & Operations</h2>
+              <div className="foot-connect-group">
+                <ExternalLink href={instagram} className="foot-social-link">
+                  <span>Instagram</span>
+                  <span className="foot-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </ExternalLink>
+                <ExternalLink href={linkedin} className="foot-social-link">
+                  <span>LinkedIn</span>
+                  <span className="foot-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </ExternalLink>
+                {university && (
+                  <ExternalLink href={university} className="foot-social-link">
+                    <span>University Portal</span>
+                    <span className="foot-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                  </ExternalLink>
+                )}
+              </div>
+              <div className="foot-meta-links">
+                <Link to="/contact" className="foot-meta-link">
+                  Contact Desk
+                </Link>
+                <span className="foot-sep" aria-hidden="true">
+                  ·
+                </span>
+                <Link to="/status" className="foot-meta-link">
+                  Service Status
+                </Link>
+                <span className="foot-sep" aria-hidden="true">
+                  ·
+                </span>
+                <Link to="/admin" className="foot-meta-link">
+                  Staff Sign-In
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="foot-sub">
+            <p className="foot-copy">
+              © {new Date().getFullYear()} Code2Chill · Chitkara University. All
+              rights reserved.
+            </p>
+            <p className="foot-credit">
+              <span className="foot-dot" aria-hidden="true">
+                ●
+              </span>{" "}
+              Built by the Code2Chill community ·{" "}
+              <ExternalLink
+                href="https://github.com/pranav-pushya/Code2Chill"
+                className="foot-repo-link"
+              >
+                Source on GitHub
               </ExternalLink>
-            ))}
-            <Link to="/status">Service status</Link>
-            <Link to="/admin">Admin sign-in</Link>
-          </nav>
+            </p>
+          </div>
         </div>
       </footer>
     </>

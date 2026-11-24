@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { PublishedImage } from "./Gallery.jsx";
 import { PublicData } from "./PublicData.jsx";
-import { Page } from "./SiteLayout.jsx";
+import { ExternalLink, Page } from "./SiteLayout.jsx";
 
 const domains = {
   technical: "Technical",
@@ -10,21 +10,84 @@ const domains = {
   promotion: "Promotion",
 };
 
+const VERIFIED_TEAM_DATA = {
+  "lakshay-kalra": {
+    linkedin: "https://www.linkedin.com/in/lakshay-kalra-5667ba387",
+    bio: "President & Community Lead. Driving technical innovation and student collaboration at Chitkara University.",
+  },
+  "jiya-arora": {
+    linkedin: "https://www.linkedin.com/in/jiya-arora-13b214377",
+    bio: "Vice-president & Operations. Ensuring smooth execution across club tracks and member initiatives.",
+  },
+  "samanyu-thakur": {
+    linkedin: "https://www.linkedin.com/in/samanyu-thakur-76622b386",
+    bio: "Technical Head. Guiding architecture, web development, and hands-on coding bootcamps.",
+  },
+  "bhupinder-singh": {
+    linkedin: "https://www.linkedin.com/in/bhupindersinghmann",
+    bio: "Technical Head. Backend engineering, algorithmic problem solving, and technical duels.",
+  },
+  "tamanna-kakkar": {
+    linkedin: "https://www.linkedin.com/in/tamanna-kakkar-995b73385",
+    bio: "Content Head. Creative direction, technical writing, and event storytelling.",
+  },
+  "ayush-sharma": {
+    linkedin: "https://www.linkedin.com/in/ayushthisside",
+    bio: "Content Head. Technical documentation, curriculum design, and creative ideation.",
+  },
+  "jashan-bhalla": {
+    linkedin: "https://www.linkedin.com/in/jashan-bhalla-7b6539213",
+    bio: "Social Media Head. Media production, visual branding, and campus outreach.",
+  },
+  "muskan-dhanda": {
+    linkedin: "https://www.linkedin.com/company/code2chill",
+    bio: "Promotion Head. Campus relations, event marketing, and community growth.",
+  },
+  "divyana-garg": {
+    linkedin: "https://www.linkedin.com/company/code2chill",
+    bio: "Core Member. Project coordination and technical event management.",
+  },
+  "hunar-mehndiratta": {
+    linkedin: "https://www.linkedin.com/company/code2chill",
+    bio: "Core Member. Technical initiatives and community engagement.",
+  },
+  "pranav-pushya": {
+    linkedin: "https://www.linkedin.com/in/pranav-pushya/",
+    bio: "Core Member. Technical initiatives and software development.",
+  },
+};
+
 export function Roster({ members }) {
   return (
     <dl className="roster">
-      {members.map((member) => (
-        <div key={member.slug}>
-          <dt>{member.name}</dt>
-          <dd>{member.role_title}</dd>
-          {member.bio && <dd>{member.bio}</dd>}
-          {member.portrait?.asset_url && (
-            <dd>
-              <PublishedImage image={member.portrait} />
-            </dd>
-          )}
-        </div>
-      ))}
+      {members.map((member) => {
+        const verified = VERIFIED_TEAM_DATA[member.slug] ?? {};
+        const bio = member.bio || verified.bio;
+        const linkedin = member.linkedin_url || verified.linkedin;
+        return (
+          <div key={member.slug} className="roster-item">
+            <div className="roster-identity">
+              <dt>{member.name}</dt>
+              {bio && <p className="roster-bio">{bio}</p>}
+            </div>
+            <div className="roster-meta">
+              <dd className="roster-role">{member.role_title}</dd>
+              {linkedin && (
+                <dd className="roster-link">
+                  <ExternalLink href={linkedin} className="text-link">
+                    LinkedIn &rarr;
+                  </ExternalLink>
+                </dd>
+              )}
+              {member.portrait?.asset_url && (
+                <dd>
+                  <PublishedImage image={member.portrait} />
+                </dd>
+              )}
+            </div>
+          </div>
+        );
+      })}
     </dl>
   );
 }
@@ -61,9 +124,11 @@ function TeamGroups({ members }) {
             </section>
           ))}
       </div>
-      <Link className="action" to="/join">
-        Explore joining
-      </Link>
+      <div className="page-actions team-actions">
+        <Link className="action" to="/join">
+          Explore joining
+        </Link>
+      </div>
     </>
   );
 }

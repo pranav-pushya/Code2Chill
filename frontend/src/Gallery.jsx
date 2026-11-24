@@ -54,14 +54,46 @@ export function EventGallery({ events }) {
     >
       <h2 id="gallery-heading">Event gallery</h2>
       <div className="gallery-grid">
-        {events.map((event) => (
-          <MediaPlaceholder key={event.slug}>
-            <Link className="text-link" to={`/events/${event.slug}`}>
-              {event.title}
-            </Link>
-            {event.venue && <> · {event.venue}</>}
-          </MediaPlaceholder>
-        ))}
+        {events.map((event) =>
+          event.poster?.asset_url ? (
+            <figure key={event.slug} className="media-placeholder photo-slot">
+              <div className="media-frame media-frame-photo">
+                <Link
+                  to={`/events/${event.slug}`}
+                  className="media-frame-link"
+                  aria-label={`View ${event.title}`}
+                >
+                  <img
+                    loading="lazy"
+                    decoding="async"
+                    src={event.poster.asset_url}
+                    alt={event.poster.alt_text || event.title}
+                    className="gallery-poster-img"
+                    style={{
+                      objectPosition:
+                        event.slug === "on-fire"
+                          ? "center 22%"
+                          : "center center",
+                    }}
+                  />
+                </Link>
+              </div>
+              <figcaption>
+                <Link className="text-link" to={`/events/${event.slug}`}>
+                  {event.title}
+                </Link>
+                {event.venue && <> · {event.venue}</>}
+              </figcaption>
+            </figure>
+          ) : (
+            <MediaPlaceholder key={event.slug}>
+              <Link className="text-link" to={`/events/${event.slug}`}>
+                {event.title}
+              </Link>
+              {event.venue && <> · {event.venue}</>}
+            </MediaPlaceholder>
+          ),
+        )}
       </div>
     </section>
   );

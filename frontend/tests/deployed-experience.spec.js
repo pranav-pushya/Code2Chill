@@ -102,7 +102,7 @@ test("brand mark and responsive image assets load successfully", async ({
   page,
 }) => {
   await page.goto("/");
-  const brandImg = page.locator("header img").first();
+  const brandImg = page.locator(".brand-art img").first();
   await expect(brandImg).toBeVisible();
 
   // Verify that the browser successfully decoded the image
