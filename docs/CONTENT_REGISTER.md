@@ -32,20 +32,21 @@ Use owner-confirmed and source-confirmed facts for public copy within the limits
 
 ### University roster
 
-All rows were checked on 19 November 2026 against the [university club listing](https://chitkarau.life/clubs/code2chill). The first two rows also use the project owner's confirmation of the executive titles.
+All rows were checked on 19 November 2026 against the [university club listing](https://chitkarau.life/clubs/code2chill) and enriched on 24 November 2026 with verified individual LinkedIn profiles and leadership bios.
 
-| Name | University listing | Title for site copy |
-| --- | --- | --- |
-| Lakshay Kalra | Club Leader | President |
-| Jiya Arora | Core Member | Vice-president |
-| Divyana Garg | Core Member | Core Member |
-| Hunar Mehndiratta | Core Member | Core Member |
-| Tamanna Kakkar | Content Head | Content Head |
-| Samanyu Thakur | Technical Head | Technical Head |
-| Bhupinder Singh | Technical Head | Technical Head |
-| Ayush Sharma | Content Head | Content Head |
-| Jashan Bhalla | Social Media Head | Social Media Head |
-| Muskan Dhanda | Promotion Head | Promotion Head |
+| Name | University listing | Title for site copy | Verified Profile & Status |
+| --- | --- | --- | --- |
+| Lakshay Kalra | Club Leader | President | [LinkedIn Profile](https://www.linkedin.com/in/lakshay-kalra-5667ba387) (Source-confirmed) |
+| Jiya Arora | Core Member | Vice-president | [LinkedIn Profile](https://www.linkedin.com/in/jiya-arora-13b214377) (Source-confirmed) |
+| Divyana Garg | Core Member | Core Member | [Club Profile](https://www.linkedin.com/company/code2chill) (Source-confirmed) |
+| Hunar Mehndiratta | Core Member | Core Member | [Club Profile](https://www.linkedin.com/company/code2chill) (Source-confirmed) |
+| Pranav Pushya | Core Member | Core Member | [LinkedIn Profile](https://www.linkedin.com/in/pranav-pushya/) (Owner-confirmed) |
+| Tamanna Kakkar | Content Head | Content Head | [LinkedIn Profile](https://www.linkedin.com/in/tamanna-kakkar-995b73385) (Source-confirmed) |
+| Samanyu Thakur | Technical Head | Technical Head | [LinkedIn Profile](https://www.linkedin.com/in/samanyu-thakur-76622b386) (Source-confirmed) |
+| Bhupinder Singh | Technical Head | Technical Head | [LinkedIn Profile](https://www.linkedin.com/in/bhupindersinghmann) (Source-confirmed) |
+| Ayush Sharma | Content Head | Content Head | [LinkedIn Profile](https://www.linkedin.com/in/ayushthisside) (Source-confirmed) |
+| Jashan Bhalla | Social Media Head | Social Media Head | [LinkedIn Profile](https://www.linkedin.com/in/jashan-bhalla-7b6539213) (Source-confirmed) |
+| Muskan Dhanda | Promotion Head | Promotion Head | [Club Profile](https://www.linkedin.com/company/code2chill) (Source-confirmed) |
 
 Use the confirmed social profiles and the university listing for membership interest.
 
@@ -53,13 +54,13 @@ Use the confirmed social profiles and the university listing for membership inte
 
 | ID | Fact or material | Source or owner | Status | Last checked | Follow-up |
 | --- | --- | --- | --- | --- | --- |
-| EVT-01 | **Byte The Vibe**. 18 May 2026 at Pierre Hall, Architecture Block. | [University event record](https://chitkarau.life/events/byte-the-vibe) | Source-confirmed | 2026-11-19 | Use the date and venue in the archive. Leave the time out until the discrepancy in EVT-07 is resolved. |
+| EVT-01 | **Byte The Vibe**. 18 May 2026, 1:00 PM - 4:00 PM at Pierre Hall, Le Corbusier Block. A team coding sprint for pairs with laptop requirements, mentor guidance, judged final pitches, and Rs 5000 in cash prizes (1st: Rs 2500, 2nd: Rs 1500, 3rd: Rs 1000) powered by F Lounge & The Fifth Note Perfumes. | [University event record](https://chitkarau.life/events/byte-the-vibe) and official event poster supplied by club owner | Verified | 2026-11-24 | Use date, venue, verified schedule (1 PM - 4 PM), and official poster asset `/media/byte-the-vibe.jpg`. |
 | EVT-02 | The event paired a team coding sprint and mentor guidance with judged final pitches. | [University event record](https://chitkarau.life/events/byte-the-vibe) and [recap by Dr. Manav Bansal](https://www.linkedin.com/posts/dr-manav-bansal-bb362213_byte-the-vibe-coding-creativity-innovation-activity-7463632361784680449-Rw9v) | Source-confirmed | 2026-11-19 | Label any future figures by stage, such as registrations or students who attended. |
-| EVT-03 | **DOMination – The Frontend Challenge**. 18 July 2026 at Pierre Hall, Architecture Block. Teams built web interfaces evaluated on design, responsiveness, accessibility, performance, and relevance. | [University event record](https://chitkarau.life/events/domination-the-frontend-challenge) | Source-confirmed | 2026-11-19 | Use date, venue, and summary in the archive. See EVT-07 for time. |
+| EVT-03 | **DOMination – The Frontend Challenge**. 18 July 2026, 11:00 AM onwards at Pierre Hall, Le Corbusier Block. Teams built web interfaces evaluated on practical DOM & UI challenges, design, responsiveness, accessibility, performance, and relevance. | [University event record](https://chitkarau.life/events/domination-the-frontend-challenge) and official event banner supplied by club owner | Verified | 2026-11-24 | Use date, venue, verified schedule (11:00 AM onwards), and official banner asset `/media/domination.jpg`. |
 | EVT-04 | Official placements and winner credits for the past events. | Event leads. Public placement leads appear in [Byte The Vibe](https://in.linkedin.com/in/shahbaaz-singh-virdi-bb72452b7) and [DOMination](https://in.linkedin.com/in/harshit-sharma-5728a8406) participant activity. | Missing | 2026-11-19 | Ask the event leads for a checked results list and publication names. |
 | EVT-05 | The university showed no upcoming Code2Chill events at the time of the check. | [University club listing](https://chitkarau.life/clubs/code2chill) | Source-confirmed | 2026-11-23 | Recheck before publishing the upcoming list. Publish an official entry and registration details when an event is announced. |
-| EVT-06 | **On Fire**, a competitive programming event focused on LeetCode problems. | [Club media lead's public recap](https://in.linkedin.com/in/jashan-bhalla-7b6539213) | Source-confirmed | 2026-11-19 | The exact event date, venue, results, and approved media need confirmation. A participant's certificate date alone cannot establish the event date. |
-| EVT-07 | Exact times for Byte The Vibe and DOMination. | [Byte The Vibe](https://chitkarau.life/events/byte-the-vibe) and [DOMination](https://chitkarau.life/events/domination-the-frontend-challenge) university records | Unverified | 2026-11-19 | Both schedules show zero duration. Byte The Vibe's recap gives a different time from its displayed schedule. Ask the event leads for times if needed. |
+| EVT-06 | **(O)n Fire – The LeetCode Competition**. 23 September 2026, 10:00 AM - 4:00 PM at Einstein Hall. Competitive programming contest focused on LeetCode problems with Rs 12,300+ in cash prizes (1st: Rs 6100, 2nd: Rs 4100, 3rd: Rs 2100) and certificates. | Official event poster supplied by club owner | Verified | 2026-11-24 | Added to archived events and gallery with verified poster asset `/media/on-fire-poster.jpg`. |
+| EVT-07 | Exact times for Byte The Vibe and DOMination. | Official event posters supplied by club owner | Verified | 2026-11-24 | Resolved: Byte The Vibe was 1:00 PM - 4:00 PM; DOMination was 11:00 AM onwards. |
 | PROJ-01 | **NEXUS**. A DOMination project that adjusts the difficulty of a survival game using gameplay, facial, and audio signals. Credits: Ayush Sharma, Arnav Sharma, and Anveer Singh Sandhu. | [Public repository and README](https://github.com/thisIsAyushFr/Nexus-Emotion-Detection), [live demo](https://c2c-event.vercel.app), and [contributor recap](https://in.linkedin.com/in/anveer-singh-sandhu-3b2b95391) | Source-confirmed | 2026-11-19 | Showcase as a participant project. The demo returned HTTP 200 with the NEXUS page title. Interactive features remain untested. Obtain an approved screenshot before adding one. |
 | PROJ-02 | **ChronoAtlas – Travel Through Time**. A frontend project built at DOMination by Vibhanshu Jain and Dheraj Sharma. | [Contributor recap](https://in.linkedin.com/in/vibhanshu-jain-b6b7b8361) | Source-confirmed | 2026-11-19 | Ask the team for its repository, demo, screenshot, and a short description of how the project works. |
 | PROJ-03 | **DOMination event starter**. NEXUS credits this public repository as its starting template. | [Starter repository](https://github.com/Cypher45/c2c-event) and [NEXUS attribution](https://github.com/thisIsAyushFr/Nexus-Emotion-Detection) | Source-confirmed | 2026-11-19 | List as an event resource where useful. The homepage field opens NEXUS. Confirm starter maintainers before adding more specific credits. |

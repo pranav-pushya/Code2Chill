@@ -46,6 +46,61 @@ The scaffold uses the campus event programme design, local Barlow Condensed and 
 
 ## 🏛️ System Architecture
 
+### 1. High-Level System Topology
+
+```mermaid
+flowchart LR
+  subgraph Edge["Client Interface Tier"]
+    B["Browser SPA<br/>React 19 + Vite + Tailwind<br/>(Client Router & Focus Management)"]
+  end
+
+  subgraph Gateway["Reverse Proxy & Ingress"]
+    C["Caddy 2 Reverse Proxy<br/>Automated ACME TLS & Security Headers<br/>Static Asset & Media Caching"]
+  end
+
+  subgraph Application["FastAPI Application Server"]
+    F["FastAPI ASGI App<br/>(Python 3.13+ / Non-root 65534)<br/>• Pydantic V2 Schema Validation<br/>• 32 KiB Streaming Body Byte Cap<br/>• Structured Monotonic Logging"]
+  end
+
+  subgraph Persistence["Database Engine"]
+    P[("PostgreSQL 17 Engine<br/>• Isolated Docker Network<br/>• JSONB Published Snapshots<br/>• Relational Integrity & Indexes")]
+  end
+
+  B -->|"HTTPS :443<br/>REST API Calls"| C
+  C -->|"Proxy /api/*<br/>HTTP internal"| F
+  C -->|"Direct file serving<br/>/assets/*, /media/*"| B
+  F -->|"SQLAlchemy 2.0 + psycopg 3<br/>Connection Pooling (pool_pre_ping)"| P
+  P -->|"Atomic Transactions<br/>Zero-Join Snapshot Data"| F
+  F -->|"Serialized JSON Responses"| C
+```
+
+### 2. Authentication & Administrative Lifecycle
+
+```mermaid
+sequenceDiagram
+  autonumber
+  actor Staff as Staff / Admin
+  participant Client as React 19 Client
+  participant API as FastAPI Backend
+  participant DB as PostgreSQL 17
+
+  Staff->>Client: Enter staff credentials on /admin
+  Client->>API: POST /api/staff/login (X-Code2Chill-Admin: 1)
+  API->>DB: Fetch staff record & verify cryptographic hash
+  DB-->>API: Active staff account confirmed
+  API-->>Client: HTTP 200 { authenticated: true, session: token }
+  Client->>Client: Store session token securely
+
+  Note over Client,API: Every Subsequent Administrative Operation
+  Client->>API: POST /api/events (Draft / Publish with Auth Token)
+  API->>API: Validate CSRF guard & Pydantic schema
+  API->>DB: Write event & update JSONB public_snapshot (Atomic transaction)
+  DB-->>API: Transaction committed
+  API-->>Client: HTTP 200 Event published
+```
+
+### 3. Service Status & Health Probe
+
 ```text
 React /status → GET /api/health → FastAPI → SQLAlchemy + psycopg → PostgreSQL 17
                                                   SELECT 1
@@ -138,6 +193,7 @@ The project enforces continuous living documentation updated across all developm
 | **Muskan Dhanda** | Promotion Head | Public Relations |
 | **Divyana Garg** | Core Member | Operations |
 | **Hunar Mehndiratta** | Core Member | Tech & Operations |
+| **Pranav Pushya** | Core Member | Tech & Development |
 
 ---
 

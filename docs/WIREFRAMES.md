@@ -300,7 +300,7 @@ Leadership is followed by the published roles. On a narrow screen the same secti
 | Tamanna Kakkar • Ayush Sharma      | Muskan Dhanda                       |
 +------------------------------------+-------------------------------------+
 +--------------------------------------------------------------------------+
-| Core members: Divyana Garg, Hunar Mehndiratta                            |
+| Core members: Divyana Garg, Hunar Mehndiratta, Pranav Pushya              |
 | [ Explore joining ]                                                      |
 +--------------------------------------------------------------------------+
 ```
@@ -324,7 +324,8 @@ Leadership is followed by the published roles. On a narrow screen the same secti
 +------------------------------------+
 +------------------------------------+
 | Core members                       |
-| Divyana Garg • Hunar Mehndiratta   |
+| Divyana Garg • Hunar Mehndiratta • |
+| Pranav Pushya                      |
 | [ Explore joining ]                |
 +------------------------------------+
 ```

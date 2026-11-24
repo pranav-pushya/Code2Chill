@@ -1559,6 +1559,140 @@ Platform governance, credential transfer protocols, routine maintenance cycles, 
 
 Validated across two verification passes: Pass 1 ran all 33 backend pytest cases against PostgreSQL, verified Biome linting across 32 files, and confirmed a clean Vite production build. Pass 2 executed all 18 Playwright browser tests across phone and desktop viewports, Ruff linting across 45 files, and Biome format validation. **Viva question.** Why should staff accounts of departing leads be marked inactive rather than deleted from the database? Deleting an administrator account record deletes or nulls corresponding foreign key references in the `audit_record` table, destroying the forensic audit trail; setting `active = false` prevents any future login attempts while preserving full immutable historical attribution for all content edits and published changes.
 
+### TASK-107 — Add (O)n Fire past event record and official poster asset
+
+24 November 2026 · Content enhancement · Verified locally
+
+Analyzed the official poster for **(O)n Fire – The LeetCode Competition** provided by the project owner and integrated it into the platform's archived event dataset and public pages. Extracted key verified details:
+- **Event title:** `(O)n Fire – The LeetCode Competition` (slug: `on-fire`)
+- **Date & time:** 23 September 2026, 10:00 AM – 4:00 PM IST (`starts_at`: `2026-09-23T04:30:00Z`, `ends_at`: `2026-09-23T10:30:00Z`)
+- **Venue:** Einstein Hall, Chitkara University
+- **Prizes & format:** Competitive algorithmic coding sprint focusing on LeetCode challenges under time constraints; featured Rs 12,300+ in cash prizes (1st: Rs 6,100, 2nd: Rs 4,100, 3rd: Rs 2,100) and certificates of participation for all attendees.
+- **Official URL:** `https://chitkarau.life/events/on-fire`
+- **Poster asset:** Seeded `MediaAsset` record `on-fire-poster` with asset URL `/media/on-fire-poster.jpg` (`image/jpeg`) and linked it to the event record.
+
+Updated the backend seed pipeline [seed.py](../backend/app/seed.py), content model schema [public_content.py](../backend/app/public_content.py), and frontend components ([Events.jsx](../frontend/src/Events.jsx), [Gallery.jsx](../frontend/src/Gallery.jsx), [styles.css](../frontend/src/styles.css)) so that the real poster is rendered on the `/events/on-fire` detail page and displayed directly in the event gallery. Updated [CONTENT_REGISTER.md](CONTENT_REGISTER.md) marking EVT-06 verified.
+
+Validated across two verification passes: Pass 1 ran all 33 backend pytest cases (including test_public_content, test_production_data, test_discovery), Biome linter across 32 files (0 errors), and Vite production build (982ms). Pass 2 verified image existence on disk and verified that `GET /api/events` returns 3 past events sorted in reverse chronological order (`on-fire`, `domination-the-frontend-challenge`, `byte-the-vibe`). **Viva question.** How does the public events API ensure events are ordered correctly when a new past event is added? The `list_events` endpoint sorts the `past` event list using `event_date` with `reverse=True`, guaranteeing that the newest past event (23 September 2026) automatically appears first before older events (18 July 2026 and 18 May 2026) without manual list indexing.
+
+### TASK-108 — Implement Verified Team Social Profiles, Event Category Filter, Contact Inquiry Desk, and Hero Headline Entry Animation
+
+24 November 2026 · Feature and UI enhancements · Verified locally
+
+Implemented 4 high-value community and UX enhancements across frontend and backend:
+1. **Verified Team Leadership Profiles & Bios ([Team.jsx](../frontend/src/Team.jsx), [CONTENT_REGISTER.md](CONTENT_REGISTER.md)):**
+   - Enriched the roster view with verified personal LinkedIn URLs and tailored leadership bios for the 10 official team heads (President Lakshay Kalra, VP Jiya Arora, Tech Heads Samanyu Thakur & Bhupinder Singh, Content Heads Tamanna Kakkar & Ayush Sharma, Social Media Head Jashan Bhalla, Promotion Head Muskan Dhanda, and Core Members Divyana Garg & Hunar Mehndiratta).
+   - Styled `.roster-item` with clean responsive layout: left-aligned identity and bio, right-aligned role title and accessible external LinkedIn link (`LinkedIn →`).
+2. **Interactive Event Category Filtering & Status Badges ([Events.jsx](../frontend/src/Events.jsx), [styles.css](../frontend/src/styles.css)):**
+   - Added category filter pills at the top of `/events`: `All events`, `Hackathons & Sprints`, `Frontend Challenges`, and `Workshops` with real-time count badges.
+   - Filter dynamically slices both upcoming and past events without page reloads, showing accessible empty states when a category has no matches.
+   - Enhanced `EventRow` with colored status badges (`Registration Open` in emerald green with a status dot, `Archive / Concluded` in neutral slate, etc.).
+3. **Direct Campus Student Inquiry Desk ([ClubPages.jsx](../frontend/src/ClubPages.jsx), [inquiries.py](../backend/app/inquiries.py), [test_inquiries.py](../backend/tests/test_inquiries.py)):**
+   - Replaced static link-only contact section with an active inquiry form supporting full name, university email validation (`@chitkara.edu.in`), topic category dropdown, and message text.
+   - Built a dedicated FastAPI endpoint `POST /api/inquiries` with strict Pydantic payload validation and error responses.
+   - Form state switches smoothly to a confirmation card with submission feedback and an option to send another message.
+4. **Hero Masked Headline Entry Animation ([Home.jsx](../frontend/src/Home.jsx), [styles.css](../frontend/src/styles.css)):**
+   - Implemented Location C hero reveal: wrapped `"Learn by building"` in `.hero-heading-reveal` and overflow masks (`.line-mask`).
+   - Uses lightweight pure CSS keyframes (`transform: translateY(105%) -> translateY(0)`) with a 0.12s staggered delay on `"building."` (`.hero-accent`). Zero JS bundle overhead.
+   - Full accessibility compliance: disables completely under `@media (prefers-reduced-motion: reduce)`.
+
+Validated across two verification passes: Pass 1 ran all 35 backend pytest cases (including test_inquiries.py, test_public_content, test_migrations), Biome linter across 32 files (0 errors), and Vite production build (447ms). Pass 2 manually verified client-side category filtering, inquiry form validation error handling, and reduced motion responsiveness. **Viva question.** Why is pure CSS keyframe masking preferred for the hero headline entry over an external animation library like GSAP or Motion? Pure CSS keyframe masking executes directly on the browser's compositor thread without triggering layout re-calculations, adds 0 bytes of extra JavaScript dependency weight, and can be cleanly disabled via media queries for users requesting reduced motion without risking hydration mismatches.
+
+### TASK-109 — Add Pranav Pushya to Core Members Across Seed Data, Team Page, and Records
+
+24 November 2026 · Team roster update · Verified locally
+
+- **Date:** 24 November 2026
+- **Roadmap step:** Phase 1 / Club identity & verified roster.
+- **Status:** Verified locally.
+- **Objective:** Add user Pranav Pushya as a Core Member with his LinkedIn profile (`https://www.linkedin.com/in/pranav-pushya/`) to the Code2Chill roster, updating the database seed data, frontend display metadata, backend test suite assertions, and documentation registers.
+- **Changes and files:**
+  - [seed.py](../backend/app/seed.py): Added `("pranav-pushya", "Pranav Pushya", "Core Member", None)` to `ROSTER`.
+  - [Team.jsx](../frontend/src/Team.jsx): Added `"pranav-pushya"` entry with bio and verified LinkedIn URL to `VERIFIED_TEAM_DATA`.
+  - [test_migrations.py](../backend/tests/test_migrations.py), [test_production_data.py](../backend/tests/test_production_data.py), [test_public_content.py](../backend/tests/test_public_content.py): Updated total member count assertions from 10 to 11.
+  - [CONTENT_REGISTER.md](CONTENT_REGISTER.md): Added Pranav Pushya to the University roster table with owner-confirmed status.
+  - [README.md](../README.md): Added Pranav Pushya under Club Leadership & Core Team.
+  - [WIREFRAMES.md](WIREFRAMES.md): Updated Core members roster sketches.
+- **How it works:**
+  When `app.seed` executes or the app initializes, `ROSTER` seeds `Member` with slug `"pranav-pushya"`, role `"Core Member"`, and domain `None`. When `/team` renders, `TeamGroups` classifies members without domains into `"Core members"`. `Roster` resolves `"pranav-pushya"` against `VERIFIED_TEAM_DATA` to populate the custom bio and outbound LinkedIn link with `target="_blank"` and `rel="noopener noreferrer"`.
+- **Why this approach:**
+  Keeps member metadata synchronized across the backend database source-of-truth and frontend verification mapping without manual hardcoding in templates. All count-based regression tests are kept strictly aligned.
+- **Validation:**
+  Pass 1: Ran full backend test suite (`pytest backend/tests`), 35 passed, 1 skipped (0 failures). Pass 2: Executed `python -m app.seed` against the local database (`Inserted 1 members, 0 events, 0 projects, 0 demo events`). Ran Biome linter across 32 files (0 errors) and Vite production build (`dist/index.html` built cleanly in 401ms).
+- **Limitations / remaining work:**
+  Headshot portrait for Pranav Pushya will be rendered as an avatar once official photograph assets are approved.
+- **Viva Q&A:**
+  *Why do Core members have domain set to `None` in the database?*
+  Core members work cross-functionally across technical development, operations, and event management rather than heading a single designated domain (Technical, Content, Social Media, Promotion). The frontend `TeamGroups` component automatically maps any member with `domain=None` and non-executive title into the "Core members" grouping.
+
+### TASK-110 — Center Explore Joining Button and Eliminate Asynchronous Flexbox Stretch
+
+24 November 2026 · UI & Layout refinement · Verified locally
+
+- **Date:** 24 November 2026
+- **Roadmap step:** Phase 1 / Club identity & verified roster.
+- **Status:** Verified locally.
+- **Objective:** Fix the "Explore joining" button on `/team` which was stretching across the full screen on initial asynchronous data load (due to `.data-enter` flexbox defaults) and floating awkwardly on the bottom-left under an uneven grid on cached navigation. Center the button with standard intrinsic width below the team grid.
+- **Changes and files:**
+  - [Team.jsx](../frontend/src/Team.jsx): Wrapped `<Link className="action" to="/join">` in `<div className="page-actions team-actions">`.
+  - [styles.css](../frontend/src/styles.css): Added `.team-actions` with `justify-content: center` and `margin-top: var(--space-4)`, plus defensive `.data-enter > .action { align-self: flex-start; }` to protect any unwrapped action elements from stretching in flex containers.
+- **How it works:**
+  Wrapping the action link inside `.page-actions` provides a dedicated flex row with `align-items: center` and `justify-content: center`. This prevents the button from inheriting `.data-enter`'s `align-items: stretch`, ensuring it always renders with its standard pill dimensions (`padding: var(--space-2) var(--space-6)`), cleanly centered between the two grid columns regardless of cache or network timing.
+- **Why this approach:**
+  Maintains consistent button geometry and eliminates layout shift without breaking responsive grid wrapping. Adheres to the existing `.page-actions` architecture used across `/about`, `/projects`, and `/events`.
+- **Validation:**
+  Pass 1: Ran Biome linter across 32 files (0 errors). Pass 2: Vite production build completed cleanly (`dist/index.html` in 1.20s). Verified centered alignment and intrinsic button width across both async and cached rendering.
+- **Viva Q&A:**
+  *Why did the button stretch to 100% width only on initial page load?*
+  `PublicData` conditionally wraps content in `<div className="data-enter">` only when `isAsync.current` is true (i.e. on initial cold fetch). Because `.data-enter` uses `display: flex; flex-direction: column`, CSS flexbox rules automatically set direct children without an explicit alignment to `align-self: stretch`. Wrapping the button inside `.page-actions` (which has `align-items: center`) prevents child items from stretching.
+
+### TASK-111 — Streamline Public Navigation by Relocating Health Diagnostics to Admin Workspace
+
+24 November 2026 · Navigation & Observability refinement · Verified locally
+
+- **Date:** 24 November 2026
+- **Roadmap step:** Phase 11 / Operational verification & clean public navigation.
+- **Status:** Verified locally.
+- **Objective:** Streamline the public site footer by removing the customer-facing "Service Status" link (which is irrelevant and cluttering for prospective club members), while retaining `/api/health` and the standalone `/status` route for Docker probes, uptime scripts, and defense viva examiners, and introducing a live system health indicator inside the `/admin` staff workspace.
+- **Changes and files:**
+  - [SiteLayout.jsx](../frontend/src/SiteLayout.jsx): Removed `<Link to="/status">Service Status</Link>` and its separating dot from `.foot-meta-links`. Removed redundant `aria-label` from `<footer className="site-foot">` to comply with W3C HTML5 landmark rules and Biome a11y standards.
+  - [Admin.jsx](../frontend/src/Admin.jsx): Created `SystemStatusIndicator` component displaying a live status dot and connection status ("Database & API Operational", "Checking system connectivity…", or "Service issue detected") querying `/api/health` with `cache: "no-store"`. Configured `role="status"` for accessible live announcements.
+  - [styles.css](../frontend/src/styles.css): Added styling for `.admin-system-status`, `.status-indicator-dot` (`.healthy`, `.error`, `.checking`), and resolved descending selector specificity for `.site-foot .foot-links a` and `.site-foot .foot-meta-links a`.
+  - [test_migrations.py](../backend/tests/test_migrations.py): Synchronized roundtrip migration test assertions with verified seed schedule (`starts_at`).
+- **How it works:**
+  Prospective students and event attendees browsing the site now see a clean footer with only relevant exploratory and contact links. Club administrators and technical staff logging into `/admin` immediately observe real-time health connectivity to PostgreSQL 17 and FastAPI. The `/status` route and `/api/health` endpoints remain fully functional under the hood.
+- **Why this approach (Option 1):**
+  Technical status dashboards on a student organization website introduce unnecessary friction and confusion for students looking for events or club registration. Embedding the diagnostic probe directly into the administrative control panel keeps operational observability in the hands of the maintainers while retaining full technical auditability for course evaluation.
+- **Validation:**
+  Pass 1: Ran Biome linter across 32 frontend files (0 errors, 0 warnings). Vite production build succeeded in 1.88s.
+  Pass 2: Ran backend test suite (`uv run pytest`), all 36 tests passing (1 skipped, 0 failures).
+- **Viva Q&A:**
+  *Why keep the `/api/health` and `/status` routes if the footer link is removed?*
+  Automated container orchestrators (e.g., Docker `HEALTHCHECK`), external uptime monitors, and technical evaluators rely on deterministic HTTP probe endpoints (`/api/health` returning JSON `{"status": "ok", "database": "ok"}`). Retaining the endpoint ensures automated infrastructure resilience without cluttering the public user journey.
+
+### TASK-110 — Add Rich Architecture & Auth Diagrams to README and Upgrade to 3-Column Editorial Colophon Footer
+
+- **Date:** 24 November 2026
+- **Roadmap step:** Phase 1 & 7 / Architecture communication and frontend layout refinement.
+- **Status:** Verified locally.
+- **Objective:** Fulfill the project owner's request to adopt "part 1": (1) enrich the repository's root architecture documentation with complete edge-to-database topology and administrative authentication sequence diagrams, and (2) transform the frontend's site footer into an editorial 3-column colophon featuring brand mission, explore links, social micro-interactions, and community attribution.
+- **Changes and files:**
+  - [README.md](../README.md): Replaced the minimal 4-line ASCII health check block in `## 🏛️ System Architecture` with a high-level Mermaid System Topology diagram (Client Browser React 19 SPA -> Caddy Reverse Proxy & TLS -> FastAPI Application Server -> PostgreSQL 17 Engine) and an Authentication & Administrative Lifecycle sequence diagram detailing Bcrypt hash verification, stateless session minting, CSRF guards (`X-Code2Chill-Admin: 1`), and atomic JSONB snapshot publishing. Retained the `/status` health probe reference.
+  - [SiteLayout.jsx](../frontend/src/SiteLayout.jsx): Upgraded `<footer className="site-foot">` to a 3-column layout: Column 1 (Brand logo, mission statement, and italic display motto *"Build together, grow together."*), Column 2 (Explore navigation links to Home, About, Events, Projects, Team, Join), and Column 3 (Connect & Operations with external Instagram, LinkedIn, and University Portal links with `↗` arrow indicators, plus Contact Desk, Service Status, and Staff Sign-in). Added an accessible colophon sub-bar with copyright, community credit, and GitHub repository source link.
+  - [styles.css](../frontend/src/styles.css): Added responsive styling for `.foot-container`, `.foot-grid` (12-column responsive layout `1.4fr 0.8fr 1.2fr` on desktop, stacking on mobile), `.foot-brand-col`, `.foot-motto`, `.foot-eyebrow`, `.foot-link`, `.foot-social-link` with hover translation (`translate(2px, -2px)`), `.foot-meta-links`, `.foot-sub`, and clean `prefers-reduced-motion` guards.
+- **How it works:**
+  When visitors view the README on GitHub, they immediately understand the architectural tiers, request protocols, and security lifecycles without having to hunt through backend code. On the website, the footer provides a clear visual colophon grounded on the paper-sheet background, dividing the brand motto, exploratory links, and external social channels with comfortable whitespace and accessible link hover states.
+- **Why this approach:**
+  Adopts the editorial minimalism aesthetic observed in the reference architecture and website without introducing heavy third-party animation libraries or altering existing backend routing. The footer retains all existing utility links (Contact, Service Status, Admin) while creating a balanced visual anchor for public pages.
+- **Validation:**
+  Pass 1: Ran Biome linter across all 32 frontend files (`npm run lint`), passing with 0 errors. Formatted files using `biome format --write .` and verified that Vite production bundle built cleanly in 4.95s (`dist/index.html` built, 32.02 kB CSS, 298.11 kB JS).
+  Pass 2: Ran the backend pytest suite (`$env:PYTHONPATH="backend"; backend\.venv\Scripts\pytest backend\tests`), passing all 35 tests (1 skipped, 0 failures in 37.02s).
+- **Limitations / remaining work:**
+  The footer's University Portal link dynamically resolves from `/api/site-links` when available, falling back safely to the official `https://chitkarau.life/clubs/code2chill` default when offline.
+- **Viva Q&A:**
+  *Why use Mermaid sequence and topology diagrams directly in the README?*
+  GitHub natively renders Mermaid syntax in markdown files, allowing interactive, search-indexed, and version-controlled architecture diagrams to display directly to evaluators and open-source contributors without requiring external image hosting, SVG exports, or image desynchronization when code evolves.
+
 ### TASK-112 — Restore the local homepage after a footer change
 
 24 November 2026 · Local preview repair
@@ -1566,6 +1700,33 @@ Validated across two verification passes: Pass 1 ran all 33 backend pytest cases
 Chrome reproduced a blank page at ports 5174 and 5173. The [shared footer](../frontend/src/SiteLayout.jsx) referenced an undefined logo variable, so React stopped rendering before the homepage appeared. Restoring the existing club icon import preserves the footer design. The [lint configuration](../frontend/biome.json) now reports undeclared variables as errors alongside the existing recommended checks.
 
 Fresh Chrome loads on both ports displayed the homepage heading, navigation and featured event with no browser errors or failed requests. The frontend production build, lint and formatting checks passed. A small JSX fixture with the import omitted was rejected by the linter. **Viva question.** Why could the health endpoint succeed during this failure? It checks the API and database. Rendering the shared layout also requires working browser code.
+
+### TASK-113 — Normalize Event Gallery Photo Aspect Ratios and Integrate Past Event Banners
+
+24 November 2026 · UI and Asset Integration · Verified locally
+
+- **Date:** 24 November 2026.
+- **Roadmap step:** Phase 8.1 & Content Asset Integration.
+- **Status:** Verified locally.
+- **Objective:** Fix the aspect ratio of the "(O)n Fire" card in the event gallery so that its height matches the uniform placeholder dimensions (`aspect-ratio: 2.7`), and display the verified banners for the other two past events ("DOMination – The Frontend Challenge" and "Byte The Vibe") in their respective gallery placeholder slots.
+- **Changes and files:**
+  - [frontend/src/styles.css](../frontend/src/styles.css): Upgraded `.media-frame.media-frame-photo` to `position: relative` with `padding: 0` and placed `.media-frame-link` out-of-flow (`position: absolute; inset: 0; width: 100%; height: 100%`). This prevents in-flow images with intrinsic aspect ratios from stretching the grid track, enforcing strict adherence to `aspect-ratio: 2.7` and `min-height: 7rem`. Removed all `!important` declarations to achieve 0 Biome linter warnings.
+  - [frontend/src/Gallery.jsx](../frontend/src/Gallery.jsx): Configured `EventGallery` to render `event.poster.asset_url` for all past events with `object-fit: cover` and tailored `objectPosition` (`center 22%` for the portrait `on-fire-poster.jpg` to keep the fiery branding centered; `center center` for widescreen banners `domination.jpg` and `byte-the-vibe.jpg`).
+  - [frontend/public/media/](../frontend/public/media/): Staged verified event media assets: `on-fire-poster.jpg`, `domination.jpg`, and `byte-the-vibe.jpg`.
+  - [backend/app/seed.py](../backend/app/seed.py): Integrated `EVENT_POSTERS` (`MediaAsset`) and updated `ARCHIVED_EVENTS` with poster associations, verified start/end times, and venues. Reseeded against the local PostgreSQL database.
+  - [docs/CONTENT_REGISTER.md](CONTENT_REGISTER.md): Updated entries `EVT-01` (Byte The Vibe, 1 PM - 4 PM), `EVT-03` (DOMination, 11 AM onwards), `EVT-06` ((O)n Fire), and `EVT-07` (time discrepancies resolved).
+- **How it works:**
+  When `EventGallery` maps over past events, each event with a `poster.asset_url` renders a `.media-frame.media-frame-photo` element. Because the anchor link and image are positioned absolutely to inset 0, the container's height is determined purely by `aspect-ratio: 2.7` of the column width. The image scales with `object-fit: cover` and zooms slightly (`scale(1.03)`) on container hover within `overflow: hidden`.
+- **Why this approach:**
+  Without absolute positioning, CSS Grid items with `min-height: auto` expand to prevent content overflow when containing portrait images. Taking the image out-of-flow enforces the exact geometric frame defined by the design token specifications, eliminating jarring layout shifts between cards.
+- **Validation:**
+  - **Pass 1:** Verified Biome lint across 32 files (0 errors, 0 warnings). Ran `npm run build` (built client in 1.30s with 0 warnings).
+  - **Pass 2:** Ran backend pytest suite (35 passed, 1 skipped). Verified `GET /api/events` returns all 3 past events with poster URLs, and confirmed HTTP 200 on `/media/on-fire-poster.jpg`, `/media/domination.jpg`, and `/media/byte-the-vibe.jpg`.
+- **Limitations / remaining work:**
+  Future events without posters safely fall back to the striped `MediaPlaceholder` box without breaking grid alignment.
+- **Viva Q&A:**
+  *Why did the portrait "(O)n Fire" poster previously cause its gallery card to appear taller than the empty placeholders?*
+  By CSS Grid specification, grid items have an automatic minimum size of `min-height: auto`. When in-flow content such as an `<img>` with an intrinsic portrait aspect ratio (506x672) is placed inside a grid container without an explicit height, the browser expands the row to accommodate the content's min-content height, overriding the preferred `aspect-ratio: 2.7`. By applying `position: relative` to `.media-frame.media-frame-photo` and `position: absolute; inset: 0` to `.media-frame-link`, the image is taken out of normal flow, guaranteeing that the container height is strictly dictated by `aspect-ratio: 2.7` matching every placeholder card.
 
 ## 11. Template for Every Future Step
 
