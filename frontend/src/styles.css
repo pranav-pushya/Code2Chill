@@ -1213,6 +1213,277 @@ span[role="status"]:empty {
   }
 }
 
+/* Accessible screen-reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* About Page Enhancements */
+.about-section {
+  margin-top: var(--space-8);
+}
+.about-section-heading {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.about-section-sub {
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 48rem;
+  margin-bottom: var(--space-4);
+  line-height: 1.45;
+}
+
+/* 1. Impact Metrics Bar */
+.about-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--space-6) var(--space-4);
+  background: color-mix(in srgb, var(--paper) 60%, var(--sheet));
+}
+.about-metric-item {
+  border-left: 3px solid var(--blue);
+  padding-left: var(--space-3);
+}
+.about-metric-value {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.about-metric-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: var(--space-1);
+}
+.about-metric-desc {
+  font-size: var(--small-size);
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+/* 2. Domain Deep-Dive Cards */
+.about-domains-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+.about-domain-card {
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+}
+.about-domain-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+}
+.about-domain-icon {
+  font-size: 1.6rem;
+  margin-bottom: var(--space-2);
+}
+.about-domain-card h3 {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-2);
+  color: var(--ink);
+}
+.about-domain-card p {
+  font-size: var(--small-size);
+  color: var(--muted);
+  line-height: 1.45;
+  flex: 1;
+  margin-bottom: var(--space-4);
+}
+.about-domain-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+.about-domain-tag {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  background: color-mix(in srgb, var(--paper) 70%, var(--sheet));
+  border: 1px solid var(--rule);
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  color: var(--ink);
+}
+
+/* 3. Milestones Timeline */
+.about-timeline {
+  position: relative;
+  padding-left: 2rem;
+  margin-top: var(--space-4);
+}
+.about-timeline::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--rule);
+}
+.about-timeline-item {
+  position: relative;
+  margin-bottom: var(--space-6);
+}
+.about-timeline-item:last-child {
+  margin-bottom: 0;
+}
+.about-timeline-dot {
+  position: absolute;
+  left: -2rem;
+  top: 5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 3px solid var(--blue);
+}
+.about-timeline-item.upcoming .about-timeline-dot {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+.about-timeline-date {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--blue);
+  text-transform: uppercase;
+}
+.about-timeline-item.upcoming .about-timeline-date {
+  color: var(--ink);
+}
+.about-timeline-title {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 0.15rem;
+  margin-bottom: 0.35rem;
+  color: var(--ink);
+}
+.about-timeline-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.45;
+  max-width: 48rem;
+}
+
+/* 5. OSL Charter Banner */
+.about-osl-banner {
+  background: var(--membership-bg);
+  border: 1px solid #bfd3f8;
+  border-radius: var(--radius);
+  padding: var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+.about-osl-mark {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius);
+  background: var(--blue);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.about-osl-content {
+  flex: 1;
+  min-width: 240px;
+}
+.about-osl-content h3 {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: var(--space-1);
+  color: var(--ink);
+}
+.about-osl-content p {
+  font-size: 0.9rem;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+/* 6. FAQ List */
+.about-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.about-faq-item {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--sheet);
+  overflow: hidden;
+}
+.about-faq-summary {
+  padding: var(--space-4);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  list-style: none;
+}
+.about-faq-summary::-webkit-details-marker {
+  display: none;
+}
+.about-faq-chevron {
+  font-family: var(--mono);
+  font-size: 1.25rem;
+  color: var(--blue);
+  transition: transform var(--duration-fast) var(--ease-out);
+  margin-left: var(--space-2);
+}
+.about-faq-item[open] .about-faq-chevron {
+  transform: rotate(45deg);
+}
+.about-faq-answer {
+  padding: 0 var(--space-4) var(--space-4);
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 @media print {
   .site-head {
     position: static;

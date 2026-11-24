@@ -3,28 +3,195 @@ import { Link } from "react-router";
 import { ExternalLink, Page } from "./SiteLayout.jsx";
 import { useSiteLinks } from "./SiteLinks.jsx";
 
+const IMPACT_METRICS = [
+  {
+    value: "3+",
+    label: "Flagship Sprints",
+    desc: "Byte The Vibe, DOMination & (O)n Fire",
+  },
+  {
+    value: "₹17,300+",
+    label: "Cash Prizes Distributed",
+    desc: "Awarded directly to winning student teams",
+  },
+  {
+    value: "11",
+    label: "Core Mentors & Leads",
+    desc: "Cross-domain leadership and guidance",
+  },
+  {
+    value: "100+",
+    label: "Student Hackers",
+    desc: "Active campus participation",
+  },
+];
+
+const DOMAINS = [
+  {
+    icon: "⚡",
+    title: "Technical",
+    desc: "Full-stack web architecture, algorithm practice, open-source tooling, and maintaining club digital platforms.",
+    tags: ["React 19", "FastAPI", "LeetCode", "PostgreSQL"],
+  },
+  {
+    icon: "✍️",
+    title: "Content",
+    desc: "Curating event problem statements, authoring developer guides, technical documentation, and recap editorials.",
+    tags: ["Tech Writing", "Challenge Specs", "Recaps"],
+  },
+  {
+    icon: "📣",
+    title: "Social Media",
+    desc: "Digital storytelling, campus reels, LinkedIn developer spotlights, and engaging the student community.",
+    tags: ["LinkedIn", "Instagram", "Brand Voice"],
+  },
+  {
+    icon: "🎯",
+    title: "Promotion",
+    desc: "On-ground event logistics at Pierre & Einstein Hall, cross-club collaborations, sponsor liaison, and registrations.",
+    tags: ["Venue Ops", "Sponsorship", "OSL Desk"],
+  },
+];
+
+const MILESTONES = [
+  {
+    date: "May 18, 2026 · Pierre Hall",
+    title: "Byte The Vibe — Team Coding Sprint",
+    desc: "Inaugural team sprint pairing fast-paced coding with mentor guidance, judged final pitches, and ₹5,000 in cash awards powered by F Lounge & The Fifth Note Perfumes.",
+  },
+  {
+    date: "July 18, 2026 · Le Corbusier Block",
+    title: "DOMination — The Frontend Challenge",
+    desc: "Flagship frontend architecture contest where teams built responsive interfaces evaluated on DOM speed, accessibility, performance, and clean design systems.",
+  },
+  {
+    date: "September 23, 2026 · Einstein Hall",
+    title: "(O)n Fire — The LeetCode Competition",
+    desc: "Competitive algorithmic sprint solving high-difficulty LeetCode problems under intense countdown timers, featuring ₹12,300+ in cash prizes and trophies.",
+  },
+  {
+    date: "Next Up · Campus & Open Source",
+    title: "Community Mentorship & Winter Builds",
+    desc: "Expanding peer-to-peer coding sessions, contributor open-source repositories, and cross-discipline student hackathons.",
+    isUpcoming: true,
+  },
+];
+
+const FAQS = [
+  {
+    question: "Do I need prior competitive coding or web development experience to participate?",
+    answer: "No. Our workshops and sprints feature tiered challenge tracks and active peer mentors to guide students who are new to building software.",
+  },
+  {
+    question: "Can non-technical students join the Content, Social Media, or Promotion teams?",
+    answer: "Yes! Our Content, Media, and Operations domains welcome creative writers, graphic designers, video editors, and event organizers.",
+  },
+  {
+    question: "How do I get involved if recruitment is currently between cycles?",
+    answer: "You can attend all our open hackathons and workshops, submit project entries, or register interest through our Contact Desk or University Clubs portal.",
+  },
+];
+
 export function About() {
   return (
     <Page title="About Code2Chill">
       <p className="lede">
-        Code2Chill is a student-led technical club at Chitkara University.
-        Students learn by building together through workshops, hackathons and
-        coding events.
+        Where serious code meets chill vibes. Official student-led technical community under the{" "}
+        <strong>Office of Student Life at Chitkara University</strong>, dedicated to learning by building real software together through workshops, hackathons, and peer coding sprints.
       </p>
-      <section className="content-block">
-        <h2>Club domains</h2>
-        <ul className="domain-list">
-          {["Technical", "Content", "Social Media", "Promotion"].map((name) => (
-            <li key={name}>{name}</li>
+
+      {/* 1. Verified Impact Metrics Bar */}
+      <section className="about-section" aria-labelledby="about-metrics-heading">
+        <h2 id="about-metrics-heading" className="sr-only">Key Impact Numbers</h2>
+        <div className="about-metrics-grid">
+          {IMPACT_METRICS.map((metric) => (
+            <div key={metric.label} className="about-metric-item">
+              <div className="about-metric-value">{metric.value}</div>
+              <div className="about-metric-label">{metric.label}</div>
+              <div className="about-metric-desc">{metric.desc}</div>
+            </div>
           ))}
-        </ul>
+        </div>
       </section>
-      <div className="page-actions">
+
+      {/* 2. Domain Deep-Dive Cards */}
+      <section className="about-section" aria-labelledby="about-domains-heading">
+        <h2 id="about-domains-heading" className="about-section-heading">Club Domains</h2>
+        <p className="about-section-sub">
+          Our four specialized tracks allow students to sharpen engineering, editorial, media, and organizational leadership skills.
+        </p>
+        <div className="about-domains-grid">
+          {DOMAINS.map((domain) => (
+            <div key={domain.title} className="about-domain-card">
+              <span className="about-domain-icon" aria-hidden="true">{domain.icon}</span>
+              <h3>{domain.title}</h3>
+              <p>{domain.desc}</p>
+              <div className="about-domain-tags">
+                {domain.tags.map((tag) => (
+                  <span key={tag} className="about-domain-tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. Milestones & Growth Timeline */}
+      <section className="about-section" aria-labelledby="about-milestones-heading">
+        <h2 id="about-milestones-heading" className="about-section-heading">Our Journey & Milestones</h2>
+        <p className="about-section-sub">
+          From our inaugural sprint to competitive algorithm contests across campus halls.
+        </p>
+        <div className="about-timeline">
+          {MILESTONES.map((item) => (
+            <div key={item.title} className={`about-timeline-item ${item.isUpcoming ? "upcoming" : ""}`}>
+              <div className="about-timeline-dot" aria-hidden="true" />
+              <div className="about-timeline-date">{item.date}</div>
+              <h3 className="about-timeline-title">{item.title}</h3>
+              <p className="about-timeline-desc">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. Office of Student Life (OSL) Charter */}
+      <section className="about-section" aria-labelledby="about-osl-heading">
+        <div className="about-osl-banner">
+          <div className="about-osl-mark" aria-hidden="true">OSL</div>
+          <div className="about-osl-content">
+            <h3 id="about-osl-heading">Chartered under Chitkara University Office of Student Life</h3>
+            <p>
+              Code2Chill operates with official university recognition, providing verified extracurricular technical activities, certified event participation, and reserved state-of-the-art campus halls (Pierre Hall, Einstein Hall).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Student & Member FAQ */}
+      <section className="about-section" aria-labelledby="about-faq-heading">
+        <h2 id="about-faq-heading" className="about-section-heading">Frequently Asked Questions</h2>
+        <div className="about-faq-list">
+          {FAQS.map((faq) => (
+            <details key={faq.question} className="about-faq-item">
+              <summary className="about-faq-summary">
+                <span>{faq.question}</span>
+                <span className="about-faq-chevron" aria-hidden="true">+</span>
+              </summary>
+              <p className="about-faq-answer">{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <div className="page-actions" style={{ marginTop: "var(--space-8)" }}>
         <Link className="action" to="/team">
           Meet the team
         </Link>
+        <Link className="action" to="/events">
+          Explore events
+        </Link>
         <Link className="text-link" to="/contact">
-          Contact
+          Contact desk
         </Link>
       </div>
     </Page>

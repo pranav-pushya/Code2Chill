@@ -1809,6 +1809,28 @@ Fresh Chrome loads on both ports displayed the homepage heading, navigation and 
   *Why should custom 404 pages provide multiple contextual links rather than just a single "Go home" button?*
   Providing high-intent secondary pathways (e.g. "Browse Events", "Student Projects", "Meet the Team") significantly reduces user bounce rates when landing on dead or broken links. It immediately directs visitors into active discovery funnels while contextual telemetry reassures them of the application's underlying reliability.
 
+### TASK-118 — Expand About page with Impact Metrics, Domain Breakdown, Timeline, OSL Charter, and FAQ
+
+24 November 2026 · Content & UI Enhancement · Verified locally
+
+- **Date:** 24 November 2026.
+- **Roadmap step:** Phase 1 / Identity & Core Content Presentation.
+- **Status:** Implemented and verified.
+- **Objective:** Upgrade the bare-bones `/about` page (which previously only featured a short 3-line paragraph and four raw domain names) into a rich, comprehensive storytelling and discovery page. Specifically implement User-Approved Proposals: (1) Verified Impact Metrics Bar, (2) Domain Deep-Dive Cards with tech tags, (3) Milestones & Growth Timeline, (5) OSL Charter Affiliation Banner, and (6) Accessible Student & Member FAQ, while omitting Proposal 4 per instruction.
+- **Changes and files:**
+  - [frontend/src/ClubPages.jsx](../frontend/src/ClubPages.jsx): Replaced minimal `About` component with structured data models (`IMPACT_METRICS`, `DOMAINS`, `MILESTONES`, `FAQS`). Implemented accessible `<details>`/`<summary>` accordion FAQ, timeline steps with past and upcoming states, domain cards with role tags, impact statistics, and dual call-to-action pathways ("Meet the team", "Explore events", "Contact desk").
+  - [frontend/src/styles.css](../frontend/src/styles.css): Added styling for `.about-section`, `.about-section-heading`, `.about-metrics-grid`, `.about-metric-item`, `.about-domains-grid`, `.about-domain-card`, `.about-timeline`, `.about-osl-banner`, `.about-faq-list`, `.about-faq-item`, `.about-faq-summary`, and `.sr-only` accessibility utility.
+- **How it works:**
+  When visitors navigate to `/about`, they encounter an editorial layout grounded on the paper-sheet aesthetic. Key quantitative impact figures (`3+ Flagship Sprints`, `₹17,300+ Cash Prizes`, `11 Core Mentors`, `100+ Hackers`) establish community scale immediately. The domain cards explain what students actually do in Technical, Content, Social Media, and Promotion tracks. The vertical timeline presents chronological milestones from Byte The Vibe to DOMination, (O)n Fire, and future open-source mentorship. The OSL banner clarifies university recognition, while the native `<details>` FAQ addresses common admission questions without runtime overhead.
+- **Why this approach:**
+  Expands club identity using only verified facts and institutional evidence from `CONTENT_REGISTER.md`. Using semantic HTML elements (like native `<details>`/`<summary>`) guarantees 100% keyboard navigation, screen-reader accessibility, and zero external npm bundle bloat.
+- **Validation:**
+  - **Pass 1:** Verified Biome linter across 33 files (0 errors, 0 warnings).
+  - **Pass 2:** Built production client distribution with Vite (`dist/index.html` built cleanly in 425ms).
+- **Viva Q&A:**
+  *Why use native `<details>` and `<summary>` elements for FAQs instead of a custom stateful React accordion?*
+  HTML5 `<details>` and `<summary>` provide native browser accessibility out of the box: built-in keyboard toggling (Enter/Space), proper ARIA disclosure states (`aria-expanded` equivalent handled by browser engines), zero extra state rendering, and zero additional JavaScript bundle weight.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
