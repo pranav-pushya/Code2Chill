@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useSearchParams } from "react-router";
 import { PublicData } from "./PublicData.jsx";
 import { ExternalLink, Page } from "./SiteLayout.jsx";
@@ -114,11 +114,19 @@ async function post(cycle, path, body) {
 
 function ApplicationForm({ cycle }) {
   const attempt = useRef(null);
+  const formRef = useRef(null);
+  const focusCode = useRef(false);
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [receipt, setReceipt] = useState("");
+  useEffect(() => {
+    if (sent && !busy && focusCode.current) {
+      formRef.current?.elements.code?.focus();
+      focusCode.current = false;
+    }
+  }, [busy, sent]);
   async function submit(event) {
     event.preventDefault();
     if (busy) return;
@@ -139,6 +147,7 @@ function ApplicationForm({ cycle }) {
     try {
       if (sendCode) {
         await post(cycle, "email-code", identity);
+        focusCode.current = true;
         setSent(true);
         setNotice(
           "Check your university inbox. Your code is valid for 15 minutes.",
@@ -178,6 +187,7 @@ function ApplicationForm({ cycle }) {
       <CycleDetails cycle={cycle} />
       <p>Name, university email and domain are required.</p>
       <form
+        ref={formRef}
         className="sign-in-form draft-form"
         onSubmit={submit}
         aria-busy={busy || undefined}
@@ -268,6 +278,7 @@ function ApplicationForm({ cycle }) {
                   type="button"
                   className="text-link"
                   onClick={() => {
+                    formRef.current?.elements.university_email.focus();
                     setSent(false);
                     setError("");
                     setNotice("");

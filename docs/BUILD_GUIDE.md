@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 10 verified through step 10.4. The next step is 10.5.
+**Current stage:** Phase 10 verified through step 10.5. The next step is 10.6.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1438,6 +1438,14 @@ Seven authentication and export tests passed, including expiry, logout, role cha
 Both [intake endpoints](../backend/app/recruitment.py) accept JSON, count incoming bytes and stop at 32 KiB, including streamed requests. Five incorrect checks exhaust a code. Sending a fresh code resets the database counter under the existing cycle lock. The [migration](../backend/migrations/versions/0006_code_failures.py) initializes existing challenges. Resend throttling provides a retry interval. The release accepts text and hosted media links, so public file attachments receive HTTP 415 before parsing or storage.
 
 Seven PostgreSQL tests passed across intake, review and migration round trips, including an oversized streamed body and successful renewal after five failures. **Viva question.** Why count received bytes? Streaming requests can omit a declared length.
+
+### TASK-095 — Check keyboard access, contrast and form focus
+
+24 November 2026 · Step 10.5 · Verified locally
+
+The [application form](../frontend/src/Recruitment.jsx) moves focus to the code after sending or resending it. Change email returns focus to the email field. The [browser checks](../frontend/tests/public-pages.spec.js) use keyboard input for the skip link, phone menu, Escape and route changes. They verify required-field feedback and run axe on Home, Events, Projects, Team, the application and staff sign-in at 320 and 1440 pixels. CI runs the checks against the production build.
+
+All six Playwright cases passed in Chrome with synthetic API responses. Both widths fit without horizontal overflow. Axe reported zero violations in the selected WCAG A/AA rules after entry transitions settled. Physical devices and human screen-reader testing remain outside this pass. **Viva question.** Why move focus after sending? The newly available code field precedes the action button in keyboard order.
 
 ## 11. Template for Every Future Task or Step
 
