@@ -1518,6 +1518,14 @@ Operational monitoring and data resilience tooling are established across [backe
 
 Validated across two verification passes: Pass 1 ran the full backend test suite with 33 passing tests, Biome lint, and the Vite production build. Pass 2 executed CLI health monitor probes against local services, backup listing and verification, isolated operations unit tests, and Ruff linting across 45 files. **Viva question.** Why store SHA-256 checksums alongside database backups? Checksums guarantee bit-level integrity, detecting storage corruption or truncated file transfers before an administrator attempts a restore during an incident.
 
+### TASK-102 — Verify deployed user experience, deep links, and authentication state
+
+24 November 2026 · Step 11.4 · Verified locally
+
+The production user experience is verified against built distribution artifacts through [frontend/tests/deployed-experience.spec.js](../frontend/tests/deployed-experience.spec.js) across desktop (1440 × 900) and phone (320 × 740) viewports. Direct cold navigation and page refresh persistence were validated across all production routes (`/events`, `/projects`, `/team`, `/join`, `/status`, `/admin`), confirming that SPA fallback routing (`try_files {path} /index.html`) correctly serves content without 404 errors. Responsive brand marks (`club-mark-240.webp`, `club-mark-480.webp`, and compact icons) successfully decode with positive natural dimensions. The staff sign-in interface enforces input constraints, rejects invalid submissions with user-facing messages, and verifies authentication guards.
+
+Validated across two verification passes: Pass 1 ran the complete suite of 18 Playwright browser tests and all 33 backend pytest cases against PostgreSQL. Pass 2 executed isolated browser verification of `deployed-experience.spec.js` (6 passing tests), backend authentication security tests, Biome formatting and linting across 31 files, and Ruff checks across 45 files. **Viva question.** Why does SPA deep linking require specific web server fallback configuration like `try_files {path} /index.html`? Without server fallback rules, a direct request or browser refresh on a client-side route like `/events` prompts the web server to search for a literal filesystem directory named `/events`, returning HTTP 404 instead of serving `index.html` and allowing the client router to render the target view.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
