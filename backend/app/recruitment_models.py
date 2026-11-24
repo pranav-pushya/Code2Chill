@@ -81,6 +81,7 @@ class EmailChallenge(Base):
     attempt_id: Mapped[UUID] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(254))
     digest: Mapped[str] = mapped_column(String(64))
+    failed_checks: Mapped[int] = mapped_column(server_default="0")
     sent_at: Mapped[datetime] = mapped_column(UTCDateTime(), index=True)
 
 

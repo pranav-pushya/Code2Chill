@@ -131,3 +131,36 @@ def test_verified_intake_and_retry_after_cutoff(api_db, monkeypatch):
         == 409
     )
     assert connection.scalar(select(func.count()).select_from(Application)) == 1
+
+
+def test_intake_limits_and_code_renewal(api_db, monkeypatch):
+    client, connection = api_db
+    cycle = create_cycle(connection)
+    path = f"/api/recruitment/{cycle}"
+    sent = {}
+    monkeypatch.setattr(recruitment_mail, "mail_ready", lambda: True)
+    monkeypatch.setattr(recruitment_mail, "send_code", sent.__setitem__)
+    email = "student@campus.example"
+    identity = {"attempt_id": str(uuid4()), "university_email": email}
+    for route in ("/applications", "/email-code"):
+        assert (
+            client.post(path + route, files={"file": ("example.txt", b"sample")}).status_code == 415
+        )
+        oversized = client.post(
+            path + route,
+            headers={"content-type": "application/json"},
+            content=iter([b" " * 16384] * 3),
+        )
+        assert oversized.status_code == 413
+    assert client.post(path + "/email-code", json=identity).status_code == 204
+    assert client.post(path + "/email-code", json=identity).headers["Retry-After"] == "60"
+    form = identity | {"code": "incorrect", "domain": "technical", "full_name": "Test Student"}
+    for _ in range(5):
+        assert client.post(path + "/applications", json=form).status_code == 403
+    form["code"] = sent[email]
+    assert client.post(path + "/applications", json=form).status_code == 429
+    connection.execute(
+        update(EmailChallenge).values(sent_at=datetime.now(UTC) - timedelta(minutes=2))
+    )
+    assert client.post(path + "/email-code", json=identity).status_code == 204
+    assert client.post(path + "/applications", json=form | {"code": sent[email]}).status_code == 200

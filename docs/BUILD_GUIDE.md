@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 10 verified through step 10.3. The next step is 10.4.
+**Current stage:** Phase 10 verified through step 10.4. The next step is 10.5.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1430,6 +1430,14 @@ Twelve tests passed, including invalid input, duplicate applications, stale even
 The [credential error handler](../backend/app/main.py) now returns a short validation message if a password-change field is missing. The [authentication test](../backend/tests/test_admin_auth.py) also opens two independent sessions, changes the password and checks that the current session survives and the other session is revoked.
 
 Seven authentication and export tests passed, including expiry, logout, role changes, deactivated accounts and rejection of the old password. **Viva question.** Why check the second session directly? Deleting a browser cookie alone cannot invalidate another device’s server-side session.
+
+### TASK-094 — Limit public recruitment submissions
+
+24 November 2026 · Step 10.4 · Verified locally
+
+Both [intake endpoints](../backend/app/recruitment.py) accept JSON, count incoming bytes and stop at 32 KiB, including streamed requests. Five incorrect checks exhaust a code. Sending a fresh code resets the database counter under the existing cycle lock. The [migration](../backend/migrations/versions/0006_code_failures.py) initializes existing challenges. Resend throttling provides a retry interval. The release accepts text and hosted media links, so public file attachments receive HTTP 415 before parsing or storage.
+
+Seven PostgreSQL tests passed across intake, review and migration round trips, including an oversized streamed body and successful renewal after five failures. **Viva question.** Why count received bytes? Streaming requests can omit a declared length.
 
 ## 11. Template for Every Future Task or Step
 

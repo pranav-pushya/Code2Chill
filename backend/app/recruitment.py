@@ -4,7 +4,8 @@ import secrets
 from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.routing import APIRoute
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from sqlalchemy import delete, func, select
 from sqlalchemy.exc import IntegrityError
@@ -16,8 +17,39 @@ from .public_content import Database
 from .publication import https_link, recruitment_state, valid_email_domain
 from .recruitment_models import Application, EmailChallenge, RecruitmentCycle
 
-router = APIRouter(prefix="/api/recruitment", tags=["Recruitment"])
 CODE_LIFETIME = timedelta(minutes=15)
+MAX_CODE_FAILURES = 5
+MAX_BODY_BYTES = 32 * 1024
+
+
+class RecruitmentRoute(APIRoute):
+    def get_route_handler(self):
+        handle = super().get_route_handler()
+
+        async def limited(request: Request):
+            if request.method != "POST":
+                return await handle(request)
+            media_type = request.headers.get("content-type", "").partition(";")[0].strip().lower()
+            if media_type != "application/json":
+                raise HTTPException(
+                    415, "Send application details as JSON. Files are not accepted."
+                )
+            size = 0
+
+            async def receive():
+                nonlocal size
+                message = await request.receive()
+                size += len(message.get("body", b""))
+                if size > MAX_BODY_BYTES:
+                    raise HTTPException(413, "Application details exceed the 32 KiB limit.")
+                return message
+
+            return await handle(Request(request.scope, receive))
+
+        return limited
+
+
+router = APIRouter(prefix="/api/recruitment", tags=["Recruitment"], route_class=RecruitmentRoute)
 
 
 class Identity(BaseModel):
@@ -172,7 +204,9 @@ def request_code(cycle_id: int, body: Identity, db: Database):
     if db.scalar(recent) >= 20 or db.scalar(
         recent.where(EmailChallenge.email == body.university_email)
     ):
-        raise HTTPException(429, "Wait a minute before requesting another code.")
+        raise HTTPException(
+            429, "Wait a minute before requesting another code.", headers={"Retry-After": "60"}
+        )
     if challenge and challenge.email != body.university_email:
         raise HTTPException(409, "Start a new attempt for this email.")
     code = secrets.token_hex(8).upper()
@@ -182,6 +216,7 @@ def request_code(cycle_id: int, body: Identity, db: Database):
         )
         db.add(challenge)
     challenge.sent_at, challenge.digest = now, digest(code)
+    challenge.failed_checks = 0
     db.execute(
         delete(EmailChallenge).where(
             EmailChallenge.cycle_id == cycle_id,
@@ -219,8 +254,13 @@ def submit(cycle_id: int, body: Submission, db: Database):
         not challenge
         or challenge.email != body.university_email
         or challenge.sent_at + CODE_LIFETIME <= now
-        or not secrets.compare_digest(challenge.digest, digest(body.code.upper()))
     ):
+        raise HTTPException(403, "Enter a valid email code or request a new one.")
+    if challenge.failed_checks >= MAX_CODE_FAILURES:
+        raise HTTPException(429, "Request a new email code to continue.")
+    if not secrets.compare_digest(challenge.digest, digest(body.code.upper())):
+        challenge.failed_checks += 1
+        db.commit()
         raise HTTPException(403, "Enter a valid email code or request a new one.")
     values = {
         "full_name": body.full_name,

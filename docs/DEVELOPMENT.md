@@ -56,11 +56,13 @@ The first command creates the tables. Run it after pulling a schema change. The 
 
 ### Enable local recruitment on a configured cycle
 
-Apply migration `0003` with the schema command above. Set `RECRUITMENT_SMTP_HOST` and `RECRUITMENT_MAIL_FROM` in the backend environment. The mailer uses SMTP over TLS on port 465 by default. Set the port and any required credentials using the names in the [environment example](../backend/.env.example). For staging, supply the values in the staging Compose environment and recreate the API service.
+Apply migrations through head with the schema command above. Migration `0006` adds a counter for incorrect email codes. Set `RECRUITMENT_SMTP_HOST` and `RECRUITMENT_MAIL_FROM` in the backend environment. The mailer uses SMTP over TLS on port 465 by default. Set the port and any required credentials using the names in the [environment example](../backend/.env.example). For staging, supply the values in the staging Compose environment and recreate the API service.
 
 The seed leaves recruitment unannounced. A published local cycle needs opening and closing times, eligibility, enabled domains, an active assigned reviewer, and the approved lowercase email domain (for example, `campus.example` in a test). Set `optional_field` to `motivation`, `portfolio_url` or leave it empty. Publish the configured cycle through the existing publication helper. Previously published local cycles need an approved email domain and a fresh publication before the application link appears. Cycle configuration currently requires backend access.
 
 Applicants start at `/join`. Verification codes expire after 15 minutes. An applicant who loses the submit response should keep the page open and retry with the same details to recover the confirmation. The form keeps the attempt and entered values in page memory.
+
+Five incorrect entries require a new code. A cycle sends up to 20 codes per minute, with one per email per minute. The two intake endpoints accept JSON bodies up to 32 KiB and reject attachments. Staff media records refer to hosted images by URL.
 
 ### Create a staff account
 
