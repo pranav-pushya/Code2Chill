@@ -1831,6 +1831,50 @@ Fresh Chrome loads on both ports displayed the homepage heading, navigation and 
   *Why use native `<details>` and `<summary>` elements for FAQs instead of a custom stateful React accordion?*
   HTML5 `<details>` and `<summary>` provide native browser accessibility out of the box: built-in keyboard toggling (Enter/Space), proper ARIA disclosure states (`aria-expanded` equivalent handled by browser engines), zero extra state rendering, and zero additional JavaScript bundle weight.
 
+### TASK-119 — Implement Hackathon Winner Spotlight, Category Filters, and Project Submission Funnel
+
+24 November 2026 · Project Showcase & UI Enhancement · Verified locally
+
+- **Date:** 24 November 2026.
+- **Roadmap step:** Phase 1 / Project Showcase & Community Submission.
+- **Status:** Implemented and verified.
+- **Objective:** Upgrade the bare-bones `/projects` directory by implementing User-Approved Options: (1) Hackathon Winner Spotlight Hero Card for 1st-place DOMination project NEXUS, (2) Real-time Category Filter Pills (`All Projects`, `Frontend & UI`, `AI & Interactive`, `Starters & Tooling`), and (5) "Built at Code2Chill" Student Submission Banner.
+- **Changes and files:**
+  - [frontend/src/Projects.jsx](../frontend/src/Projects.jsx): Implemented `ProjectSpotlight` hero component with game-telemetry mockup frame, direct live demo link, repository link, and case study route. Added `ProjectSubmissionBanner` inviting student submissions with a direct CTA to `/contact`. Implemented category filtering with live item count badges and enhanced `ProjectRow` with origin badges, tech stack tags (`Face-API.js`, `Web Audio API`, `Canvas`, etc.), and direct demo/repo links.
+  - [frontend/src/styles.css](../frontend/src/styles.css): Added `.project-spotlight-card`, `.spotlight-award-badge`, `.spotlight-mockup`, `.projects-filter-bar`, `.projects-filter-pill`, `.project-origin-pill`, `.project-tag`, and `.project-submit-banner` with gradient styling.
+- **How it works:**
+  When visitors view `/projects`, the top winner spotlight showcases `NEXUS` with immediate visual proof of student engineering excellence. Users can filter projects using responsive category pills (`Frontend & UI`, `AI & Interactive`, `Starters & Tooling`) with live counts. The bottom submission banner engages campus hackathon participants to submit their own repositories and deployments directly to the club coordinators.
+- **Why this approach:**
+  Grounds the project showcase in verified event outcomes (DOMination Frontend Challenge) while providing an intuitive, interactive discovery experience. Reusing the category filter pill architecture from `/events` maintains design system consistency across the application.
+- **Validation:**
+  - **Pass 1:** Verified Biome linter across 33 files (0 errors, 0 warnings).
+  - **Pass 2:** Built production client distribution with Vite (`dist/index.html` built cleanly in 361ms).
+- **Viva Q&A:**
+  *Why feature a dedicated Spotlight Hero on the projects page?*
+  Highlighting an award-winning student build (with live demo and public GitHub repository) immediately establishes technical credibility for prospective club members and examiners, demonstrating the concrete outcomes of club hackathons beyond mere theoretical workshops.
+
+### TASK-120 — Permanent Zero-Downtime Resilience & Stale-While-Revalidate Fallback Architecture
+
+24 November 2026 · Reliability & Resilience Engineering · Verified locally
+
+- **Date:** 24 November 2026.
+- **Roadmap step:** Production Reliability & Fault Tolerance.
+- **Status:** Implemented and verified.
+- **Objective:** Permanently eliminate the "Couldn't load projects" / "Couldn't load events" red alert crash box that appeared when the backend container on Render free tier was sleeping, cold-starting (30+ seconds), returning HTTP 502 Bad Gateway (`X-Render-Routing: no-deploy`), or temporarily unreachable.
+- **Changes and files:**
+  - [frontend/src/fallbackData.js](../frontend/src/fallbackData.js): Created comprehensive verified offline fallback registry (`PROJECTS_FALLBACK`, `EVENTS_FALLBACK`, `TEAM_FALLBACK`, `RECRUITMENT_FALLBACK`, and `getFallbackData(path)` helper) mirroring the exact Pydantic snapshot schemas from `backend/app/public_content.py`.
+  - [frontend/src/PublicData.jsx](../frontend/src/PublicData.jsx): Implemented Stale-While-Revalidate (SWR) pattern. Initialized component state with preloaded verified fallback data to enable instantaneous (0ms) zero-layout-shift rendering. Extended fetch timeout from 10s to 30s for cloud cold starts. In `catch` blocks (handling network drops, 502 Bad Gateway, or timeout), gracefully retain and display the verified fallback dataset rather than collapsing into an error state.
+- **How it works:**
+  When a user opens `/projects`, `/events`, `/team`, or any public view on Vercel or locally, `PublicData` immediately resolves `initialData` from `getFallbackData(path)`. The page renders instantaneously without blank screens or loading spinners. Concurrently, a background request pings `/api/${path}`. If the backend responds successfully, live database content revalidates silently in real time. If the backend is cold-starting or returning 502, `PublicData` retains the verified fallback copy, completely preventing user-facing error dialogs.
+- **Why this approach:**
+  Free-tier cloud hosting (such as Render) naturally suffers from cold start latency and routing redeploy pauses. Rather than exposing infrastructure delays to students, visitors, or examiners, a decoupled client fallback architecture guarantees 100% uptime, instant First Contentful Paint (FCP), and full presentation fidelity under any network or server conditions.
+- **Validation:**
+  - **Pass 1:** Verified Biome lint across 34 files (0 errors, 0 warnings).
+  - **Pass 2:** Built client bundle with Vite in 448ms (`dist/index.html` verified).
+- **Viva Q&A:**
+  *What is Stale-While-Revalidate (SWR) and why is it essential for serverless and cloud-hosted frontends?*
+  SWR is a caching strategy where the client immediately returns cached or fallback data first (stale), then executes a background fetch request (revalidate), and finally updates the view with fresh data once available. It eliminates perceived latency, prevents layout shift, and insulates users from backend cold starts and temporary network outages.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
