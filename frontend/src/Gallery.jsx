@@ -1,7 +1,18 @@
+import { useState } from "react";
 import { Link } from "react-router";
 
 export function PublishedImage({ image }) {
+  const [failedUrl, setFailedUrl] = useState(null);
   if (!image?.asset_url) return null;
+  if (failedUrl === image.asset_url)
+    return (
+      <figure className="media-placeholder">
+        <div className="media-frame">Image unavailable</div>
+        <figcaption>
+          {image.alt_text} · {image.credit}
+        </figcaption>
+      </figure>
+    );
   return (
     <figure>
       <img
@@ -10,6 +21,7 @@ export function PublishedImage({ image }) {
         decoding="async"
         src={image.asset_url}
         alt={image.alt_text}
+        onError={() => setFailedUrl(image.asset_url)}
       />
       <figcaption>{image.credit}</figcaption>
     </figure>

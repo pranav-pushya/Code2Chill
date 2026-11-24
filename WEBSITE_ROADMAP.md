@@ -2,7 +2,7 @@
 
 **Prepared:** 16 November 2026  
 **Project:** Dynamic Python full-stack website for Code2Chill, Chitkara University  
-Phase 10 verified through step 10.5. The next step is 10.6. Step 3.7 awaits approved club images and credits.
+Phase 10 verified through step 10.6. The next step is 10.7. Step 3.7 awaits approved club images and credits.
 
 ## Objective
 
@@ -258,7 +258,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **10.3 Verify authentication.** Check session expiry, logout, password handling, and permission enforcement.
 - [x] **10.4 Protect public submissions and uploads.** Apply suitable rate limits and validate file type, size, and handling.
 - [x] **10.5 Check accessibility.** Verify keyboard navigation, focus order, contrast, labels, form errors, and mobile layouts.
-- [ ] **10.6 Check degraded conditions.** Exercise slow connections, API failures, missing media, and empty datasets.
+- [x] **10.6 Check degraded conditions.** Exercise slow connections, API failures, missing media, and empty datasets.
 - [ ] **10.7 Measure performance.** Fix the largest measured bottlenecks and record remaining limitations.
 - [ ] **10.8 Validate recovery.** Test migrations and backup restoration against a production-like database.
 

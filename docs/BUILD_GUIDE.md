@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 10 verified through step 10.5. The next step is 10.6.
+**Current stage:** Phase 10 verified through step 10.6. The next step is 10.7.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1446,6 +1446,14 @@ Seven PostgreSQL tests passed across intake, review and migration round trips, i
 The [application form](../frontend/src/Recruitment.jsx) moves focus to the code after sending or resending it. Change email returns focus to the email field. The [browser checks](../frontend/tests/public-pages.spec.js) use keyboard input for the skip link, phone menu, Escape and route changes. They verify required-field feedback and run axe on Home, Events, Projects, Team, the application and staff sign-in at 320 and 1440 pixels. CI runs the checks against the production build.
 
 All six Playwright cases passed in Chrome with synthetic API responses. Both widths fit without horizontal overflow. Axe reported zero violations in the selected WCAG A/AA rules after entry transitions settled. Physical devices and human screen-reader testing remain outside this pass. **Viva question.** Why move focus after sending? The newly available code field precedes the action button in keyboard order.
+
+### TASK-096 — Exercise slow requests, failures and missing media
+
+24 November 2026 · Step 10.6 · Verified locally
+
+The [browser tests](../frontend/tests/degraded-pages.spec.js) hold an event request open, return a service error, retry to an empty list and follow its recovery link. A separate test gives a published project an image that returns 404. The [shared image component](../frontend/src/Gallery.jsx) now displays “Image unavailable” with the original description and credit. The rest of the project stays usable.
+
+All four scenarios passed across phone and desktop widths using controlled network responses. **Viva question.** Why distinguish an empty list from an outage? An empty list is a valid response with a next destination. A service error gives the visitor a retry action.
 
 ## 11. Template for Every Future Task or Step
 
