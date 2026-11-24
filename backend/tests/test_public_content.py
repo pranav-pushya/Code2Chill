@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.content_models import Event, Member, Project, RegistrationStatus
+from app.public_content import public_event
 from app.publication import snapshot_for
 from app.seed import seed_content
 from app.time_rules import campus_date
@@ -74,3 +75,34 @@ def test_public_registration_handoff_follows_published_window(api_db):
         event.public_snapshot = snapshot_for(db, event)
     closed = client.get(endpoint).json()
     assert closed["registration_status"] == "closed" and closed["registration_url"] is None
+
+
+def test_registration_link_at_exact_window_boundaries():
+    opening = datetime(2030, 1, 8, 9, tzinfo=UTC)
+    closing = opening + timedelta(hours=1)
+    end = closing + timedelta(hours=1)
+    tick = timedelta(microseconds=1)
+    url = "https://chitkarau.life/events/workshop"
+    snapshot = {
+        "slug": "workshop",
+        "title": "Workshop",
+        "summary": "Campus event",
+        "venue": None,
+        "starts_at": None,
+        "ends_at": end.isoformat(),
+        "event_date": "2030-01-08",
+        "official_url": None,
+        "registration_status": "open",
+        "registration_url": url,
+        "registration_opens_at": opening.isoformat(),
+        "registration_closes_at": closing.isoformat(),
+    }
+    for instant, status, link in [
+        (opening - tick, "pending", None),
+        (opening, "open", url),
+        (closing - tick, "open", url),
+        (closing, "closed", None),
+        (end, "ended", None),
+    ]:
+        event = public_event(snapshot, instant)
+        assert (event.registration_status, event.registration_url) == (status, link)

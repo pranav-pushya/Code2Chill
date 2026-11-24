@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 10 verified through step 10.1. The next step is 10.2.
+**Current stage:** Phase 10 verified through step 10.2. The next step is 10.3.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1414,6 +1414,14 @@ Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files), p
 The [journey test](../backend/tests/test_admin_recruitment.py) discovers the published cycle, requests a code, submits the application, signs in as staff and accepts the same record. An identical student retry returns the original receipt. The existing event journey also checks draft visibility, preview, publication and the university registration destination.
 
 Nine workflow tests passed against PostgreSQL. Email delivery was captured in memory and the university handoff ended at its URL. **Viva question.** Why use the same record throughout? It checks that what the student submits is what staff can actually review.
+
+### TASK-092 — Check registration and submission boundaries
+
+24 November 2026 · Step 10.2 · Verified locally
+
+The [registration test](../backend/tests/test_public_content.py) checks the public response one microsecond before opening, exactly at opening, just before closing, at closing and at the event end. Only the open responses carry the university registration URL. An explicit clock keeps the test repeatable.
+
+Twelve tests passed, including invalid input, duplicate applications, stale event revisions, closed cycles and denied staff requests. **Viva question.** When is registration available? The opening instant is inclusive and the closing instant is exclusive.
 
 ## 11. Template for Every Future Task or Step
 
