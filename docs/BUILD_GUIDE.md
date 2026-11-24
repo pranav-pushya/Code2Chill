@@ -1666,6 +1666,7 @@ Validated across two verification passes: Pass 1 ran all 35 backend pytest cases
 - **Validation:**
   Pass 1: Ran Biome linter across 32 frontend files (0 errors, 0 warnings). Vite production build succeeded in 1.88s.
   Pass 2: Ran backend test suite (`uv run pytest`), all 36 tests passing (1 skipped, 0 failures).
+- **Delivery:** Pushed to `origin/main` in commit `92b07c3` (`remove status from footer`).
 - **Viva Q&A:**
   *Why keep the `/api/health` and `/status` routes if the footer link is removed?*
   Automated container orchestrators (e.g., Docker `HEALTHCHECK`), external uptime monitors, and technical evaluators rely on deterministic HTTP probe endpoints (`/api/health` returning JSON `{"status": "ok", "database": "ok"}`). Retaining the endpoint ensures automated infrastructure resilience without cluttering the public user journey.
