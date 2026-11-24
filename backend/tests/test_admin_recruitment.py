@@ -2,7 +2,9 @@ from uuid import uuid4
 
 from sqlalchemy import delete, insert, select, update
 from test_admin_auth import EMAIL, HEADER, provision, sign_in
+from test_recruitment import create_cycle
 
+from app import recruitment_mail
 from app.admin_models import (
     AdminAccount,
     AdminRole,
@@ -19,6 +21,34 @@ from app.recruitment_models import (
 )
 
 ROOT = "/api/admin/recruitment"
+
+
+def test_public_application_reaches_staff_review(api_db, monkeypatch):
+    client, connection = api_db
+    cycle = create_cycle(connection)
+    sent = {}
+    monkeypatch.setattr(recruitment_mail, "mail_ready", lambda: True)
+    monkeypatch.setattr(recruitment_mail, "send_code", sent.__setitem__)
+    advertised = client.get("/api/recruitment").json()
+    assert advertised["route"] == "local" and advertised["id"] == cycle
+    path = f"/api/recruitment/{cycle}"
+    email = "applicant@campus.example"
+    identity = {"attempt_id": str(uuid4()), "university_email": email}
+    assert client.post(path + "/email-code", json=identity).status_code == 204
+    form = identity | {"code": sent[email], "domain": "technical", "full_name": "Test Student"}
+    receipt = client.post(path + "/applications", json=form).json()["receipt"]
+    provision(connection, AdminRole.ADMIN)
+    assert sign_in(client).status_code == 200
+    listing = f"{ROOT}/{cycle}/applications"
+    [application] = client.get(listing, params={"status": "pending"}).json()["applications"]
+    detail = f"{listing}/{application['id']}"
+    assert client.get(detail).json()["university_email"] == email
+    decision = client.patch(
+        detail, headers=HEADER, json={"expected_status": "pending", "status": "accepted"}
+    )
+    assert decision.json()["history"][0]["new_state"] == "accepted"
+    assert client.get(listing, params={"status": "pending"}).json()["applications"] == []
+    assert client.post(path + "/applications", json=form).json() == {"receipt": receipt}
 
 
 def cycle_with_applicant(connection, slug, name):

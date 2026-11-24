@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 9.1 through 9.6 are implemented and verified. Removing experiment controls (9.7) is next.
+**Current stage:** Phase 10 verified through step 10.1. The next step is 10.2.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1406,6 +1406,14 @@ Optimized asset loading sequences, image decoding pipelines, and CSS rendering c
 - **Hit-Testing & Paint Containment:** Added `pointer-events: none;` to large decorative background layers (`.brand-art::before`, `.print::before`, `.ticket::before`, `.ticket::after`) in [pages.css](design/pages.css) to eliminate mouse movement hit-testing overhead on rotated gradient canvases. Added `contain: layout paint;` to `.gallery-grid figure` in [styles.css](../frontend/src/styles.css) to isolate card layout computations and hover box-shadow repaints from the broader document. [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Home View](../frontend/src/Home.jsx) · [Site Layout](../frontend/src/SiteLayout.jsx) · [Gallery View](../frontend/src/Gallery.jsx)
 
 Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files), production client build `vite build` (passed in 416ms), motion CDP check (`phase9-motion-check.mjs`), and end-to-end recruitment UI check (`phase8-ui-check.mjs`). **Viva question.** Why combine `fetchPriority="high"` with `decoding="async"` on hero images? `fetchPriority="high"` informs the browser's preload and network scheduler to bump the critical Largest Contentful Paint (LCP) hero asset ahead of lower-priority scripts or background fetches, while `decoding="async"` decodes the raster WebP pixels off the main JavaScript UI thread, avoiding frame stutters during initial render.
+
+### TASK-091 — Follow a recruitment application into review
+
+24 November 2026 · Step 10.1 · Verified locally
+
+The [journey test](../backend/tests/test_admin_recruitment.py) discovers the published cycle, requests a code, submits the application, signs in as staff and accepts the same record. An identical student retry returns the original receipt. The existing event journey also checks draft visibility, preview, publication and the university registration destination.
+
+Nine workflow tests passed against PostgreSQL. Email delivery was captured in memory and the university handoff ended at its URL. **Viva question.** Why use the same record throughout? It checks that what the student submits is what staff can actually review.
 
 ## 11. Template for Every Future Task or Step
 
