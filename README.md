@@ -107,6 +107,7 @@ The project enforces continuous living documentation updated across all developm
 | :--- | :--- |
 | **[Implementation Roadmap](WEBSITE_ROADMAP.md)** | 11-phase master execution plan with strict completion criteria. |
 | **[Living Build Guide](docs/BUILD_GUIDE.md)** | Chronological task history (`TASK-001`+), verification logs, and viva defense answers. |
+| **[Handover & Operations](docs/HANDOVER.md)** | Production deployment, rollback procedures, admin onboarding, and operational checklists. |
 | **[Local Development Guide](docs/DEVELOPMENT.md)** | Prerequisites, local PostgreSQL container, FastAPI startup, and Vite client execution. |
 | **[Content Register](docs/CONTENT_REGISTER.md)** | Verified club facts, leadership roster, past events, and media provenance. |
 | **[Launch Scope & Rules](docs/LAUNCH_SCOPE.md)** | MVP feature boundaries, university registration handoff, and recruitment rules. |

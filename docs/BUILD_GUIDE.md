@@ -1526,6 +1526,14 @@ The production user experience is verified against built distribution artifacts 
 
 Validated across two verification passes: Pass 1 ran the complete suite of 18 Playwright browser tests and all 33 backend pytest cases against PostgreSQL. Pass 2 executed isolated browser verification of `deployed-experience.spec.js` (6 passing tests), backend authentication security tests, Biome formatting and linting across 31 files, and Ruff checks across 45 files. **Viva question.** Why does SPA deep linking require specific web server fallback configuration like `try_files {path} /index.html`? Without server fallback rules, a direct request or browser refresh on a client-side route like `/events` prompts the web server to search for a literal filesystem directory named `/events`, returning HTTP 404 instead of serving `index.html` and allowing the client router to render the target view.
 
+### TASK-103 — Author comprehensive production handover and operations manual
+
+24 November 2026 · Step 11.5 · Verified locally
+
+Comprehensive operational and administrative handover documentation is established in [docs/HANDOVER.md](HANDOVER.md) and referenced from [README.md](../README.md). The manual details the complete system topology (Caddy reverse proxy, FastAPI runtime, non-root user execution, PostgreSQL isolation, and persistent media storage volumes), production environment secret generation (`openssl rand -hex 24`), multi-container launch sequences, database migrations, and clean data seeding. It provides step-by-step administrator onboarding procedures via CLI (`python -m app.create_admin`), permission tier boundaries (`admin`, `editor`, `reviewer`), role deactivation semantics, content publishing flows, and emergency rollback procedures (container rollbacks, migration downgrades, and full database disaster recovery).
+
+Validated across two verification passes: Pass 1 executed the complete backend test suite (33 passing tests) and frontend lint/build. Pass 2 confirmed the full Playwright suite (18 passing tests across mobile and desktop viewports), Ruff linting across 45 files, and verified internal documentation links. **Viva question.** How does account deactivation protect the club if an administrator leaves? Rather than deleting database accounts (which would break foreign key audit trails in `audit_record`), setting `active = false` immediately invalidates current and future session lookups on their very next HTTP request because `current_account` checks `AdminAccount.active.is_(True)`.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
