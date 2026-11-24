@@ -1494,6 +1494,14 @@ The isolated drill passed, then the complete backend suite passed all 27 tests w
 
 **Viva question.** What proves the backup is usable? A fresh database accepted the archive, preserved a student receipt and linked content, migrated to the current schema, and allocated a new application ID.
 
+### TASK-099 — Configure production environment, database isolation, media storage, and HTTPS
+
+24 November 2026 · Step 11.1 · Verified locally
+
+Production multi-container configuration is established in [backend/compose.prod.yaml](../backend/compose.prod.yaml) and [backend/Caddyfile](../backend/Caddyfile). The PostgreSQL database service is isolated to the internal Docker bridge network without exposing port 5432 to the host. The API service runs under non-root execution (`nobody:nogroup`), mounts a persistent media volume at `/srv/media`, and enforces required production secrets via [backend/.env.production.example](../backend/.env.production.example). Caddy manages automated Let's Encrypt / ZeroSSL HTTPS certificates using `{$SERVER_NAME::8080}`, applies production security headers (`Strict-Transport-Security`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`), enables `zstd gzip` compression, and mounts the persistent media volume read-only (`:ro`) to serve uploaded assets directly under `/media/*`.
+
+Validated across two verification passes: Pass 1 confirmed interpolation guards for missing secrets (`POSTGRES_PASSWORD`, `PUBLIC_SITE_URL`), quiet compose syntax validation, Ruff lint and formatting across 41 files, all 26 backend pytest cases passing, Biome lint, and the Vite production build. Pass 2 executed matrix variable tests and all 12 Playwright browser and axe accessibility tests across mobile and desktop viewports. **Viva question.** Why isolate the database container without binding port 5432 to the host? Mapping database ports to host interfaces opens external attack vectors; keeping Postgres on an internal container bridge allows only the authenticated API container to communicate with the database.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.

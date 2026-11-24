@@ -1,11 +1,22 @@
-:8080 {
+{$SERVER_NAME::8080} {
     root * /srv
+    encode zstd gzip
+
+    # Production security headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    }
+
     redir /index.html / 308
     @api path /api /api/*
     handle @api {
         reverse_proxy api:8000
     }
-    @files path /assets/* /licenses/* /share/*
+    @files path /assets/* /licenses/* /share/* /media/*
     handle @files {
         file_server
     }

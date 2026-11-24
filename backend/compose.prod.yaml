@@ -1,0 +1,71 @@
+services:
+  db:
+    image: postgres:17-bookworm
+    restart: always
+    environment:
+      POSTGRES_DB: code2chill
+      POSTGRES_USER: code2chill
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a strong POSTGRES_PASSWORD in .env.production}
+    volumes:
+      - postgres-prod-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U code2chill -d code2chill"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    ports: !reset []
+
+  api:
+    build:
+      context: ..
+      target: api
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_HOST_PORT: "5432"
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:?Set canonical HTTPS PUBLIC_SITE_URL in .env.production}
+      RECRUITMENT_SMTP_HOST: ${RECRUITMENT_SMTP_HOST:-}
+      RECRUITMENT_SMTP_PORT: ${RECRUITMENT_SMTP_PORT:-465}
+      RECRUITMENT_MAIL_FROM: ${RECRUITMENT_MAIL_FROM:-}
+      RECRUITMENT_SMTP_USER: ${RECRUITMENT_SMTP_USER:-}
+      RECRUITMENT_SMTP_PASSWORD: ${RECRUITMENT_SMTP_PASSWORD:-}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.production}
+    volumes:
+      - media-prod-data:/srv/media
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", ".venv/bin/python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/api/health', timeout=4).close()"]
+      interval: 5s
+      timeout: 6s
+      retries: 12
+
+  web:
+    build:
+      context: ..
+      target: web
+    restart: always
+    environment:
+      SERVER_NAME: ${SERVER_NAME:-:80}
+    ports:
+      - "${PROD_HTTP_PORT:-80}:80"
+      - "${PROD_HTTPS_PORT:-443}:443"
+    volumes:
+      - caddy-prod-data:/data
+      - caddy-prod-config:/config
+      - media-prod-data:/srv/media:ro
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:2019/config/ || wget -q -O /dev/null http://127.0.0.1:80/api/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  postgres-prod-data:
+  caddy-prod-data:
+  caddy-prod-config:
+  media-prod-data:
