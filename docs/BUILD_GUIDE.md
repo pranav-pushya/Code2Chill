@@ -1559,6 +1559,14 @@ Platform governance, credential transfer protocols, routine maintenance cycles, 
 
 Validated across two verification passes: Pass 1 ran all 33 backend pytest cases against PostgreSQL, verified Biome linting across 32 files, and confirmed a clean Vite production build. Pass 2 executed all 18 Playwright browser tests across phone and desktop viewports, Ruff linting across 45 files, and Biome format validation. **Viva question.** Why should staff accounts of departing leads be marked inactive rather than deleted from the database? Deleting an administrator account record deletes or nulls corresponding foreign key references in the `audit_record` table, destroying the forensic audit trail; setting `active = false` prevents any future login attempts while preserving full immutable historical attribution for all content edits and published changes.
 
+### TASK-112 — Restore the local homepage after a footer change
+
+24 November 2026 · Local preview repair
+
+Chrome reproduced a blank page at ports 5174 and 5173. The [shared footer](../frontend/src/SiteLayout.jsx) referenced an undefined logo variable, so React stopped rendering before the homepage appeared. Restoring the existing club icon import preserves the footer design. The [lint configuration](../frontend/biome.json) now reports undeclared variables as errors alongside the existing recommended checks.
+
+Fresh Chrome loads on both ports displayed the homepage heading, navigation and featured event with no browser errors or failed requests. The frontend production build, lint and formatting checks passed. A small JSX fixture with the import omitted was rejected by the linter. **Viva question.** Why could the health endpoint succeed during this failure? It checks the API and database. Rendering the shared layout also requires working browser code.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
