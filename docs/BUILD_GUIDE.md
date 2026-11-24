@@ -1750,6 +1750,25 @@ Fresh Chrome loads on both ports displayed the homepage heading, navigation and 
   *Why does SQLAlchemy require `postgresql+psycopg://` instead of the standard `postgresql://` URI provided by cloud hosts?*
   In SQLAlchemy, the URL scheme specifies both the database dialect and the driver (`dialect+driver://`). The plain `postgresql://` scheme historically defaults to the legacy `psycopg2` C-extension driver. Because modern Python 3.13/3.14 deployments use `psycopg` (v3), specifying or automatically mapping to `postgresql+psycopg://` instructs SQLAlchemy to load the v3 driver, preventing runtime `NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgresql.psycopg2` exceptions.
 
+### TASK-115 — Configure Vercel API reverse proxy and SPA routing fallbacks
+
+24 November 2026 · Cloud Hosting & Reverse Proxy · Verified locally
+
+- **Date:** 24 November 2026.
+- **Roadmap step:** Production Cloud Deployment & Frontend Routing.
+- **Status:** Implemented and verified.
+- **Objective:** Fix the frontend "Couldn't load" errors when deployed on Vercel by routing relative `/api/*` endpoints directly to the live Render backend (`https://code2chill.onrender.com`), and prevent HTTP 404 errors during client-side route reloads.
+- **Changes and files:**
+  - [frontend/vercel.json](../frontend/vercel.json) & [vercel.json](../vercel.json): Added Vercel rewrite configuration mapping `/api/:path*` to `https://code2chill.onrender.com/api/:path*` and fallback routing `/(.*)` to `/index.html`.
+- **How it works:**
+  Vercel evaluates static assets first (serving CSS, JavaScript bundles, and images from `/media/`). For all dynamic API requests (`/api/*`), Vercel acts as a reverse proxy, forwarding the requests directly to the live Render backend while preserving same-origin semantics for client cookies and security headers. Unmatched HTML paths fall back to `/index.html` to allow React Router to hydrate the requested client-side view.
+- **Validation:**
+  - **Pass 1:** Verified JSON configuration syntax and tested curl against `https://code2chill.onrender.com/api/health` (HTTP 200 `{"status": "ok"}`) and `https://code2chill.onrender.com/api/events` (returns all 3 seeded past events with poster metadata).
+  - **Pass 2:** Executed frontend Biome format and lint check (0 errors across 32 files), and Vite production build.
+- **Viva Q&A:**
+  *Why is a Vercel rewrite proxy superior to configuring CORS and hardcoding the backend URL in client bundles?*
+  Hardcoding backend URLs tightly couples client builds to specific hostnames, exposes internal origins, and triggers cross-origin CORS preflight latency (`OPTIONS` requests) on every interaction. A reverse proxy preserves relative URLs (`/api/...`), enabling first-party cookie transmission (`SameSite=Lax`), preventing third-party cookie blocking, and allowing the backend host to change without rebuilding or redeploying client assets.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
