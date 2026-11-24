@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 10 verified through step 10.7. The next step is 10.8.
+**Current stage:** Phase 10 verified through step 10.8. Phase 11 launch preparation is next.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -59,7 +59,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Recruitment | Intake and decisions verified locally | Local applicants verify their email and receive a reference. Authorized staff can filter submissions, record decisions and read their history. Exports are pending. [Review API](../backend/app/admin_recruitment.py) |
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
 | Interaction and visual polish | Verified locally | The interface supports reduced motion. Step 10.7 records cold-load measurements and the reduction in public requests. |
-| Automated tests and CI | Configured | [GitHub Actions](../.github/workflows/ci.yml) runs database tests, formatting, lint and the frontend build. |
+| Automated tests and CI | Verified locally and configured in CI | [GitHub Actions](../.github/workflows/ci.yml) runs PostgreSQL workflow and restore tests, browser accessibility and failure checks, lint, formatting and the frontend build. |
 | Deployment | Local staging verified | [Rebuild and access instructions](DEVELOPMENT.md#local-staging) for the web service, API and PostgreSQL. |
 
 **Accurate current viva statement:** “I verified the available club content, defined the first release, and mapped its public and administrator journeys. Desktop and mobile design previews demonstrate the event discovery and return path. The local staging status page calls FastAPI and verifies a PostgreSQL query.”
@@ -1464,6 +1464,16 @@ Network measurements found that loading any route immediately requested four col
 Three cold Chrome loads per route and build used a 390 × 844 viewport, 4× CPU slowdown, 100 ms latency, 200 kB/s download, gzip and local fixture responses. Home went from 9 API requests to 5 and About from 6 to 2. Initial JS transfer fell from 96,247 to 89,346 bytes. Median largest contentful paint went from 2.29 s to 1.85 s on Home and from 2.05 s to 1.72 s on About. One timed-out baseline run was discarded and the complete baseline repeated. These are desktop emulation measurements with empty lists. Real-device timings and large rosters remain unmeasured.
 
 The production build, lint, format check and all 12 browser cases passed. **Viva question.** What moves off the public page’s critical path? The staff code and requests for collections the visitor has not opened.
+
+### TASK-098 — Restore a PostgreSQL backup and migrate it forward
+
+24 November 2026 · Step 10.8 · Verified locally
+
+The [recovery test](../backend/tests/test_recovery.py) creates two isolated PostgreSQL 17 databases. It seeds revision 0005 with published club records, a synthetic application and an email challenge, creates a custom-format dump, and restores it into the second database in one transaction. It verifies the restored revision, upgrades to head, checks for schema drift, reads the original receipt and published project relationships, and inserts a second application to verify sequence continuity. Both temporary databases are removed. The [operator guide](DEVELOPMENT.md#database-backup-and-restore) includes the backup and restore commands.
+
+The isolated drill passed, then the complete backend suite passed all 27 tests with the drill enabled. One test-client dependency deprecation warning remains. Ruff passed lint and formatting for 41 files, the production frontend built, and all 12 browser tests passed. Migration 0006 was also applied to the local development database. The local site and its database health endpoint responded. This rehearsal covers database contents. Production retention, off-site storage, external media and recovery times remain launch work.
+
+**Viva question.** What proves the backup is usable? A fresh database accepted the archive, preserved a student receipt and linked content, migrated to the current schema, and allocated a new application ID.
 
 ## 11. Template for Every Future Task or Step
 

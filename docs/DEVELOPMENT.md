@@ -153,6 +153,31 @@ uv run --locked python -m pytest -q
 
 [GitHub Actions](../.github/workflows/ci.yml) runs these checks on pushes and pull requests with a fresh PostgreSQL service. The positive health test requires a reachable database. The failure test directs its own request to an unavailable port.
 
+### Browser checks
+
+From `frontend/`, run `npm ci`, `npx playwright install chromium`, `npm run build` and `npm run test:browser`. The suite starts its own preview on port 4175 and supplies synthetic API responses. Set `PLAYWRIGHT_CHANNEL=chrome` to use an installed Chrome instead. The PostgreSQL tests exercise the real API and database.
+
+### Database backup and restore
+
+Use PostgreSQL 17 client tools and connection settings for the intended server. Store backups outside the repository with restricted access because the database contains private applications and staff sessions. The following example uses PostgreSQL environment settings for host, port and user and a protected password file for authentication.
+
+```sh
+pg_dump --format=custom --dbname=code2chill --file=code2chill.dump
+createdb --template=template0 c2c_restore_check
+pg_restore --single-transaction --no-owner --no-acl --dbname=c2c_restore_check code2chill.dump
+```
+
+Choose a fresh target database name for each restore. Stop if creation fails. Run `alembic upgrade head` and `alembic check` from the backend environment with `DATABASE_URL` pointing to that **restored** database. Check a published project, its event and contributors, a private application receipt and an insert in the restored database before switching any service over. The restore role owns the objects. Configure the deployment’s database grants separately. Hosted images and SMTP configuration live outside this backup.
+
+The [automated drill](../backend/tests/test_recovery.py) exercises these operations on two generated databases and removes both on exit. It uses the matching PostgreSQL tools inside the Docker container. From `backend/` with the development database running, execute the following in PowerShell.
+
+```powershell
+$env:RECOVERY_DB_CONTAINER = 'code2chill-dev-db-1'
+.\.venv\Scripts\python.exe -m pytest -q tests/test_recovery.py
+```
+
+CI supplies its own fresh service container. The drill archives a previous-release schema populated with test data, restores it, migrates to head, and checks the data, relationships, verification counter and ID sequence. Operational backup schedules, retention, off-site storage and recovery times need to be set for the production environment.
+
 ## Local staging
 
 Staging builds the React production bundle and FastAPI runtime into separate images. Caddy serves JavaScript, styles, fonts and the branded share image. It forwards page requests to FastAPI, which inserts route-specific metadata into the built HTML. API requests still use the same origin. The staging database has its own volume and is reachable only on the staging network. Use Docker Compose 2.24.4 or newer for the port override.
