@@ -1875,6 +1875,28 @@ Fresh Chrome loads on both ports displayed the homepage heading, navigation and 
   *What is Stale-While-Revalidate (SWR) and why is it essential for serverless and cloud-hosted frontends?*
   SWR is a caching strategy where the client immediately returns cached or fallback data first (stale), then executes a background fetch request (revalidate), and finally updates the view with fresh data once available. It eliminates perceived latency, prevents layout shift, and insulates users from backend cold starts and temporary network outages.
 
+### TASK-121 — Implement Perforated Event Pass Tickets and Next Season Hackathon Notifier
+
+24 November 2026 · Events UI & Community Engagement · Verified locally
+
+- **Date:** 24 November 2026.
+- **Roadmap step:** Phase 1 / Event Archive & Engagement Presentation.
+- **Status:** Implemented and verified.
+- **Objective:** Upgrade the Events directory (`/events`) by implementing User-Approved Options: (1) Perforated Physical Event Pass Ticket Cards replacing standard table rows, and (2) High-energy Next Sprint Announcement & Notifier Banner for upcoming hackathon cycles.
+- **Changes and files:**
+  - [frontend/src/Events.jsx](../frontend/src/Events.jsx): Transformed `EventRow` into a physical 3-section perforated event ticket (`.ticket-pass`) featuring an embossed punch-hole date stamp (day, month, IST start time), prize pool badge (`₹12,300+ Cash Pool`, `₹5,000 Prizes`, `OSL Honors`), venue pin, and vertical barcode serial with direct `View Recap →` action. Replaced the empty "No upcoming events" notice with `UpcomingSprintAlert` banner featuring direct CTAs to the Contact Desk and official Instagram announcements.
+  - [frontend/src/styles.css](../frontend/src/styles.css): Added styling for `.ticket-pass`, `.ticket-stub-left` (with circular punch-out pseudo elements `::before`/`::after`), `.ticket-body`, `.badge-pill`, `.ticket-stub-right`, `.barcode`, and `.sprint-alert` gradient banner.
+- **How it works:**
+  When visitors view `/events` or the featured event on the homepage, each competition displays as a physical paper ticket stub matching our editorial brand identity. If no upcoming events are scheduled on the calendar, the top of the events section surfaces the active season preparation banner rather than an uninviting blank notice, driving prospective attendees directly to inquiry and social notification funnels.
+- **Why this approach:**
+  Grounds the event schedule in physical campus ephemera (boarding passes/tickets), highlighting the verified stakes and prize pools of past competitions while keeping the registration pipeline active between event seasons.
+- **Validation:**
+  - **Pass 1:** Verified Biome linter across 34 files (0 errors, 0 warnings).
+  - **Pass 2:** Built production client distribution bundle with Vite in 466ms (`dist/index.html` verified).
+- **Viva Q&A:**
+  *Why replace empty upcoming event placeholders with an announcement banner?*
+  Displaying a plain "No upcoming events listed" text conveys inactivity and creates dead ends for interested students. Replacing it with a high-energy alert banner acknowledging that the next sprint is in active curation keeps engagement high and converts visitors into newsletter/social followers or direct inquiries.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.

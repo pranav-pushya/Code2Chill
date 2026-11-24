@@ -63,6 +63,30 @@ function classifyEvent(event) {
   return "general";
 }
 
+const EVENT_EXTRAS = {
+  "on-fire": {
+    prize: "🏆 ₹12,300+ Cash Pool",
+    barcode: "C2C-E03-2026",
+  },
+  "domination-the-frontend-challenge": {
+    prize: "⚡ OSL Honors & Awards",
+    barcode: "C2C-E02-2026",
+  },
+  "byte-the-vibe": {
+    prize: "🏆 ₹5,000 Prizes",
+    barcode: "C2C-E01-2026",
+  },
+};
+
+function getEventExtras(slug) {
+  return (
+    EVENT_EXTRAS[slug] || {
+      prize: "⚡ OSL Technical Event",
+      barcode: "C2C-EVENT",
+    }
+  );
+}
+
 function EventDate({ date, ticket = false }) {
   return (
     <time className={ticket ? undefined : "date-stamp"} dateTime={date}>
@@ -75,20 +99,84 @@ function EventDate({ date, ticket = false }) {
 }
 
 export function EventRow({ event }) {
+  const extras = getEventExtras(event.slug);
+  const eventDateObj = new Date(`${event.event_date}T00:00:00Z`);
+  const day = event.event_date ? event.event_date.slice(-2) : "--";
+  const monthStr = event.event_date
+    ? monthYear.format(eventDateObj).toUpperCase()
+    : "PENDING";
+  const timeStr = event.starts_at
+    ? `${campusTime.format(new Date(event.starts_at))} IST`
+    : null;
+
   return (
-    <Link className="event-row" to={`/events/${event.slug}`}>
-      <EventDate date={event.event_date} />
-      <span className="event-name">{event.title}</span>
-      <span className="event-place">
-        {event.venue}
-        <span
-          className={`event-badge event-badge-${event.registration_status}`}
-        >
-          <span className="status-dot" aria-hidden="true" />
-          {states[event.registration_status]}
+    <Link
+      className="ticket-pass"
+      to={`/events/${event.slug}`}
+      aria-label={`View event pass: ${event.title}`}
+    >
+      <div className="ticket-stub-left">
+        <div className="ticket-day">{day}</div>
+        <div className="ticket-month">{monthStr}</div>
+        {timeStr && <div className="ticket-time">{timeStr}</div>}
+      </div>
+
+      <div className="ticket-body">
+        <div className="ticket-badges">
+          <span className="badge-pill badge-prize">{extras.prize}</span>
+          <span
+            className={`badge-pill badge-status badge-status-${event.registration_status}`}
+          >
+            <span className="status-dot" aria-hidden="true" />
+            {states[event.registration_status]}
+          </span>
+        </div>
+        <h3 className="ticket-title">{event.title}</h3>
+        {event.venue && (
+          <p className="ticket-venue">
+            <span aria-hidden="true">📍</span> {event.venue}
+          </p>
+        )}
+      </div>
+
+      <div className="ticket-stub-right">
+        <div className="barcode" aria-hidden="true">
+          {extras.barcode}
+        </div>
+        <span className="ticket-action">
+          {event.registration_status === "ended"
+            ? "View Recap →"
+            : "View Pass →"}
         </span>
-      </span>
+      </div>
     </Link>
+  );
+}
+
+function UpcomingSprintAlert() {
+  return (
+    <div className="sprint-alert">
+      <div className="sprint-alert-content">
+        <span className="alert-tag">⚡ Next Season in Preparation</span>
+        <h3 className="alert-title">Don't miss the next hackathon</h3>
+        <p className="alert-desc">
+          We are curating high-impact problem statements, mentorship tracks, and
+          campus venues for our upcoming sprint under the Office of Student
+          Life.
+        </p>
+      </div>
+      <div className="alert-actions">
+        <Link to="/contact" className="btn-alert-primary">
+          Inquire at Desk ↗
+        </Link>
+        <ExternalLink
+          href="https://www.instagram.com/code2chill.osl"
+          className="btn-alert-secondary"
+        >
+          Instagram Alerts ↗
+        </ExternalLink>
+      </div>
+    </div>
   );
 }
 
@@ -171,11 +259,12 @@ function Schedule({ upcoming, past }) {
           filteredUpcoming.map((event) => (
             <EventRow key={event.slug} event={event} />
           ))
+        ) : filter === "all" ? (
+          <UpcomingSprintAlert />
         ) : (
           <p className="empty-category-msg">
-            {filter === "all"
-              ? "No upcoming events are listed."
-              : "No upcoming events in this category."}
+            No upcoming events in this category. Check back soon or inquire at
+            our desk.
           </p>
         )}
       </section>

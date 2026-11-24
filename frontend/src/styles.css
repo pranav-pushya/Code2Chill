@@ -1782,6 +1782,277 @@ span[role="status"]:empty {
   white-space: nowrap;
 }
 
+/* Event Ticket Pass (Proposal 1) */
+.ticket-pass {
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  display: grid;
+  grid-template-columns: 140px 1fr 160px;
+  overflow: hidden;
+  margin-bottom: var(--space-4);
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 12px rgba(16, 29, 50, 0.03);
+  transition: transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+.ticket-pass:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+  box-shadow: 0 8px 24px rgba(33, 79, 197, 0.08);
+}
+.ticket-stub-left {
+  background: color-mix(in srgb, var(--paper) 70%, var(--sheet));
+  border-right: 2px dashed var(--rule);
+  padding: var(--space-4) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+.ticket-stub-left::before,
+.ticket-stub-left::after {
+  content: "";
+  position: absolute;
+  right: -9px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--paper);
+}
+.ticket-stub-left::before {
+  top: -8px;
+}
+.ticket-stub-left::after {
+  bottom: -8px;
+}
+.ticket-pass .ticket-day {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 0.9;
+  color: var(--ink);
+}
+.ticket-pass .ticket-month {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-top: var(--space-1);
+}
+.ticket-pass .ticket-time {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+.ticket-body {
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.ticket-badges {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.badge-pill {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.badge-prize {
+  background: #fef3c7;
+  color: #92400e;
+}
+.badge-status {
+  background: #f1f5f9;
+  color: #475569;
+}
+.badge-status-ended {
+  background: #f1f5f9;
+  color: #475569;
+}
+.badge-status-open {
+  background: #dcfce7;
+  color: #166534;
+}
+.ticket-title {
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 2.8vw, 1.85rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.25rem;
+  color: var(--ink);
+}
+.ticket-venue {
+  font-size: 0.88rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0;
+}
+.ticket-stub-right {
+  border-left: 1px solid color-mix(in srgb, var(--rule) 40%, transparent);
+  background: color-mix(in srgb, var(--paper) 30%, var(--sheet));
+  padding: var(--space-4) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.ticket-stub-right .barcode {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: #94a3b8;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin-bottom: var(--space-2);
+}
+.ticket-action {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--blue);
+  white-space: nowrap;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.ticket-pass:hover .ticket-action {
+  transform: translateX(3px);
+}
+@media (max-width: 48rem) {
+  .ticket-pass {
+    grid-template-columns: 1fr;
+  }
+  .ticket-stub-left {
+    border-right: none;
+    border-bottom: 2px dashed var(--rule);
+    padding: var(--space-3);
+  }
+  .ticket-stub-left::before,
+  .ticket-stub-left::after {
+    display: none;
+  }
+  .ticket-stub-right {
+    border-left: none;
+    border-top: 1px solid var(--rule);
+    padding: var(--space-3);
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .ticket-stub-right .barcode {
+    writing-mode: horizontal-tb;
+    transform: none;
+    margin-bottom: 0;
+  }
+}
+
+/* Upcoming Sprint Notifier Banner (Proposal 2) */
+.sprint-alert {
+  background: linear-gradient(135deg, #071628 0%, #102a4e 100%);
+  color: #ffffff;
+  border-radius: var(--radius);
+  padding: var(--space-8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.sprint-alert-content {
+  flex: 1;
+  min-width: 260px;
+}
+.alert-tag {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+  margin-bottom: var(--space-3);
+}
+.alert-title {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+.alert-desc {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  max-width: 38rem;
+  line-height: 1.45;
+}
+.alert-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.btn-alert-primary {
+  background: #ffffff;
+  color: #071628;
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.65rem 1.5rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.btn-alert-primary:hover {
+  background: #e2e8f0;
+}
+.btn-alert-secondary {
+  border: 1px solid #475569;
+  color: #ffffff;
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.65rem 1.5rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.btn-alert-secondary:hover {
+  border-color: #ffffff;
+}
+
 @media print {
   .site-head {
     position: static;
