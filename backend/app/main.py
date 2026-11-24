@@ -15,6 +15,7 @@ from . import (
     admin_events,
     admin_recruitment,
     discovery,
+    inquiries,
     public_content,
     recruitment,
 )
@@ -44,6 +45,7 @@ app.include_router(admin_content.router)
 app.include_router(admin_events.router)
 app.include_router(admin_recruitment.router)
 app.include_router(public_content.router)
+app.include_router(inquiries.router)
 app.include_router(recruitment.router)
 app.include_router(discovery.router)
 
