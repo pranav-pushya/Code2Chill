@@ -280,7 +280,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **11.4 Verify the deployed experience.** Check refreshes, deep links, forms, images, authentication, and permissions.
 - [x] **11.5 Write handover instructions.** Document deployment, rollback, content editing, and administrator onboarding.
 - [x] **11.6 Prepare the technical explanation.** Explain architecture, data flow, validation, authentication, migrations, and tradeoffs accurately.
-- [ ] **11.7 Prepare the demonstration.** Record a short walkthrough and capture polished screenshots.
+- [x] **11.7 Prepare the demonstration.** Record a short walkthrough and capture polished screenshots.
 - [ ] **11.8 Establish ownership.** Transfer necessary access securely and identify maintenance responsibilities.
 
 ### Deliverables
