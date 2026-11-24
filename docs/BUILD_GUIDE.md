@@ -1502,6 +1502,14 @@ Production multi-container configuration is established in [backend/compose.prod
 
 Validated across two verification passes: Pass 1 confirmed interpolation guards for missing secrets (`POSTGRES_PASSWORD`, `PUBLIC_SITE_URL`), quiet compose syntax validation, Ruff lint and formatting across 41 files, all 26 backend pytest cases passing, Biome lint, and the Vite production build. Pass 2 executed matrix variable tests and all 12 Playwright browser and axe accessibility tests across mobile and desktop viewports. **Viva question.** Why isolate the database container without binding port 5432 to the host? Mapping database ports to host interfaces opens external attack vectors; keeping Postgres on an internal container bridge allows only the authenticated API container to communicate with the database.
 
+### TASK-100 — Prepare production data, run migrations, and bootstrap verified content
+
+24 November 2026 · Step 11.2 · Verified locally
+
+Production data preparation is enforced through [backend/app/seed.py](../backend/app/seed.py) and verified via [backend/tests/test_production_data.py](../backend/tests/test_production_data.py). In production mode (`--include-demo` omitted), the seed pipeline initializes strictly approved club records from [docs/CONTENT_REGISTER.md](CONTENT_REGISTER.md): exactly 10 official team members, 2 archived events (Byte The Vibe, DOMination) with verified campus venues, 2 student projects (NEXUS, ChronoAtlas) with attributed contributor credits, and verified site social links in `SiteSettings`. Synthetic test records, practice events (`is_demo=True`), and sample recruitment applications are strictly excluded. The seed routine is completely idempotent using Postgres `ON CONFLICT DO NOTHING`.
+
+Validated across two verification passes: Pass 1 executed migration upgrade to head on an isolated test schema followed by clean seed, verifying exact record counts (10 members, 2 events, 2 projects, 0 demo events, 0 applications), published snapshot structures, idempotency on subsequent runs, and passing all 27 backend tests plus frontend lint and build. Pass 2 executed isolated data bootstrap assertions, Ruff linting across 42 files, and migration continuity. **Viva question.** How do you guarantee no demo records or test applicant data contaminate production? Production deployment runs `seed.py` without `--include-demo`, which restricts insertions to verified roster, event, project, and link tuples, while recruitment tables remain empty until an authorized club administrator opens an active cycle.
+
 ## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.

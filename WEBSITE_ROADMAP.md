@@ -275,7 +275,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 ### Steps
 
 - [x] **11.1 Configure production.** Set secrets, database access, persistent media storage, and HTTPS.
-- [ ] **11.2 Prepare production data.** Run migrations and load approved real content only.
+- [x] **11.2 Prepare production data.** Run migrations and load approved real content only.
 - [ ] **11.3 Configure operations.** Add logs, error monitoring, health checks, and backups.
 - [ ] **11.4 Verify the deployed experience.** Check refreshes, deep links, forms, images, authentication, and permissions.
 - [ ] **11.5 Write handover instructions.** Document deployment, rollback, content editing, and administrator onboarding.

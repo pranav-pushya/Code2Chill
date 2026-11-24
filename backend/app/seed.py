@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from .content_models import Event, Member, Project, ProjectCredit, RegistrationStatus
+from .content_models import Event, Member, Project, ProjectCredit, RegistrationStatus, SiteSettings
 from .database import database_engine
 from .domain import ClubDomain
 from .publication import snapshot_for
@@ -128,6 +128,11 @@ def seed_content(session: Session, *, include_demo: bool = False) -> dict[str, i
         chronoatlas.public_snapshot = snapshot_for(session, chronoatlas)
         chronoatlas.published_at = now
         created["projects"] += 1
+
+    settings = session.get(SiteSettings, 1)
+    if settings is not None and settings.public_snapshot is None:
+        settings.public_snapshot = snapshot_for(session, settings)
+        settings.published_at = now
 
     if include_demo:
         demo = create_missing(
