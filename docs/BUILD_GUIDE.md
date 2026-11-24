@@ -2,7 +2,7 @@
 
 **Last updated:** 24 November 2026
 
-**Current stage:** Phase 10 verified through step 10.2. The next step is 10.3.
+**Current stage:** Phase 10 verified through step 10.3. The next step is 10.4.
 **Policy:** Update this guide after every task or independently completed step.
 
 ## 1. Purpose
@@ -1422,6 +1422,14 @@ Nine workflow tests passed against PostgreSQL. Email delivery was captured in me
 The [registration test](../backend/tests/test_public_content.py) checks the public response one microsecond before opening, exactly at opening, just before closing, at closing and at the event end. Only the open responses carry the university registration URL. An explicit clock keeps the test repeatable.
 
 Twelve tests passed, including invalid input, duplicate applications, stale event revisions, closed cycles and denied staff requests. **Viva question.** When is registration available? The opening instant is inclusive and the closing instant is exclusive.
+
+### TASK-093 — Verify staff sessions and password changes
+
+24 November 2026 · Step 10.3 · Verified locally
+
+The [credential error handler](../backend/app/main.py) now returns a short validation message if a password-change field is missing. The [authentication test](../backend/tests/test_admin_auth.py) also opens two independent sessions, changes the password and checks that the current session survives and the other session is revoked.
+
+Seven authentication and export tests passed, including expiry, logout, role changes, deactivated accounts and rejection of the old password. **Viva question.** Why check the second session directly? Deleting a browser cookie alone cannot invalidate another device’s server-side session.
 
 ## 11. Template for Every Future Task or Step
 

@@ -84,9 +84,12 @@ async def validation_error(request: Request, exc: RequestValidationError):
         return JSONResponse(
             {"detail": messages.get(field, "Check your application details.")}, status_code=422
         )
-    if request.url.path == "/api/admin/sign-in":
-        # Pydantic validation details can echo parts of the submitted credentials.
-        return JSONResponse({"detail": "Enter an email address and password."}, status_code=422)
+    credential_messages = {
+        "/api/admin/sign-in": "Enter an email address and password.",
+        "/api/admin/change-password": "Enter your current password and a new password.",
+    }
+    if message := credential_messages.get(request.url.path):
+        return JSONResponse({"detail": message}, status_code=422)
     return await request_validation_exception_handler(request, exc)
 
 

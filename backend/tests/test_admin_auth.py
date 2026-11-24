@@ -166,6 +166,9 @@ def test_change_password_workflow(api_db):
     )
     assert too_short.status_code == 422
 
+    incomplete = client.post(path, headers=HEADER, json={"current_password": PASSWORD})
+    assert incomplete.status_code == 422 and PASSWORD not in incomplete.text
+
     # Same password
     same_pass = client.post(
         path,
@@ -175,6 +178,9 @@ def test_change_password_workflow(api_db):
     assert same_pass.status_code == 422
 
     # Successful change
+    other_device = client.cookies[COOKIE]
+    client.cookies.clear()
+    assert sign_in(client).status_code == 200
     ok = client.post(
         path,
         headers=HEADER,
@@ -182,6 +188,8 @@ def test_change_password_workflow(api_db):
     )
     assert ok.status_code == 200
     assert ok.json() == {"status": "ok", "message": "Password changed successfully."}
+    assert client.get(SESSION).status_code == 200
+    assert client.get(SESSION, headers={"Cookie": f"{COOKIE}={other_device}"}).status_code == 401
 
     # Verify audit record
     user_id = connection.scalar(select(AdminAccount.id))
