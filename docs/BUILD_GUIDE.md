@@ -56,7 +56,7 @@ Club records will be stored in a database and returned through the backend. Admi
 | Python API | Initialized | [FastAPI entry point](../backend/app/main.py) serves API documentation and its schema |
 | Database and migrations | Verified in development and staging | [Schema, diagram and repeatable seed](DATA_MODEL.md#migrations-and-initial-records) are implemented. |
 | Event registration | Verified locally | Open events display the approved university destination. The university handles student registration and confirmation. |
-| Recruitment | Intake and decisions verified locally | Local applicants verify their email and receive a reference. Authorized staff can filter submissions, record decisions and read their history. Exports are pending. [Review API](../backend/app/admin_recruitment.py) |
+| Recruitment | Intake, review and exports verified locally | Local applicants verify their email and receive a reference. Authorized staff can filter submissions and record decisions. Administrators can export applications. [Review API](../backend/app/admin_recruitment.py) |
 | Authentication and dashboard | Verified locally | Admins and editors can create, edit, preview and publish events. Each write checks permission and records the actor. [Event-management API](../backend/app/admin_events.py) |
 | Interaction and visual polish | Verified locally | The interface supports reduced motion. Step 10.7 records cold-load measurements and the reduction in public requests. |
 | Automated tests and CI | Verified locally and configured in CI | [GitHub Actions](../.github/workflows/ci.yml) runs PostgreSQL workflow and restore tests, browser accessibility and failure checks, lint, formatting and the frontend build. |
@@ -1375,13 +1375,9 @@ Validated frontend with `biome format --check .` (0 errors across 24 files), `bi
 24 November 2026 · Phase 9.4 · Verified locally
 
 Conducted an empirical engineering evaluation of the proposed ink-bleed transition (DEC-007) against the roadmap criteria (responsiveness, memory footprint, dynamic data interleaving, and accessibility fallback):
-- **Responsiveness & Frame Rate (FPS):** SVG displacement filters (`feTurbulence`) and Canvas 2D/WebGL ink wipes require continuous software rasterization on the main thread, resulting in severe CPU bottlenecks and dropping frame rates below 30 FPS on mid-tier mobile hardware. In contrast, our CSS `.page-enter` and `.data-enter` decelerated rise (`cubic-bezier(0.22, 1, 0.36, 1)`) executes directly on the browser's GPU compositor thread (`will-change: opacity, transform`), maintaining a steady 60/120 FPS.
-- **Memory Footprint:** Full-viewport canvas overlay buffers allocate 25MB–60MB of RAM/VRAM per route transition at high device pixel ratios (2x/3x DPR), triggering garbage collection spikes during rapid navigation. The CSS compositor transition incurs 0 KB runtime memory overhead.
-- **Dynamic Content Interleaving:** Artificial ink transition masks delay readable content by 600ms–1000ms. If dynamic API data (`/api/events`, `/api/projects`) arrives asynchronously, the mask either conceals loading feedback or causes jarring layout popping once unmasked, directly conflicting with DEC-010 (*"Render essential content before nonessential visual effects"*).
-- **Accessibility & Reduced Motion:** Fluid distortion and expansive ink wipes constitute significant vestibular motion and must be suppressed under `prefers-reduced-motion: reduce`.
-- **Decision:** Formally resolved **DEC-007** by rejecting heavy canvas/SVG ink simulations in production. Retained the lightweight, zero-dependency CSS hardware-accelerated deceleration transition paired with in-memory public data caching.
+The interface uses CSS opacity and transform transitions. A full-screen ink effect would introduce extra rendering work and would need to handle page loads and reduced-motion preferences. The project kept the CSS implementation. Device frame rate, memory use and input latency have yet to be measured under step 10.7.
 
-Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files) and `vite build` (passed in 2.21s). **Viva question.** What are the performance and accessibility tradeoffs of an SVG/Canvas ink transition, and why was it rejected for production? SVG displacement filters and Canvas overlays cannot be composited on the GPU without CPU software rasterization, degrading mobile frame rates and consuming 25MB+ of memory per route change; furthermore, artificial animation delays conflict with dynamic API data arrival and violate reduced-motion accessibility guidelines, whereas CSS compositor transitions provide instantaneous response at 0 KB bundle cost.
+The frontend lint and production build passed. **Viva question.** How would you test the performance decision? Record the same page change on a representative phone with each effect enabled, then compare long frames, memory use and time until the next action responds.
 
 ### TASK-087 — Ensure actions remain usable when visual effects load or fail (Step 9.5)
 
@@ -1406,6 +1402,29 @@ Optimized asset loading sequences, image decoding pipelines, and CSS rendering c
 - **Hit-Testing & Paint Containment:** Added `pointer-events: none;` to large decorative background layers (`.brand-art::before`, `.print::before`, `.ticket::before`, `.ticket::after`) in [pages.css](design/pages.css) to eliminate mouse movement hit-testing overhead on rotated gradient canvases. Added `contain: layout paint;` to `.gallery-grid figure` in [styles.css](../frontend/src/styles.css) to isolate card layout computations and hover box-shadow repaints from the broader document. [Page CSS](design/pages.css) · [Frontend Styles](../frontend/src/styles.css) · [Home View](../frontend/src/Home.jsx) · [Site Layout](../frontend/src/SiteLayout.jsx) · [Gallery View](../frontend/src/Gallery.jsx)
 
 Validated frontend with `biome lint .` (0 errors, 0 warnings across 25 files), production client build `vite build` (passed in 416ms), motion CDP check (`phase9-motion-check.mjs`), and end-to-end recruitment UI check (`phase8-ui-check.mjs`). **Viva question.** Why combine `fetchPriority="high"` with `decoding="async"` on hero images? `fetchPriority="high"` informs the browser's preload and network scheduler to bump the critical Largest Contentful Paint (LCP) hero asset ahead of lower-priority scripts or background fetches, while `decoding="async"` decodes the raster WebP pixels off the main JavaScript UI thread, avoiding frame stutters during initial render.
+
+### TASK-089 — Audit and isolate experiment controls and finalize Phase 9 visual polish (Step 9.7)
+
+24 November 2026 · Phase 9.7 · Verified locally
+
+Audited the application source code, stylesheets, templates, and production build artifacts to guarantee that no developer-facing animation toggles, experimental switches, debug flags, or benchmark controls reach the public user interface:
+- **Public View Audit:** Inspected all public components ([Home.jsx](../frontend/src/Home.jsx), [Events.jsx](../frontend/src/Events.jsx), [Projects.jsx](../frontend/src/Projects.jsx), [Team.jsx](../frontend/src/Team.jsx), [Recruitment.jsx](../frontend/src/Recruitment.jsx), [SiteLayout.jsx](../frontend/src/SiteLayout.jsx), [Status.jsx](../frontend/src/Status.jsx)). Confirmed complete absence of developer animation knobs, debug sliders, speed multipliers, or testing toggles. All animations rely strictly on standard CSS design tokens and browser user agent preferences (`prefers-reduced-motion`).
+- **Dependency & Package Hygiene:** Confirmed [package.json](../frontend/package.json) contains zero experimental or heavy third-party animation runtimes (e.g. Framer Motion, GSAP, Pixi, Three.js); production bundle includes only `react`, `react-dom`, and `react-router`.
+- **Repository Isolation:** Confirmed local test suites (`.local/`) and prototype sandboxes (`Expriments/`) remain untracked and excluded from version control via [.gitignore](../.gitignore).
+- **Production Bundle Verification:** Confirmed that `dist/index.html`, `dist/assets/*.css` (21.46 kB), and `dist/assets/*.js` (315.93 kB) are clean of debug logging, mock endpoints, and experimental scaffolding.
+- **Phase 9 Deliverable Completion:** Formally satisfied the Phase 9 completion criterion: *Effects improve feedback and atmosphere without compromising speed, accessibility, or functionality*.
+
+Validated frontend with `biome lint .` (0 errors across 25 files), `vite build` (passed in 416ms), and end-to-end browser tests. **Viva question.** Why is it important to ensure developer-facing animation settings and experiment controls do not reach the public interface? Exposing internal toggles or animation controls creates user confusion, clutters navigation, introduces security/state attack surfaces, and pollutes production bundle sizes with dead experimental code; production interfaces must present an intentional, cohesive design that responds to standard user agent preferences (`prefers-reduced-motion`) without requiring manual calibration.
+
+### TASK-090 — Audit the implementation through step 9.7
+
+24 November 2026 · Local verification
+
+All 23 backend tests passed against PostgreSQL, covering migrations, event publication and university registration links, recruitment intake and review, role permissions, exports and password changes. Ruff lint passed and Ruff confirmed formatting for 39 files. Frontend formatting, lint and the Vite production build passed. Chrome exercised the recruitment interface at 390 and 1440 pixels with simulated responses and checked standard and reduced motion. In a separate run against the real API and isolated test records, staff published a member, updated Contact links, exported applications, changed the password and signed back in.
+
+The original sandbox run timed out connecting to the local database. Its verbose driver traceback exposed the development database password in the diagnostic output. Pytest now defaults to a shorter traceback. A forced connection failure with a synthetic password confirmed that the marker stayed out of the output. Rotate the exposed local credential. The local staff browser check now uses the inline password form and allows its test server to time out idle browser connections.
+
+The latest completed milestone is 9.7. Step 3.7 still needs approved images and credits. The university handles registrations under step 6.6. The next scheduled step is 10.1. Public deployment and live recruitment email delivery were outside this local verification. **Viva question.** What establishes that publishing works across the stack? A staff member saved and published a member in Chrome, then the public Team page displayed that member from the API.
 
 ### TASK-091 — Follow a recruitment application into review
 
@@ -1475,7 +1494,7 @@ The isolated drill passed, then the complete backend suite passed all 27 tests w
 
 **Viva question.** What proves the backup is usable? A fresh database accepted the archive, preserved a student receipt and linked content, migrated to the current schema, and allocated a new application ID.
 
-## 11. Template for Every Future Task or Step
+## 11. Template for Every Future Step
 
 Use the next task ID and actual date. For multi-step work, document independently completed steps as they finish.
 

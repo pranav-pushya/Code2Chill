@@ -197,7 +197,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **7.5 Build About and Contact.** Both routes use the confirmed club description and official contact links.
 - [x] **7.6 Add archives and galleries.** The archive has a linked, responsive event gallery. Event photography and project screenshots use the owner-requested labeled placeholders until approved files and credits arrive. [Asset inventory](docs/CONTENT_REGISTER.md#asset-inventory)
 - [x] **7.7 Complete resilience states.** Public lists, details and homepage previews handle loading, empty results, missing records and retryable errors.
-- [x] **7.8 Add discovery metadata.** Public URLs return page-specific titles and descriptions, canonical links and a branded social preview in the initial HTML. Detail pages use published snapshots. [Verification](docs/BUILD_GUIDE.md#task-065--serve-discovery-metadata-and-a-branded-share-card)
+- [x] **7.8 Add discovery metadata.** Public URLs return page-specific titles and descriptions, canonical links and a branded social preview in the initial HTML. Detail pages use published snapshots. [Verification](docs/BUILD_GUIDE.md#task-066--serve-discovery-metadata-and-a-branded-share-card)
 
 ### Deliverables
 
@@ -240,7 +240,7 @@ Select compatible, maintained dependency versions during setup rather than copyi
 - [x] **9.4 Evaluate the ink transition separately.** Evaluated responsiveness, memory footprint, dynamic data interleaving, and accessibility; resolved DEC-007 by adopting zero-overhead CSS compositor transitions in production.
 - [x] **9.5 Keep actions usable.** Essential interactions must work while visual effects load or fail. Protected sticky header anchor scroll padding, guaranteed non-blocking transition pointer events, enabled forced-colors high contrast focus outlines, and provided print media fallbacks.
 - [x] **9.6 Optimize visual assets.** Improve image sizing, font loading, and expensive rendering effects. Added fetchPriority="high" and decoding="async" on hero and gallery images, isolated decorative background hit-testing with pointer-events: none, and applied layout/paint containment to cards.
-- [ ] **9.7 Remove experiment controls.** Keep developer-facing animation settings out of the public interface.
+- [x] **9.7 Remove experiment controls.** Keep developer-facing animation settings out of the public interface. Confirmed zero developer-facing animation toggles, debug switches, or test controls in public views; isolated prototypes and test scripts via .gitignore.
 
 ### Deliverables
 
